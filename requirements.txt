@@ -1,0 +1,4 @@
+# smoke_demo.py uses only the standard library.
+# Freeze exact versions after the first successful integration.
+httpx>=0.27,<1
+python-dotenv>=1,<2

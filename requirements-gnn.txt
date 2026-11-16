@@ -1,0 +1,4 @@
+-r requirements.txt
+# Use CPU torch when CUDA is unavailable.
+torch>=2.2,<3
+torch-geometric>=2.5,<3

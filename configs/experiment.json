@@ -1,0 +1,54 @@
+{
+  "status": "scaffold_not_experiment_results",
+  "seed": 42,
+  "modes": [
+    "llm",
+    "text",
+    "gnn"
+  ],
+  "data": {
+    "train": "data/processed/train.jsonl",
+    "validation": "data/processed/validation.jsonl",
+    "test": "data/processed/test.jsonl"
+  },
+  "retrieval": {
+    "max_hops": 2,
+    "max_nodes": 200,
+    "max_edges": 800,
+    "context_token_budget": 2000
+  },
+  "agent": {
+    "max_tool_calls": 2
+  },
+  "gnn": {
+    "model": "GAT",
+    "hidden_dim": 128,
+    "configs": [
+      {
+        "name": "gat_2_mean",
+        "layers": 2,
+        "graph_pool": "mean"
+      },
+      {
+        "name": "gat_1_mean",
+        "layers": 1,
+        "graph_pool": "mean"
+      },
+      {
+        "name": "gat_3_mean",
+        "layers": 3,
+        "graph_pool": "mean"
+      },
+      {
+        "name": "gat_2_sum",
+        "layers": 2,
+        "graph_pool": "sum"
+      },
+      {
+        "name": "gat_2_max",
+        "layers": 2,
+        "graph_pool": "max"
+      }
+    ]
+  }
+}

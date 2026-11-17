@@ -6,7 +6,9 @@
 
 高级机器学习课程五人项目：基于 FB15k-237，比较纯大模型、Agent 加图谱文本检索、Agent 加图谱检索与 GNN 三种问答方案。
 
-**当前状态：A 数据管线与收尾材料已在 `codex/data` 交付。** 已提供可校验下载、两跳模板 QA 构造、分组划分与完整答案/证据审计，2000/200/300 条训练/验证/测试数据成品已提交到 [data/processed](data/processed/)。另提供全查询组质量标记、77组模型语义初审和A侧交接检查；已标记的语义限制及B/D待实际接入确认状态见 [收尾与验收](docs/A收尾与验收.md)。本分支其余模块仍为初始框架，尚无正式三组对比实验结果。A 的运行与接口见 [数据交接](docs/A数据交接.md)。
+**当前状态：A 数据管线与收尾材料已在 `codex/data` 交付。** 已提供可校验下载、两跳模板 QA 构造、分组划分与完整答案/证据审计，2000/200/300 条训练/验证/测试数据成品已提交到 [data/processed](data/processed/)。另提供全查询组质量标记、77组模型语义初审和A侧交接检查；数据边界见 [收尾与验收](docs/A收尾与验收.md)。A 的运行与接口见 [数据交接](docs/A数据交接.md)。
+
+**D Agent 已完成可独立开发的实现。** 包括 LangChain/DeepSeek 客户端、自主工具循环、三种模式接口及离线演示。D 尚未使用真实密钥验证 API，B 正式检索、C 训练模型及 E 正式实验待联调；没有正式三组实验结果。D 的运行方法和边界见 [Agent 交接](docs/D-Agent交接.md)。
 
 ## 快速开始
 
@@ -26,18 +28,25 @@ python scripts/smoke_demo.py
 
 示例使用仓库内的虚构微型图谱，展示“电影 → 导演 → 出生地”的两跳检索及原始证据，不调用 LLM，也不运行 GNN。
 
-开始正式开发时：
+实验使用已有的 Anaconda `langchain` 环境：
 
 ```bash
-python -m venv .venv
-# Windows PowerShell
-.venv\Scripts\Activate.ps1
-python -m pip install -r requirements.txt
+conda activate langchain
+python --version
+# 当前环境已安装 LangChain；缺少依赖时再安装
+python -m pip install -r requirements-agent.txt
 # C 同学开发 GNN 时再安装
 python -m pip install -r requirements-gnn.txt
 ```
 
-复制 `.env.example` 为本地 `.env` 后填写配置。真实密钥只保存在本地，不提交到 GitHub。正式实验入口尚未实现，会明确退出提示：
+激活环境后，可以先运行不调用模型的脚本响应演示：
+
+```bash
+python scripts/agent_demo.py --offline
+python scripts/check_agent_routing.py --dry-run
+```
+
+复制 `.env.example` 为本地 `.env` 后填写 DeepSeek 密钥（已有文件不要覆盖）。真实密钥只保存在本地，不提交到 GitHub。然后运行 `python scripts/agent_demo.py` 验证真实模型路由，或 `python scripts/run_agent.py --mode llm --limit 1` 开发验证集单题。正式实验入口仍由 E 完成，目前会明确退出提示：
 
 ```bash
 python scripts/run_experiments.py --config configs/experiment.json
@@ -99,6 +108,9 @@ configs/experiment.json       三基线与五组消融配置
 data/README.md                数据约定，成品 QA 已提交，原始大包按需下载
 docs/                        分工 Word、数据链接与协作说明
 scripts/smoke_demo.py         无网络的检索示例
+scripts/agent_demo.py         D 的虚构图谱演示，支持离线脚本/真实 API
+scripts/run_agent.py          D 的验证集小批量开发入口
+scripts/check_agent_routing.py D 的独立合成路由检查
 scripts/run_experiments.py    正式实验入口，等待 E 完成
 src/graph_agent/schemas.py    公共数据结构
 src/graph_agent/data/         A

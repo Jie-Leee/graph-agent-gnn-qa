@@ -4,8 +4,9 @@ Usage
 -----
     python scripts/prepare_data.py --raw data/raw --output data/processed
 
-The JSONL files land in ``data/processed`` (git-ignored); the human-readable
-reports are copied to ``docs/`` so they can be committed and reviewed.
+The fixed QA release lives in ``data/processed`` and is versioned alongside
+the scripts. Human-readable reports are also copied to ``docs/`` for review.
+Use a different --output directory for exploratory variants.
 """
 from __future__ import annotations
 

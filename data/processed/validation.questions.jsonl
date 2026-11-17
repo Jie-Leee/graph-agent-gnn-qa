@@ -1,0 +1,200 @@
+{"question_id": "validation-00000", "text": "Return every contained location of any place of birth of Robert Louis Stevenson.", "topic_entity_ids": ["/m/06lbp"]}
+{"question_id": "validation-00001", "text": "List every contained location of any place of birth of Robert Louis Stevenson.", "topic_entity_ids": ["/m/06lbp"]}
+{"question_id": "validation-00002", "text": "For Vladimir Vladimirovich Nabokov, list every contained location of any place of birth.", "topic_entity_ids": ["/m/03f47xl"]}
+{"question_id": "validation-00003", "text": "Return every contained location of any place of birth of Vladimir Vladimirovich Nabokov.", "topic_entity_ids": ["/m/03f47xl"]}
+{"question_id": "validation-00004", "text": "Return every place of birth of any composer of Demolition Man.", "topic_entity_ids": ["/m/02ny6g"]}
+{"question_id": "validation-00005", "text": "List every place of birth of any composer of Demolition Man.", "topic_entity_ids": ["/m/02ny6g"]}
+{"question_id": "validation-00006", "text": "Return every country of citizenship of any cast member of Animaniacs.", "topic_entity_ids": ["/m/0vhm"]}
+{"question_id": "validation-00007", "text": "List every country of citizenship of any cast member of Animaniacs.", "topic_entity_ids": ["/m/0vhm"]}
+{"question_id": "validation-00008", "text": "For The Time Machine, list every place of birth of any composer.", "topic_entity_ids": ["/m/09zf_q"]}
+{"question_id": "validation-00009", "text": "Return every place of birth of any composer of The Time Machine.", "topic_entity_ids": ["/m/09zf_q"]}
+{"question_id": "validation-00010", "text": "Name every headquarters city of any production company of Ghost Rider.", "topic_entity_ids": ["/m/06yykb"]}
+{"question_id": "validation-00011", "text": "For Ghost Rider, list every headquarters city of any production company.", "topic_entity_ids": ["/m/06yykb"]}
+{"question_id": "validation-00012", "text": "List every profession of any writer of Dancer in the Dark.", "topic_entity_ids": ["/m/01m13b"]}
+{"question_id": "validation-00013", "text": "Name every profession of any writer of Dancer in the Dark.", "topic_entity_ids": ["/m/01m13b"]}
+{"question_id": "validation-00014", "text": "For Germany, list every headquarters city of any contained location.", "topic_entity_ids": ["/m/0345h"]}
+{"question_id": "validation-00015", "text": "Return every headquarters city of any contained location of Germany.", "topic_entity_ids": ["/m/0345h"]}
+{"question_id": "validation-00016", "text": "For The Longest Yard, list every headquarters city of any production company.", "topic_entity_ids": ["/m/095z4q"]}
+{"question_id": "validation-00017", "text": "Return every headquarters city of any production company of The Longest Yard.", "topic_entity_ids": ["/m/095z4q"]}
+{"question_id": "validation-00018", "text": "For Guns N' Roses, list every time zone of any place of origin.", "topic_entity_ids": ["/m/081wh1"]}
+{"question_id": "validation-00019", "text": "Return every time zone of any place of origin of Guns N' Roses.", "topic_entity_ids": ["/m/081wh1"]}
+{"question_id": "validation-00020", "text": "Name every country of citizenship of any artist of Electronic rock.", "topic_entity_ids": ["/m/05c6073"]}
+{"question_id": "validation-00021", "text": "For Electronic rock, list every country of citizenship of any artist.", "topic_entity_ids": ["/m/05c6073"]}
+{"question_id": "validation-00022", "text": "Name every profession of any composer of Casino Royale.", "topic_entity_ids": ["/m/03r0g9"]}
+{"question_id": "validation-00023", "text": "For Casino Royale, list every profession of any composer.", "topic_entity_ids": ["/m/03r0g9"]}
+{"question_id": "validation-00024", "text": "Return every place of birth of any producer of Armageddon.", "topic_entity_ids": ["/m/0ds33"]}
+{"question_id": "validation-00025", "text": "List every place of birth of any producer of Armageddon.", "topic_entity_ids": ["/m/0ds33"]}
+{"question_id": "validation-00026", "text": "List every school type of any contained location of Tuscaloosa.", "topic_entity_ids": ["/m/0qc7l"]}
+{"question_id": "validation-00027", "text": "Name every school type of any contained location of Tuscaloosa.", "topic_entity_ids": ["/m/0qc7l"]}
+{"question_id": "validation-00028", "text": "For Space Cowboys, list every headquarters city of any production company.", "topic_entity_ids": ["/m/05r3qc"]}
+{"question_id": "validation-00029", "text": "Return every headquarters city of any production company of Space Cowboys.", "topic_entity_ids": ["/m/05r3qc"]}
+{"question_id": "validation-00030", "text": "For X-Men Origins: Wolverine, list every profession of any composer.", "topic_entity_ids": ["/m/08hmch"]}
+{"question_id": "validation-00031", "text": "Return every profession of any composer of X-Men Origins: Wolverine.", "topic_entity_ids": ["/m/08hmch"]}
+{"question_id": "validation-00032", "text": "List every contained location of any place of birth of Matt Groening.", "topic_entity_ids": ["/m/04s04"]}
+{"question_id": "validation-00033", "text": "Name every contained location of any place of birth of Matt Groening.", "topic_entity_ids": ["/m/04s04"]}
+{"question_id": "validation-00034", "text": "Name every place of birth of any cast member of CSI: Crime Scene Investigation.", "topic_entity_ids": ["/m/01kt_j"]}
+{"question_id": "validation-00035", "text": "For CSI: Crime Scene Investigation, list every place of birth of any cast member.", "topic_entity_ids": ["/m/01kt_j"]}
+{"question_id": "validation-00036", "text": "For Sophie's Choice, list every official language of any country.", "topic_entity_ids": ["/m/0bcp9b"]}
+{"question_id": "validation-00037", "text": "Return every official language of any country of Sophie's Choice.", "topic_entity_ids": ["/m/0bcp9b"]}
+{"question_id": "validation-00038", "text": "List every profession of any artist of Industrial music.", "topic_entity_ids": ["/m/0mmp3"]}
+{"question_id": "validation-00039", "text": "Name every profession of any artist of Industrial music.", "topic_entity_ids": ["/m/0mmp3"]}
+{"question_id": "validation-00040", "text": "List every country of citizenship of any artist of Post-bop.", "topic_entity_ids": ["/m/0gt_0v"]}
+{"question_id": "validation-00041", "text": "Name every country of citizenship of any artist of Post-bop.", "topic_entity_ids": ["/m/0gt_0v"]}
+{"question_id": "validation-00042", "text": "List every time zone of any place of origin of Ne-Yo.", "topic_entity_ids": ["/m/06s7rd"]}
+{"question_id": "validation-00043", "text": "Name every time zone of any place of origin of Ne-Yo.", "topic_entity_ids": ["/m/06s7rd"]}
+{"question_id": "validation-00044", "text": "Name every place of birth of any producer of Thelma & Louise.", "topic_entity_ids": ["/m/026390q"]}
+{"question_id": "validation-00045", "text": "For Thelma & Louise, list every place of birth of any producer.", "topic_entity_ids": ["/m/026390q"]}
+{"question_id": "validation-00046", "text": "For The Greatest Story Ever Told, list every place of birth of any composer.", "topic_entity_ids": ["/m/01wb95"]}
+{"question_id": "validation-00047", "text": "Return every place of birth of any composer of The Greatest Story Ever Told.", "topic_entity_ids": ["/m/01wb95"]}
+{"question_id": "validation-00048", "text": "For Daryl Hannah, list every contained location of any place of birth.", "topic_entity_ids": ["/m/01xv77"]}
+{"question_id": "validation-00049", "text": "Return every contained location of any place of birth of Daryl Hannah.", "topic_entity_ids": ["/m/01xv77"]}
+{"question_id": "validation-00050", "text": "Return every headquarters city of any production company of Titanic.", "topic_entity_ids": ["/m/0dr_4"]}
+{"question_id": "validation-00051", "text": "List every headquarters city of any production company of Titanic.", "topic_entity_ids": ["/m/0dr_4"]}
+{"question_id": "validation-00052", "text": "Name every place of birth of any producer of You Can Count on Me.", "topic_entity_ids": ["/m/02_06s"]}
+{"question_id": "validation-00053", "text": "For You Can Count on Me, list every place of birth of any producer.", "topic_entity_ids": ["/m/02_06s"]}
+{"question_id": "validation-00054", "text": "For David Foster, list every contained location of any place of origin.", "topic_entity_ids": ["/m/02dbp7"]}
+{"question_id": "validation-00055", "text": "Return every contained location of any place of origin of David Foster.", "topic_entity_ids": ["/m/02dbp7"]}
+{"question_id": "validation-00056", "text": "For The Fighter, list every headquarters city of any production company.", "topic_entity_ids": ["/m/047d21r"]}
+{"question_id": "validation-00057", "text": "Return every headquarters city of any production company of The Fighter.", "topic_entity_ids": ["/m/047d21r"]}
+{"question_id": "validation-00058", "text": "List every profession of any artist of Synthpunk.", "topic_entity_ids": ["/m/01_sz1"]}
+{"question_id": "validation-00059", "text": "Name every profession of any artist of Synthpunk.", "topic_entity_ids": ["/m/01_sz1"]}
+{"question_id": "validation-00060", "text": "For St Andrews, list every school type of any contained location.", "topic_entity_ids": ["/m/01zk9d"]}
+{"question_id": "validation-00061", "text": "Return every school type of any contained location of St Andrews.", "topic_entity_ids": ["/m/01zk9d"]}
+{"question_id": "validation-00062", "text": "Name every headquarters city of any production company of Letters from Iwo Jima.", "topic_entity_ids": ["/m/0gy0l_"]}
+{"question_id": "validation-00063", "text": "For Letters from Iwo Jima, list every headquarters city of any production company.", "topic_entity_ids": ["/m/0gy0l_"]}
+{"question_id": "validation-00064", "text": "For Quincy Jones, list every contained location of any place of birth.", "topic_entity_ids": ["/m/01wd9lv"]}
+{"question_id": "validation-00065", "text": "Return every contained location of any place of birth of Quincy Jones.", "topic_entity_ids": ["/m/01wd9lv"]}
+{"question_id": "validation-00066", "text": "Return every official language of any country of Spirited Away.", "topic_entity_ids": ["/m/0j6b5"]}
+{"question_id": "validation-00067", "text": "List every official language of any country of Spirited Away.", "topic_entity_ids": ["/m/0j6b5"]}
+{"question_id": "validation-00068", "text": "Name every religion of any producer of Evolution.", "topic_entity_ids": ["/m/03n0cd"]}
+{"question_id": "validation-00069", "text": "For Evolution, list every religion of any producer.", "topic_entity_ids": ["/m/03n0cd"]}
+{"question_id": "validation-00070", "text": "List every time zone of any place of origin of Oingo Boingo.", "topic_entity_ids": ["/m/014pg1"]}
+{"question_id": "validation-00071", "text": "Name every time zone of any place of origin of Oingo Boingo.", "topic_entity_ids": ["/m/014pg1"]}
+{"question_id": "validation-00072", "text": "List every profession of any composer of Aladdin.", "topic_entity_ids": ["/m/0jnwx"]}
+{"question_id": "validation-00073", "text": "Name every profession of any composer of Aladdin.", "topic_entity_ids": ["/m/0jnwx"]}
+{"question_id": "validation-00074", "text": "Return every profession of any producer of The 40-Year-Old Virgin.", "topic_entity_ids": ["/m/06fpsx"]}
+{"question_id": "validation-00075", "text": "List every profession of any producer of The 40-Year-Old Virgin.", "topic_entity_ids": ["/m/06fpsx"]}
+{"question_id": "validation-00076", "text": "Name every headquarters city of any production company of Lost in Translation.", "topic_entity_ids": ["/m/0209xj"]}
+{"question_id": "validation-00077", "text": "For Lost in Translation, list every headquarters city of any production company.", "topic_entity_ids": ["/m/0209xj"]}
+{"question_id": "validation-00078", "text": "Return every time zone of any headquarters city of University of South Florida.", "topic_entity_ids": ["/m/09s5q8"]}
+{"question_id": "validation-00079", "text": "List every time zone of any headquarters city of University of South Florida.", "topic_entity_ids": ["/m/09s5q8"]}
+{"question_id": "validation-00080", "text": "Name every profession of any artist of Free improvisation.", "topic_entity_ids": ["/m/0f_j1"]}
+{"question_id": "validation-00081", "text": "For Free improvisation, list every profession of any artist.", "topic_entity_ids": ["/m/0f_j1"]}
+{"question_id": "validation-00082", "text": "For Courage Under Fire, list every profession of any composer.", "topic_entity_ids": ["/m/01j5ql"]}
+{"question_id": "validation-00083", "text": "Return every profession of any composer of Courage Under Fire.", "topic_entity_ids": ["/m/01j5ql"]}
+{"question_id": "validation-00084", "text": "Return every place of birth of any composer of Nick and Norah's Infinite Playlist.", "topic_entity_ids": ["/m/03cyslc"]}
+{"question_id": "validation-00085", "text": "List every place of birth of any composer of Nick and Norah's Infinite Playlist.", "topic_entity_ids": ["/m/03cyslc"]}
+{"question_id": "validation-00086", "text": "Name every profession of any producer of Mary Poppins.", "topic_entity_ids": ["/m/0kcn7"]}
+{"question_id": "validation-00087", "text": "For Mary Poppins, list every profession of any producer.", "topic_entity_ids": ["/m/0kcn7"]}
+{"question_id": "validation-00088", "text": "For Game Change, list every headquarters city of any production company.", "topic_entity_ids": ["/m/0gmblvq"]}
+{"question_id": "validation-00089", "text": "Return every headquarters city of any production company of Game Change.", "topic_entity_ids": ["/m/0gmblvq"]}
+{"question_id": "validation-00090", "text": "Return every official language of any country of Hotel Rwanda.", "topic_entity_ids": ["/m/046488"]}
+{"question_id": "validation-00091", "text": "List every official language of any country of Hotel Rwanda.", "topic_entity_ids": ["/m/046488"]}
+{"question_id": "validation-00092", "text": "Name every profession of any composer of 8 Mile.", "topic_entity_ids": ["/m/017d93"]}
+{"question_id": "validation-00093", "text": "For 8 Mile, list every profession of any composer.", "topic_entity_ids": ["/m/017d93"]}
+{"question_id": "validation-00094", "text": "List every place of origin of any artist of Psychedelic folk.", "topic_entity_ids": ["/m/04z1v0"]}
+{"question_id": "validation-00095", "text": "Name every place of origin of any artist of Psychedelic folk.", "topic_entity_ids": ["/m/04z1v0"]}
+{"question_id": "validation-00096", "text": "Return every place of birth of any producer of The Island.", "topic_entity_ids": ["/m/0435vm"]}
+{"question_id": "validation-00097", "text": "List every place of birth of any producer of The Island.", "topic_entity_ids": ["/m/0435vm"]}
+{"question_id": "validation-00098", "text": "For Bob Balaban, list every contained location of any place of birth.", "topic_entity_ids": ["/m/051wwp"]}
+{"question_id": "validation-00099", "text": "Return every contained location of any place of birth of Bob Balaban.", "topic_entity_ids": ["/m/051wwp"]}
+{"question_id": "validation-00100", "text": "For Lil Wayne, list every contained location of any place of birth.", "topic_entity_ids": ["/m/016kjs"]}
+{"question_id": "validation-00101", "text": "Return every contained location of any place of birth of Lil Wayne.", "topic_entity_ids": ["/m/016kjs"]}
+{"question_id": "validation-00102", "text": "For Howard Shore, list every contained location of any place of birth.", "topic_entity_ids": ["/m/01tc9r"]}
+{"question_id": "validation-00103", "text": "Return every contained location of any place of birth of Howard Shore.", "topic_entity_ids": ["/m/01tc9r"]}
+{"question_id": "validation-00104", "text": "Name every religion of any artist of Gospel music.", "topic_entity_ids": ["/m/016cjb"]}
+{"question_id": "validation-00105", "text": "For Gospel music, list every religion of any artist.", "topic_entity_ids": ["/m/016cjb"]}
+{"question_id": "validation-00106", "text": "Return every profession of any artist of Grime.", "topic_entity_ids": ["/m/04j_h4"]}
+{"question_id": "validation-00107", "text": "List every profession of any artist of Grime.", "topic_entity_ids": ["/m/04j_h4"]}
+{"question_id": "validation-00108", "text": "Name every profession of any composer of Mr. & Mrs. Smith.", "topic_entity_ids": ["/m/05sns6"]}
+{"question_id": "validation-00109", "text": "For Mr. & Mrs. Smith, list every profession of any composer.", "topic_entity_ids": ["/m/05sns6"]}
+{"question_id": "validation-00110", "text": "For Bubblegum pop, list every country of citizenship of any artist.", "topic_entity_ids": ["/m/0dn16"]}
+{"question_id": "validation-00111", "text": "Return every country of citizenship of any artist of Bubblegum pop.", "topic_entity_ids": ["/m/0dn16"]}
+{"question_id": "validation-00112", "text": "For Brian Doyle-Murray, list every contained location of any place of birth.", "topic_entity_ids": ["/m/0p_r5"]}
+{"question_id": "validation-00113", "text": "Return every contained location of any place of birth of Brian Doyle-Murray.", "topic_entity_ids": ["/m/0p_r5"]}
+{"question_id": "validation-00114", "text": "List every place of birth of any writer of Fanny and Alexander.", "topic_entity_ids": ["/m/02gd6x"]}
+{"question_id": "validation-00115", "text": "Name every place of birth of any writer of Fanny and Alexander.", "topic_entity_ids": ["/m/02gd6x"]}
+{"question_id": "validation-00116", "text": "List every contained location of any place of origin of Guns N' Roses.", "topic_entity_ids": ["/m/081wh1"]}
+{"question_id": "validation-00117", "text": "Name every contained location of any place of origin of Guns N' Roses.", "topic_entity_ids": ["/m/081wh1"]}
+{"question_id": "validation-00118", "text": "Name every headquarters city of any production company of Halloween.", "topic_entity_ids": ["/m/09qljs"]}
+{"question_id": "validation-00119", "text": "For Halloween, list every headquarters city of any production company.", "topic_entity_ids": ["/m/09qljs"]}
+{"question_id": "validation-00120", "text": "Return every profession of any composer of Hold Back the Dawn.", "topic_entity_ids": ["/m/0kb07"]}
+{"question_id": "validation-00121", "text": "List every profession of any composer of Hold Back the Dawn.", "topic_entity_ids": ["/m/0kb07"]}
+{"question_id": "validation-00122", "text": "For The Great Gatsby, list every place of birth of any producer.", "topic_entity_ids": ["/m/0gtt5fb"]}
+{"question_id": "validation-00123", "text": "Return every place of birth of any producer of The Great Gatsby.", "topic_entity_ids": ["/m/0gtt5fb"]}
+{"question_id": "validation-00124", "text": "Name every official language of any country of Imagine That.", "topic_entity_ids": ["/m/05pxnmb"]}
+{"question_id": "validation-00125", "text": "For Imagine That, list every official language of any country.", "topic_entity_ids": ["/m/05pxnmb"]}
+{"question_id": "validation-00126", "text": "For Some Like It Hot, list every religion of any producer.", "topic_entity_ids": ["/m/0k4f3"]}
+{"question_id": "validation-00127", "text": "Return every religion of any producer of Some Like It Hot.", "topic_entity_ids": ["/m/0k4f3"]}
+{"question_id": "validation-00128", "text": "Return every religion of any producer of Memoirs of a Geisha.", "topic_entity_ids": ["/m/0drnwh"]}
+{"question_id": "validation-00129", "text": "List every religion of any producer of Memoirs of a Geisha.", "topic_entity_ids": ["/m/0drnwh"]}
+{"question_id": "validation-00130", "text": "Return every profession of any writer of New York Stories.", "topic_entity_ids": ["/m/03wy8t"]}
+{"question_id": "validation-00131", "text": "List every profession of any writer of New York Stories.", "topic_entity_ids": ["/m/03wy8t"]}
+{"question_id": "validation-00132", "text": "List every place of birth of any producer of A Simple Plan.", "topic_entity_ids": ["/m/0fy34l"]}
+{"question_id": "validation-00133", "text": "Name every place of birth of any producer of A Simple Plan.", "topic_entity_ids": ["/m/0fy34l"]}
+{"question_id": "validation-00134", "text": "List every headquarters city of any production company of Kung Fu Panda.", "topic_entity_ids": ["/m/09146g"]}
+{"question_id": "validation-00135", "text": "Name every headquarters city of any production company of Kung Fu Panda.", "topic_entity_ids": ["/m/09146g"]}
+{"question_id": "validation-00136", "text": "Name every contained location of any place of birth of Greta Scacchi.", "topic_entity_ids": ["/m/03crmd"]}
+{"question_id": "validation-00137", "text": "For Greta Scacchi, list every contained location of any place of birth.", "topic_entity_ids": ["/m/03crmd"]}
+{"question_id": "validation-00138", "text": "List every religion of any producer of Mean Girls.", "topic_entity_ids": ["/m/02xtxw"]}
+{"question_id": "validation-00139", "text": "Name every religion of any producer of Mean Girls.", "topic_entity_ids": ["/m/02xtxw"]}
+{"question_id": "validation-00140", "text": "Return every profession of any composer of The Lost World: Jurassic Park.", "topic_entity_ids": ["/m/0315rp"]}
+{"question_id": "validation-00141", "text": "List every profession of any composer of The Lost World: Jurassic Park.", "topic_entity_ids": ["/m/0315rp"]}
+{"question_id": "validation-00142", "text": "For Night at the Museum: Battle of the Smithsonian, list every time zone of any featured location.", "topic_entity_ids": ["/m/04gv3db"]}
+{"question_id": "validation-00143", "text": "Return every time zone of any featured location of Night at the Museum: Battle of the Smithsonian.", "topic_entity_ids": ["/m/04gv3db"]}
+{"question_id": "validation-00144", "text": "Name every place of birth of any producer of The Other Guys.", "topic_entity_ids": ["/m/087vnr5"]}
+{"question_id": "validation-00145", "text": "For The Other Guys, list every place of birth of any producer.", "topic_entity_ids": ["/m/087vnr5"]}
+{"question_id": "validation-00146", "text": "Name every religion of any artist of Comedy-GB.", "topic_entity_ids": ["/m/01z4y"]}
+{"question_id": "validation-00147", "text": "For Comedy-GB, list every religion of any artist.", "topic_entity_ids": ["/m/01z4y"]}
+{"question_id": "validation-00148", "text": "Return every religion of any producer of Over the Top.", "topic_entity_ids": ["/m/059lwy"]}
+{"question_id": "validation-00149", "text": "List every religion of any producer of Over the Top.", "topic_entity_ids": ["/m/059lwy"]}
+{"question_id": "validation-00150", "text": "List every place of birth of any writer of Jack & Jill.", "topic_entity_ids": ["/m/0ch3qr1"]}
+{"question_id": "validation-00151", "text": "Name every place of birth of any writer of Jack & Jill.", "topic_entity_ids": ["/m/0ch3qr1"]}
+{"question_id": "validation-00152", "text": "Return every time zone of any featured location of Top Gun.", "topic_entity_ids": ["/m/018js4"]}
+{"question_id": "validation-00153", "text": "List every time zone of any featured location of Top Gun.", "topic_entity_ids": ["/m/018js4"]}
+{"question_id": "validation-00154", "text": "List every place of birth of any writer of Troy.", "topic_entity_ids": ["/m/01vw8k"]}
+{"question_id": "validation-00155", "text": "Name every place of birth of any writer of Troy.", "topic_entity_ids": ["/m/01vw8k"]}
+{"question_id": "validation-00156", "text": "Return every contained location of any featured location of Imagine That.", "topic_entity_ids": ["/m/05pxnmb"]}
+{"question_id": "validation-00157", "text": "List every contained location of any featured location of Imagine That.", "topic_entity_ids": ["/m/05pxnmb"]}
+{"question_id": "validation-00158", "text": "Return every time zone of any featured location of Midnight in Paris.", "topic_entity_ids": ["/m/0bs5vty"]}
+{"question_id": "validation-00159", "text": "List every time zone of any featured location of Midnight in Paris.", "topic_entity_ids": ["/m/0bs5vty"]}
+{"question_id": "validation-00160", "text": "Return every official language of any country of A Better Tomorrow.", "topic_entity_ids": ["/m/0mb8c"]}
+{"question_id": "validation-00161", "text": "List every official language of any country of A Better Tomorrow.", "topic_entity_ids": ["/m/0mb8c"]}
+{"question_id": "validation-00162", "text": "Return every profession of any producer of Into the Storm.", "topic_entity_ids": ["/m/04f6df0"]}
+{"question_id": "validation-00163", "text": "List every profession of any producer of Into the Storm.", "topic_entity_ids": ["/m/04f6df0"]}
+{"question_id": "validation-00164", "text": "Name every contained location of any place of origin of The Moody Blues.", "topic_entity_ids": ["/m/012vm6"]}
+{"question_id": "validation-00165", "text": "For The Moody Blues, list every contained location of any place of origin.", "topic_entity_ids": ["/m/012vm6"]}
+{"question_id": "validation-00166", "text": "For David Banner, list every time zone of any place of origin.", "topic_entity_ids": ["/m/01wlt3k"]}
+{"question_id": "validation-00167", "text": "Return every time zone of any place of origin of David Banner.", "topic_entity_ids": ["/m/01wlt3k"]}
+{"question_id": "validation-00168", "text": "List every profession of any artist of Technical death metal.", "topic_entity_ids": ["/m/05g7tj"]}
+{"question_id": "validation-00169", "text": "Name every profession of any artist of Technical death metal.", "topic_entity_ids": ["/m/05g7tj"]}
+{"question_id": "validation-00170", "text": "For Very Bad Things, list every place of birth of any composer.", "topic_entity_ids": ["/m/05dss7"]}
+{"question_id": "validation-00171", "text": "Return every place of birth of any composer of Very Bad Things.", "topic_entity_ids": ["/m/05dss7"]}
+{"question_id": "validation-00172", "text": "Return every time zone of any headquarters city of Fairfield University.", "topic_entity_ids": ["/m/02h30z"]}
+{"question_id": "validation-00173", "text": "List every time zone of any headquarters city of Fairfield University.", "topic_entity_ids": ["/m/02h30z"]}
+{"question_id": "validation-00174", "text": "List every place of birth of any artist of Swing music.", "topic_entity_ids": ["/m/015y_n"]}
+{"question_id": "validation-00175", "text": "Name every place of birth of any artist of Swing music.", "topic_entity_ids": ["/m/015y_n"]}
+{"question_id": "validation-00176", "text": "List every profession of any producer of Amistad.", "topic_entity_ids": ["/m/0260bz"]}
+{"question_id": "validation-00177", "text": "Name every profession of any producer of Amistad.", "topic_entity_ids": ["/m/0260bz"]}
+{"question_id": "validation-00178", "text": "For Hellboy II: The Golden Army, list every profession of any composer.", "topic_entity_ids": ["/m/0dcz8_"]}
+{"question_id": "validation-00179", "text": "Return every profession of any composer of Hellboy II: The Golden Army.", "topic_entity_ids": ["/m/0dcz8_"]}
+{"question_id": "validation-00180", "text": "List every official language of any country of Lucky Numbers.", "topic_entity_ids": ["/m/0fphgb"]}
+{"question_id": "validation-00181", "text": "Name every official language of any country of Lucky Numbers.", "topic_entity_ids": ["/m/0fphgb"]}
+{"question_id": "validation-00182", "text": "List every place of origin of any artist of Ambient music.", "topic_entity_ids": ["/m/0fd3y"]}
+{"question_id": "validation-00183", "text": "Name every place of origin of any artist of Ambient music.", "topic_entity_ids": ["/m/0fd3y"]}
+{"question_id": "validation-00184", "text": "For Maurice Sendak, list every contained location of any place of birth.", "topic_entity_ids": ["/m/01pw9v"]}
+{"question_id": "validation-00185", "text": "Return every contained location of any place of birth of Maurice Sendak.", "topic_entity_ids": ["/m/01pw9v"]}
+{"question_id": "validation-00186", "text": "Return every contained location of any place of birth of Martin Lawrence.", "topic_entity_ids": ["/m/02633g"]}
+{"question_id": "validation-00187", "text": "List every contained location of any place of birth of Martin Lawrence.", "topic_entity_ids": ["/m/02633g"]}
+{"question_id": "validation-00188", "text": "Name every place of origin of any artist of Horror punk.", "topic_entity_ids": ["/m/020ngt"]}
+{"question_id": "validation-00189", "text": "For Horror punk, list every place of origin of any artist.", "topic_entity_ids": ["/m/020ngt"]}
+{"question_id": "validation-00190", "text": "For Will & Grace, list every religion of any cast member.", "topic_entity_ids": ["/m/01q_y0"]}
+{"question_id": "validation-00191", "text": "Return every religion of any cast member of Will & Grace.", "topic_entity_ids": ["/m/01q_y0"]}
+{"question_id": "validation-00192", "text": "Name every time zone of any contained location of Libya.", "topic_entity_ids": ["/m/04gqr"]}
+{"question_id": "validation-00193", "text": "For Libya, list every time zone of any contained location.", "topic_entity_ids": ["/m/04gqr"]}
+{"question_id": "validation-00194", "text": "Return every profession of any producer of J. Edgar.", "topic_entity_ids": ["/m/0g54xkt"]}
+{"question_id": "validation-00195", "text": "List every profession of any producer of J. Edgar.", "topic_entity_ids": ["/m/0g54xkt"]}
+{"question_id": "validation-00196", "text": "For Frost/Nixon, list every place of origin of any composer.", "topic_entity_ids": ["/m/02vqsll"]}
+{"question_id": "validation-00197", "text": "Return every place of origin of any composer of Frost/Nixon.", "topic_entity_ids": ["/m/02vqsll"]}
+{"question_id": "validation-00198", "text": "List every contained location of any place of birth of Jon Lord.", "topic_entity_ids": ["/m/01k47c"]}
+{"question_id": "validation-00199", "text": "Name every contained location of any place of birth of Jon Lord.", "topic_entity_ids": ["/m/01k47c"]}

@@ -5,6 +5,9 @@
 
 ## 从零复现
 
+固定种子 42、模板 v4 的成品 QA 已提交到 `data/processed/`，克隆本分支即可读取。
+训练图等原始大文件通过下载脚本获取。以下命令用于校验来源并重新构造数据。
+
 Python 3.10 及以上，仅用标准库；数据阶段不需要 LLM、PyTorch 或 API 密钥。
 在仓库根目录依次运行：
 
@@ -34,16 +37,18 @@ data/raw/
 
 | 文件 | 用途 | Git |
 |---|---|---|
-| `processed/train.jsonl` | 2000 条训练监督 | 本地生成 |
-| `processed/validation.jsonl` | 200 条验证金标 | 本地生成 |
-| `processed/test.jsonl` | 300 条测试金标 | 本地生成 |
-| `processed/{split}.questions.jsonl` | 相应划分的推理输入，不含答案、标准路径、证据 | 本地生成 |
-| `processed/manifest.json` | 全部参数、输入/输出/代码 SHA256 | 本地生成 |
-| `processed/stats.json`、`stats.md`、`samples.md` | 详细统计和 12 条可读样例 | 本地生成 |
+| `processed/train.jsonl` | 2000 条训练监督 | 已提交 |
+| `processed/validation.jsonl` | 200 条验证金标 | 已提交 |
+| `processed/test.jsonl` | 300 条测试金标 | 已提交 |
+| `processed/{split}.questions.jsonl` | 相应划分的推理输入，不含答案、标准路径、证据 | 已提交 |
+| `processed/manifest.json` | 全部参数、输入/输出/代码 SHA256 | 已提交 |
+| `processed/stats.json`、`stats.md`、`samples.md` | 详细统计和 12 条可读样例 | 已提交 |
 | `docs/数据说明.md`、`数据样例.md`、`数据清单.json` | 自动复制的交接报告及哈希清单 | 提交 |
 
-原始大文件、完整生成 QA 和缓存按仓库约定不提交，队友运行以上三条命令即可重建。
-`--no-docs` 可禁止自动覆盖报告。
+本次按 A 的交付要求，将约 1.8 MB 的固定版本成品纳入 Git；原始大文件、缓存及
+其他试验版本继续忽略。`.gitattributes` 固定成品文件为 LF 换行，保证哈希跨平台一致。
+需要探索其他种子或参数时，建议使用 `--output` 指向单独目录，并加 `--no-docs`，
+避免覆盖已冻结的数据和报告。
 
 ## QA 格式与安全读取
 

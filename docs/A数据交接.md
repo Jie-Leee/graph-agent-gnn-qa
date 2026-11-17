@@ -102,3 +102,6 @@ A 的三页汇报内容及约五分钟讲稿见 [A汇报提纲](A汇报提纲.md
 约定和A侧可执行交接检查。原数据保持不变。A侧收尾结果、明确的语义限制及
 B/D尚待实际接入确认的状态见 [A收尾与验收](A收尾与验收.md)；质量元数据见
 [data/quality](../data/quality/README.md)。这些含金标的元数据不能送入测试推理。
+
+对接提醒：推理入口优先读取 `data/processed/*.questions.jsonl`；首次联调前运行
+`python scripts/accept_data_handoff.py`，如有问题，请保留具体报错和题目编号便于定位。

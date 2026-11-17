@@ -1,0 +1,73 @@
+{
+  "report_kind": "A_side_export_and_contract_acceptance",
+  "dataset_manifest_sha256": "265149a25a79d785f54ae6132ef1e568ef0544f81ada15567b8b1cc0d56e81ae",
+  "dataset_file_sha256": {
+    "train.jsonl": "c10c4bb6047576a42419600f050a49d8ed9c976a7342052d88f6c460718d2987",
+    "train.questions.jsonl": "640164ba1ab92d5329506a0721c6e3fb96274a7b0ef4be50515358a70da7767f",
+    "validation.jsonl": "94291e43dee17857b8e0d332d30f1e33f572bc2bdc8b46945d22e3df75ca1864",
+    "validation.questions.jsonl": "b9c4f4ab94812c34de3d9edc4b68f75f91c59469c6431966a1e4023b18d695f1",
+    "test.jsonl": "7294a5118d1a5a312348630d2f8f6b6d3af80162b5c1a95f05d2054768017207",
+    "test.questions.jsonl": "1e60497acb13208111e8103c2a0affd440a48232b18bd94793ef96dc7b2ce1e4"
+  },
+  "repository_revision_at_execution": "2ad91d0f06f7d4fe2382dbce9c54c80d76cdbfa6",
+  "acceptance_script_sha256_lf": "bc7a51529c62e841860da1b697bc942600393e81d3daee1eddf100a3dfd80f67",
+  "A_export": {
+    "status": "passed",
+    "split_items": {
+      "train": 2000,
+      "validation": 200,
+      "test": 300
+    },
+    "public_exports_match_supervised_questions": true,
+    "C_training_QAExample_readable": true,
+    "E_gold_QAExample_readable": true,
+    "known_topic_ids_provided": true
+  },
+  "B_scaffold": {
+    "status": "compatible",
+    "indexed_training_edges": 272115,
+    "heldout_exclusive_edges": 38001,
+    "heldout_exclusive_edges_indexed": 0,
+    "questions_retrieved": 300,
+    "all_returned_evidence_edges_in_train": true,
+    "retrieval_input_type": "Question",
+    "gold_joined_only_after_retrieval": true,
+    "diagnostic": {
+      "max_hops": 2,
+      "max_nodes": 200,
+      "max_edges": 800,
+      "mean_gold_node_recall": 0.444389,
+      "all_gold_nodes_present_fraction": 0.373333,
+      "is_QA_accuracy": false
+    },
+    "actual_B_implementation_acceptance": "pending_teammate_confirmation"
+  },
+  "D_contract_probe": {
+    "status": "passed",
+    "kind": "recording_consumer_contract_probe",
+    "question_count": 300,
+    "serialized_fields": [
+      "question_id",
+      "text",
+      "topic_entity_ids"
+    ],
+    "gold_fields_forwarded": false,
+    "not_an_actual_agent_or_llm_run": true
+  },
+  "gold_poison_probe": {
+    "status": "passed",
+    "question_count": 300,
+    "gold_values_replaced_with_invalid_sentinels": true,
+    "question_objects_unchanged": true
+  },
+  "D_actual_integration": {
+    "status": "pending_downstream_implementation",
+    "reason": "AgentRunner.run currently raises NotImplementedError",
+    "actual_llm_or_tool_loop_verified": false
+  },
+  "human_acceptance": {
+    "status": "pending_no_confirmation",
+    "reason": "No confirmation has been received from B, C, D or E; no teammate was contacted"
+  },
+  "scope": "A exports and current scaffold compatibility only. No actual LLM prompt or tool loop was verified. Gold supervision fields must not be forwarded; evidence retrieved from the visible graph is allowed for text/gnn modes."
+}

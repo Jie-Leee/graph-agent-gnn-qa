@@ -1,0 +1,54 @@
+{
+  "closeout_version": "v4-quality-closeout-1",
+  "created_date": "2026-11-17",
+  "status": "A_side_delivered_with_documented_quality_limitations; actual_downstream_acceptance_pending",
+  "frozen_dataset_manifest_sha256": "265149a25a79d785f54ae6132ef1e568ef0544f81ada15567b8b1cc0d56e81ae",
+  "frozen_QA_files_changed": false,
+  "model_assisted_semantic_review": {
+    "groups": 77,
+    "path_types": 39,
+    "split_groups": {
+      "test": 26,
+      "train": 42,
+      "validation": 9
+    },
+    "dispositions": {
+      "clear": 13,
+      "needs_clarification": 6,
+      "usable_with_caveat": 58
+    },
+    "reviewers": [
+      "codex_semantic_even",
+      "codex_semantic_odd"
+    ],
+    "scope": "one model-assisted review per group; no independent human expert or real-world factual verification",
+    "population_error_rate_or_human_pass_rate_estimated": false
+  },
+  "automated_checks": {
+    "legacy_checks_passed": 12,
+    "unittest_cases_passed": 70,
+    "quality_regeneration_byte_identical": true
+  },
+  "A_export_status": "passed",
+  "B_scaffold_status": "compatible",
+  "D_contract_probe_status": "passed",
+  "D_actual_integration_status": "pending_downstream_implementation",
+  "teammate_confirmation_status": "pending_no_confirmation",
+  "files_sha256": {
+    "README.md": "f64ef0c2cf68f3be43fc7d23bef7dcd157133a599c85bb8de1d6d7b253c740d3",
+    "group_annotations.jsonl": "d13f1bb12872116fd3c77eba2fed4ce0d7ffcc41c0abadfa0be619af4725a056",
+    "summary.json": "8e47811d528b0c10734c1b6f5d14d15c977aff3decc57ab66bcee453cad4510c",
+    "review_samples.jsonl": "095d8981275695b34c9dcce3c501f5eba151cf9716ace58beb3ba03c4c91d6b0",
+    "semantic_review.jsonl": "efb3c7faa24cd2f039438578832f99a2f0de3eee729aa036b0b0a37087333aa0",
+    "handoff_acceptance.json": "eade5f2edc5f1d09963810fc33f37100f5138fd02bd58d6d02bd235698122449"
+  },
+  "supporting_source_sha256_lf": {
+    "scripts/audit_data_quality.py": "8fc4bc59e1d5ebb6cc2ec94cf7436d754702d2cdf46f88679f3dd160c68a23bc",
+    "scripts/accept_data_handoff.py": "bc7a51529c62e841860da1b697bc942600393e81d3daee1eddf100a3dfd80f67",
+    "tests/test_data_quality.py": "9813e8e5157746b65fc6af55114e1c399d3eec4912fcf776107e9d646af9c133",
+    "tests/test_data_handoff.py": "10ee3be621fc8b6aa2fb0b5525f336d0b36fc0dfed09eb028b9b1a205f91da95",
+    "docs/A数据质量处理约定.md": "5d64fdfaba9992d68b580740c1bcf7d4b3d3c3c3e0f0b51e514c0db788e43699",
+    "docs/A收尾与验收.md": "8470131c1fbf0531788551349cd598a988e18850fa406488a7d1846875fff675"
+  },
+  "source_hash_policy": "CRLF normalized to LF for supporting source files; quality artifact hashes use exact bytes"
+}

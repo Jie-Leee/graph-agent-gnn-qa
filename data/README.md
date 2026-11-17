@@ -105,3 +105,17 @@ python scripts/check_data.py --retrieval-diagnostic
 不通过时不写输出。`check_data.py` 另核对文件哈希、代码版本、完整可达答案及
 推理文件字段；输入或数据模块变化后应重新构造。代码哈希先将 CRLF 归一为 LF，
 避免不同平台 Git 换行设置导致误报。
+
+## 收尾质量记录与交接
+
+[`quality/`](quality/README.md) 提供全查询组质量标记、覆盖全部关系组合的模型语义
+初审及A侧接口验收。本目录的固定QA保持不变。质量元数据含金标及答案派生标记，
+只用于质量审查和事后评测；D/B推理仍只读取 `*.questions.jsonl`。
+
+```bash
+python scripts/audit_data_quality.py
+python scripts/accept_data_handoff.py
+```
+
+完整边界、已标记未静默修订的题面风险，以及B/D接入后的确认要求，见
+[A收尾与验收](../docs/A收尾与验收.md)。

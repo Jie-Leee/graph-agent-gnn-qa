@@ -1,0 +1,939 @@
+{
+  "artifact_role": "supervision_and_quality_review_only; never Agent or retriever inputs",
+  "dataset_status": "frozen QA unchanged; flags are review signals, not confirmed errors",
+  "normalizer": "Unicode str.casefold plus split/join whitespace collapse; no suffix stripping",
+  "definitions": {
+    "topic_label_collision_all_mapping": "topic name maps to multiple IDs in the complete source name map",
+    "topic_label_collision_visible_graph": "topic name maps to multiple IDs present in train graph",
+    "same_label_answer_ids": "distinct gold IDs in one answer set share a normalized source name; do not merge",
+    "source_label_suffix": "at least one named topic/answer/evidence node ends in exact -GB or -US; preserve source label",
+    "any_gold_direct_neighbor": "at least one gold answer is also an outgoing one-hop neighbor under any relation; does not invalidate relation composition",
+    "all_gold_direct_neighbors": "all gold answers are outgoing one-hop neighbors; this is topological, not proof the question can be semantically answered in one hop",
+    "topic_out_degree": "number of unique directed relation-tail edges in visible train graph"
+  },
+  "group_count": 1250,
+  "row_count": 2500,
+  "path_count": 39,
+  "flag_group_counts": {
+    "topic_label_collision_all_mapping": 63,
+    "topic_label_collision_visible_graph": 61,
+    "same_label_answer_ids": 1,
+    "source_label_suffix": 315,
+    "any_gold_direct_neighbor": 128,
+    "all_gold_direct_neighbors": 79
+  },
+  "answer_size_group_counts": {
+    "1": 639,
+    "2-5": 465,
+    "6-20": 146
+  },
+  "topic_degree_group_counts": {
+    "0-20": 620,
+    "101+": 11,
+    "21-100": 619
+  },
+  "per_split": {
+    "train": {
+      "groups": 1000,
+      "rows": 2000,
+      "flag_group_counts": {
+        "topic_label_collision_all_mapping": 48,
+        "topic_label_collision_visible_graph": 46,
+        "same_label_answer_ids": 0,
+        "source_label_suffix": 252,
+        "any_gold_direct_neighbor": 109,
+        "all_gold_direct_neighbors": 70
+      }
+    },
+    "validation": {
+      "groups": 100,
+      "rows": 200,
+      "flag_group_counts": {
+        "topic_label_collision_all_mapping": 5,
+        "topic_label_collision_visible_graph": 5,
+        "same_label_answer_ids": 0,
+        "source_label_suffix": 24,
+        "any_gold_direct_neighbor": 6,
+        "all_gold_direct_neighbors": 3
+      }
+    },
+    "test": {
+      "groups": 150,
+      "rows": 300,
+      "flag_group_counts": {
+        "topic_label_collision_all_mapping": 10,
+        "topic_label_collision_visible_graph": 10,
+        "same_label_answer_ids": 1,
+        "source_label_suffix": 39,
+        "any_gold_direct_neighbor": 13,
+        "all_gold_direct_neighbors": 6
+      }
+    }
+  },
+  "per_path": [
+    {
+      "relation_path": [
+        "/film/film/country",
+        "/location/country/official_language"
+      ],
+      "relation_surface": [
+        "country",
+        "official language"
+      ],
+      "groups": 65,
+      "flag_group_counts": {
+        "topic_label_collision_all_mapping": 4,
+        "topic_label_collision_visible_graph": 4,
+        "same_label_answer_ids": 0,
+        "source_label_suffix": 1,
+        "any_gold_direct_neighbor": 47,
+        "all_gold_direct_neighbors": 27
+      }
+    },
+    {
+      "relation_path": [
+        "/film/film/country",
+        "/location/location/contains"
+      ],
+      "relation_surface": [
+        "country",
+        "contained location"
+      ],
+      "groups": 2,
+      "flag_group_counts": {
+        "topic_label_collision_all_mapping": 1,
+        "topic_label_collision_visible_graph": 1,
+        "same_label_answer_ids": 0,
+        "source_label_suffix": 0,
+        "any_gold_direct_neighbor": 0,
+        "all_gold_direct_neighbors": 0
+      }
+    },
+    {
+      "relation_path": [
+        "/film/film/featured_film_locations",
+        "/location/country/capital"
+      ],
+      "relation_surface": [
+        "featured location",
+        "capital city"
+      ],
+      "groups": 3,
+      "flag_group_counts": {
+        "topic_label_collision_all_mapping": 0,
+        "topic_label_collision_visible_graph": 0,
+        "same_label_answer_ids": 0,
+        "source_label_suffix": 0,
+        "any_gold_direct_neighbor": 0,
+        "all_gold_direct_neighbors": 0
+      }
+    },
+    {
+      "relation_path": [
+        "/film/film/featured_film_locations",
+        "/location/country/form_of_government"
+      ],
+      "relation_surface": [
+        "featured location",
+        "form of government"
+      ],
+      "groups": 7,
+      "flag_group_counts": {
+        "topic_label_collision_all_mapping": 0,
+        "topic_label_collision_visible_graph": 0,
+        "same_label_answer_ids": 0,
+        "source_label_suffix": 0,
+        "any_gold_direct_neighbor": 0,
+        "all_gold_direct_neighbors": 0
+      }
+    },
+    {
+      "relation_path": [
+        "/film/film/featured_film_locations",
+        "/location/country/official_language"
+      ],
+      "relation_surface": [
+        "featured location",
+        "official language"
+      ],
+      "groups": 9,
+      "flag_group_counts": {
+        "topic_label_collision_all_mapping": 0,
+        "topic_label_collision_visible_graph": 0,
+        "same_label_answer_ids": 0,
+        "source_label_suffix": 0,
+        "any_gold_direct_neighbor": 5,
+        "all_gold_direct_neighbors": 4
+      }
+    },
+    {
+      "relation_path": [
+        "/film/film/featured_film_locations",
+        "/location/location/contains"
+      ],
+      "relation_surface": [
+        "featured location",
+        "contained location"
+      ],
+      "groups": 19,
+      "flag_group_counts": {
+        "topic_label_collision_all_mapping": 0,
+        "topic_label_collision_visible_graph": 0,
+        "same_label_answer_ids": 0,
+        "source_label_suffix": 0,
+        "any_gold_direct_neighbor": 0,
+        "all_gold_direct_neighbors": 0
+      }
+    },
+    {
+      "relation_path": [
+        "/film/film/featured_film_locations",
+        "/location/location/time_zones"
+      ],
+      "relation_surface": [
+        "featured location",
+        "time zone"
+      ],
+      "groups": 43,
+      "flag_group_counts": {
+        "topic_label_collision_all_mapping": 3,
+        "topic_label_collision_visible_graph": 2,
+        "same_label_answer_ids": 0,
+        "source_label_suffix": 13,
+        "any_gold_direct_neighbor": 0,
+        "all_gold_direct_neighbors": 0
+      }
+    },
+    {
+      "relation_path": [
+        "/film/film/music",
+        "/music/artist/origin"
+      ],
+      "relation_surface": [
+        "composer",
+        "place of origin"
+      ],
+      "groups": 20,
+      "flag_group_counts": {
+        "topic_label_collision_all_mapping": 2,
+        "topic_label_collision_visible_graph": 2,
+        "same_label_answer_ids": 0,
+        "source_label_suffix": 0,
+        "any_gold_direct_neighbor": 1,
+        "all_gold_direct_neighbors": 1
+      }
+    },
+    {
+      "relation_path": [
+        "/film/film/music",
+        "/people/person/place_of_birth"
+      ],
+      "relation_surface": [
+        "composer",
+        "place of birth"
+      ],
+      "groups": 47,
+      "flag_group_counts": {
+        "topic_label_collision_all_mapping": 2,
+        "topic_label_collision_visible_graph": 2,
+        "same_label_answer_ids": 0,
+        "source_label_suffix": 1,
+        "any_gold_direct_neighbor": 3,
+        "all_gold_direct_neighbors": 3
+      }
+    },
+    {
+      "relation_path": [
+        "/film/film/music",
+        "/people/person/profession"
+      ],
+      "relation_surface": [
+        "composer",
+        "profession"
+      ],
+      "groups": 87,
+      "flag_group_counts": {
+        "topic_label_collision_all_mapping": 6,
+        "topic_label_collision_visible_graph": 5,
+        "same_label_answer_ids": 0,
+        "source_label_suffix": 51,
+        "any_gold_direct_neighbor": 0,
+        "all_gold_direct_neighbors": 0
+      }
+    },
+    {
+      "relation_path": [
+        "/film/film/produced_by",
+        "/people/person/place_of_birth"
+      ],
+      "relation_surface": [
+        "producer",
+        "place of birth"
+      ],
+      "groups": 71,
+      "flag_group_counts": {
+        "topic_label_collision_all_mapping": 3,
+        "topic_label_collision_visible_graph": 3,
+        "same_label_answer_ids": 0,
+        "source_label_suffix": 0,
+        "any_gold_direct_neighbor": 8,
+        "all_gold_direct_neighbors": 8
+      }
+    },
+    {
+      "relation_path": [
+        "/film/film/produced_by",
+        "/people/person/profession"
+      ],
+      "relation_surface": [
+        "producer",
+        "profession"
+      ],
+      "groups": 85,
+      "flag_group_counts": {
+        "topic_label_collision_all_mapping": 3,
+        "topic_label_collision_visible_graph": 3,
+        "same_label_answer_ids": 0,
+        "source_label_suffix": 85,
+        "any_gold_direct_neighbor": 1,
+        "all_gold_direct_neighbors": 0
+      }
+    },
+    {
+      "relation_path": [
+        "/film/film/produced_by",
+        "/people/person/religion"
+      ],
+      "relation_surface": [
+        "producer",
+        "religion"
+      ],
+      "groups": 26,
+      "flag_group_counts": {
+        "topic_label_collision_all_mapping": 2,
+        "topic_label_collision_visible_graph": 2,
+        "same_label_answer_ids": 0,
+        "source_label_suffix": 13,
+        "any_gold_direct_neighbor": 0,
+        "all_gold_direct_neighbors": 0
+      }
+    },
+    {
+      "relation_path": [
+        "/film/film/production_companies",
+        "/organization/organization/headquarters./location/mailing_address/citytown"
+      ],
+      "relation_surface": [
+        "production company",
+        "headquarters city"
+      ],
+      "groups": 80,
+      "flag_group_counts": {
+        "topic_label_collision_all_mapping": 6,
+        "topic_label_collision_visible_graph": 6,
+        "same_label_answer_ids": 0,
+        "source_label_suffix": 2,
+        "any_gold_direct_neighbor": 3,
+        "all_gold_direct_neighbors": 2
+      }
+    },
+    {
+      "relation_path": [
+        "/film/film/written_by",
+        "/people/person/place_of_birth"
+      ],
+      "relation_surface": [
+        "writer",
+        "place of birth"
+      ],
+      "groups": 48,
+      "flag_group_counts": {
+        "topic_label_collision_all_mapping": 9,
+        "topic_label_collision_visible_graph": 9,
+        "same_label_answer_ids": 0,
+        "source_label_suffix": 0,
+        "any_gold_direct_neighbor": 3,
+        "all_gold_direct_neighbors": 1
+      }
+    },
+    {
+      "relation_path": [
+        "/film/film/written_by",
+        "/people/person/profession"
+      ],
+      "relation_surface": [
+        "writer",
+        "profession"
+      ],
+      "groups": 58,
+      "flag_group_counts": {
+        "topic_label_collision_all_mapping": 6,
+        "topic_label_collision_visible_graph": 6,
+        "same_label_answer_ids": 0,
+        "source_label_suffix": 55,
+        "any_gold_direct_neighbor": 1,
+        "all_gold_direct_neighbors": 0
+      }
+    },
+    {
+      "relation_path": [
+        "/film/film/written_by",
+        "/people/person/religion"
+      ],
+      "relation_surface": [
+        "writer",
+        "religion"
+      ],
+      "groups": 19,
+      "flag_group_counts": {
+        "topic_label_collision_all_mapping": 0,
+        "topic_label_collision_visible_graph": 0,
+        "same_label_answer_ids": 0,
+        "source_label_suffix": 8,
+        "any_gold_direct_neighbor": 0,
+        "all_gold_direct_neighbors": 0
+      }
+    },
+    {
+      "relation_path": [
+        "/location/country/capital",
+        "/location/location/contains"
+      ],
+      "relation_surface": [
+        "capital city",
+        "contained location"
+      ],
+      "groups": 4,
+      "flag_group_counts": {
+        "topic_label_collision_all_mapping": 0,
+        "topic_label_collision_visible_graph": 0,
+        "same_label_answer_ids": 0,
+        "source_label_suffix": 0,
+        "any_gold_direct_neighbor": 0,
+        "all_gold_direct_neighbors": 0
+      }
+    },
+    {
+      "relation_path": [
+        "/location/location/contains",
+        "/education/educational_institution/school_type"
+      ],
+      "relation_surface": [
+        "contained location",
+        "school type"
+      ],
+      "groups": 39,
+      "flag_group_counts": {
+        "topic_label_collision_all_mapping": 3,
+        "topic_label_collision_visible_graph": 3,
+        "same_label_answer_ids": 0,
+        "source_label_suffix": 1,
+        "any_gold_direct_neighbor": 0,
+        "all_gold_direct_neighbors": 0
+      }
+    },
+    {
+      "relation_path": [
+        "/location/location/contains",
+        "/location/country/official_language"
+      ],
+      "relation_surface": [
+        "contained location",
+        "official language"
+      ],
+      "groups": 2,
+      "flag_group_counts": {
+        "topic_label_collision_all_mapping": 0,
+        "topic_label_collision_visible_graph": 0,
+        "same_label_answer_ids": 0,
+        "source_label_suffix": 0,
+        "any_gold_direct_neighbor": 0,
+        "all_gold_direct_neighbors": 0
+      }
+    },
+    {
+      "relation_path": [
+        "/location/location/contains",
+        "/location/location/time_zones"
+      ],
+      "relation_surface": [
+        "contained location",
+        "time zone"
+      ],
+      "groups": 40,
+      "flag_group_counts": {
+        "topic_label_collision_all_mapping": 5,
+        "topic_label_collision_visible_graph": 5,
+        "same_label_answer_ids": 0,
+        "source_label_suffix": 13,
+        "any_gold_direct_neighbor": 21,
+        "all_gold_direct_neighbors": 21
+      }
+    },
+    {
+      "relation_path": [
+        "/location/location/contains",
+        "/organization/organization/headquarters./location/mailing_address/citytown"
+      ],
+      "relation_surface": [
+        "contained location",
+        "headquarters city"
+      ],
+      "groups": 9,
+      "flag_group_counts": {
+        "topic_label_collision_all_mapping": 2,
+        "topic_label_collision_visible_graph": 2,
+        "same_label_answer_ids": 0,
+        "source_label_suffix": 0,
+        "any_gold_direct_neighbor": 6,
+        "all_gold_direct_neighbors": 4
+      }
+    },
+    {
+      "relation_path": [
+        "/music/artist/origin",
+        "/location/location/contains"
+      ],
+      "relation_surface": [
+        "place of origin",
+        "contained location"
+      ],
+      "groups": 29,
+      "flag_group_counts": {
+        "topic_label_collision_all_mapping": 0,
+        "topic_label_collision_visible_graph": 0,
+        "same_label_answer_ids": 0,
+        "source_label_suffix": 0,
+        "any_gold_direct_neighbor": 0,
+        "all_gold_direct_neighbors": 0
+      }
+    },
+    {
+      "relation_path": [
+        "/music/artist/origin",
+        "/location/location/time_zones"
+      ],
+      "relation_surface": [
+        "place of origin",
+        "time zone"
+      ],
+      "groups": 25,
+      "flag_group_counts": {
+        "topic_label_collision_all_mapping": 0,
+        "topic_label_collision_visible_graph": 0,
+        "same_label_answer_ids": 0,
+        "source_label_suffix": 4,
+        "any_gold_direct_neighbor": 0,
+        "all_gold_direct_neighbors": 0
+      }
+    },
+    {
+      "relation_path": [
+        "/music/genre/artists",
+        "/music/artist/origin"
+      ],
+      "relation_surface": [
+        "artist",
+        "place of origin"
+      ],
+      "groups": 24,
+      "flag_group_counts": {
+        "topic_label_collision_all_mapping": 0,
+        "topic_label_collision_visible_graph": 0,
+        "same_label_answer_ids": 0,
+        "source_label_suffix": 1,
+        "any_gold_direct_neighbor": 0,
+        "all_gold_direct_neighbors": 0
+      }
+    },
+    {
+      "relation_path": [
+        "/music/genre/artists",
+        "/people/person/nationality"
+      ],
+      "relation_surface": [
+        "artist",
+        "country of citizenship"
+      ],
+      "groups": 22,
+      "flag_group_counts": {
+        "topic_label_collision_all_mapping": 1,
+        "topic_label_collision_visible_graph": 1,
+        "same_label_answer_ids": 0,
+        "source_label_suffix": 2,
+        "any_gold_direct_neighbor": 0,
+        "all_gold_direct_neighbors": 0
+      }
+    },
+    {
+      "relation_path": [
+        "/music/genre/artists",
+        "/people/person/place_of_birth"
+      ],
+      "relation_surface": [
+        "artist",
+        "place of birth"
+      ],
+      "groups": 30,
+      "flag_group_counts": {
+        "topic_label_collision_all_mapping": 1,
+        "topic_label_collision_visible_graph": 1,
+        "same_label_answer_ids": 0,
+        "source_label_suffix": 1,
+        "any_gold_direct_neighbor": 0,
+        "all_gold_direct_neighbors": 0
+      }
+    },
+    {
+      "relation_path": [
+        "/music/genre/artists",
+        "/people/person/profession"
+      ],
+      "relation_surface": [
+        "artist",
+        "profession"
+      ],
+      "groups": 25,
+      "flag_group_counts": {
+        "topic_label_collision_all_mapping": 0,
+        "topic_label_collision_visible_graph": 0,
+        "same_label_answer_ids": 0,
+        "source_label_suffix": 24,
+        "any_gold_direct_neighbor": 0,
+        "all_gold_direct_neighbors": 0
+      }
+    },
+    {
+      "relation_path": [
+        "/music/genre/artists",
+        "/people/person/religion"
+      ],
+      "relation_surface": [
+        "artist",
+        "religion"
+      ],
+      "groups": 24,
+      "flag_group_counts": {
+        "topic_label_collision_all_mapping": 1,
+        "topic_label_collision_visible_graph": 1,
+        "same_label_answer_ids": 0,
+        "source_label_suffix": 5,
+        "any_gold_direct_neighbor": 0,
+        "all_gold_direct_neighbors": 0
+      }
+    },
+    {
+      "relation_path": [
+        "/organization/organization/headquarters./location/mailing_address/citytown",
+        "/location/location/contains"
+      ],
+      "relation_surface": [
+        "headquarters city",
+        "contained location"
+      ],
+      "groups": 12,
+      "flag_group_counts": {
+        "topic_label_collision_all_mapping": 0,
+        "topic_label_collision_visible_graph": 0,
+        "same_label_answer_ids": 0,
+        "source_label_suffix": 1,
+        "any_gold_direct_neighbor": 0,
+        "all_gold_direct_neighbors": 0
+      }
+    },
+    {
+      "relation_path": [
+        "/organization/organization/headquarters./location/mailing_address/citytown",
+        "/location/location/time_zones"
+      ],
+      "relation_surface": [
+        "headquarters city",
+        "time zone"
+      ],
+      "groups": 43,
+      "flag_group_counts": {
+        "topic_label_collision_all_mapping": 0,
+        "topic_label_collision_visible_graph": 0,
+        "same_label_answer_ids": 0,
+        "source_label_suffix": 3,
+        "any_gold_direct_neighbor": 0,
+        "all_gold_direct_neighbors": 0
+      }
+    },
+    {
+      "relation_path": [
+        "/people/person/nationality",
+        "/location/location/contains"
+      ],
+      "relation_surface": [
+        "country of citizenship",
+        "contained location"
+      ],
+      "groups": 18,
+      "flag_group_counts": {
+        "topic_label_collision_all_mapping": 0,
+        "topic_label_collision_visible_graph": 0,
+        "same_label_answer_ids": 1,
+        "source_label_suffix": 1,
+        "any_gold_direct_neighbor": 8,
+        "all_gold_direct_neighbors": 0
+      }
+    },
+    {
+      "relation_path": [
+        "/people/person/place_of_birth",
+        "/location/country/form_of_government"
+      ],
+      "relation_surface": [
+        "place of birth",
+        "form of government"
+      ],
+      "groups": 1,
+      "flag_group_counts": {
+        "topic_label_collision_all_mapping": 0,
+        "topic_label_collision_visible_graph": 0,
+        "same_label_answer_ids": 0,
+        "source_label_suffix": 0,
+        "any_gold_direct_neighbor": 0,
+        "all_gold_direct_neighbors": 0
+      }
+    },
+    {
+      "relation_path": [
+        "/people/person/place_of_birth",
+        "/location/location/contains"
+      ],
+      "relation_surface": [
+        "place of birth",
+        "contained location"
+      ],
+      "groups": 133,
+      "flag_group_counts": {
+        "topic_label_collision_all_mapping": 0,
+        "topic_label_collision_visible_graph": 0,
+        "same_label_answer_ids": 0,
+        "source_label_suffix": 2,
+        "any_gold_direct_neighbor": 2,
+        "all_gold_direct_neighbors": 0
+      }
+    },
+    {
+      "relation_path": [
+        "/tv/tv_program/regular_cast./tv/regular_tv_appearance/actor",
+        "/music/artist/origin"
+      ],
+      "relation_surface": [
+        "cast member",
+        "place of origin"
+      ],
+      "groups": 2,
+      "flag_group_counts": {
+        "topic_label_collision_all_mapping": 0,
+        "topic_label_collision_visible_graph": 0,
+        "same_label_answer_ids": 0,
+        "source_label_suffix": 0,
+        "any_gold_direct_neighbor": 0,
+        "all_gold_direct_neighbors": 0
+      }
+    },
+    {
+      "relation_path": [
+        "/tv/tv_program/regular_cast./tv/regular_tv_appearance/actor",
+        "/people/person/nationality"
+      ],
+      "relation_surface": [
+        "cast member",
+        "country of citizenship"
+      ],
+      "groups": 25,
+      "flag_group_counts": {
+        "topic_label_collision_all_mapping": 2,
+        "topic_label_collision_visible_graph": 2,
+        "same_label_answer_ids": 0,
+        "source_label_suffix": 1,
+        "any_gold_direct_neighbor": 19,
+        "all_gold_direct_neighbors": 8
+      }
+    },
+    {
+      "relation_path": [
+        "/tv/tv_program/regular_cast./tv/regular_tv_appearance/actor",
+        "/people/person/place_of_birth"
+      ],
+      "relation_surface": [
+        "cast member",
+        "place of birth"
+      ],
+      "groups": 20,
+      "flag_group_counts": {
+        "topic_label_collision_all_mapping": 0,
+        "topic_label_collision_visible_graph": 0,
+        "same_label_answer_ids": 0,
+        "source_label_suffix": 0,
+        "any_gold_direct_neighbor": 0,
+        "all_gold_direct_neighbors": 0
+      }
+    },
+    {
+      "relation_path": [
+        "/tv/tv_program/regular_cast./tv/regular_tv_appearance/actor",
+        "/people/person/profession"
+      ],
+      "relation_surface": [
+        "cast member",
+        "profession"
+      ],
+      "groups": 25,
+      "flag_group_counts": {
+        "topic_label_collision_all_mapping": 0,
+        "topic_label_collision_visible_graph": 0,
+        "same_label_answer_ids": 0,
+        "source_label_suffix": 23,
+        "any_gold_direct_neighbor": 0,
+        "all_gold_direct_neighbors": 0
+      }
+    },
+    {
+      "relation_path": [
+        "/tv/tv_program/regular_cast./tv/regular_tv_appearance/actor",
+        "/people/person/religion"
+      ],
+      "relation_surface": [
+        "cast member",
+        "religion"
+      ],
+      "groups": 9,
+      "flag_group_counts": {
+        "topic_label_collision_all_mapping": 1,
+        "topic_label_collision_visible_graph": 1,
+        "same_label_answer_ids": 0,
+        "source_label_suffix": 4,
+        "any_gold_direct_neighbor": 0,
+        "all_gold_direct_neighbors": 0
+      }
+    }
+  ],
+  "selection": {
+    "seed": 20261117,
+    "per_path_max": 2,
+    "policy": "SHA256(seed|group_id) ranking within each relation path; prefer a different split after the first pick",
+    "review_group_count": 77,
+    "review_path_count": 39,
+    "selected_group_ids": [
+      "g_ce0411149d58c007",
+      "g_dc9c850df26825e9",
+      "g_c9ef2f813dbf4dc8",
+      "g_aa501cc49c9a17cd",
+      "g_3c7ae728b6952d6e",
+      "g_0e09293fcdd98d8e",
+      "g_e9cb5e59150600c6",
+      "g_6151a0802036cbf3",
+      "g_4fc1342eba7862fc",
+      "g_0bbc42fb7fe22f56",
+      "g_5ae8f36a86cad9c3",
+      "g_ff05dab0b42f4623",
+      "g_5826abcc822aee38",
+      "g_1b542d8c0e803456",
+      "g_101cc2e3cf773273",
+      "g_51f258e03f42a712",
+      "g_ba457c1092581a75",
+      "g_efd1c37b5778e817",
+      "g_4f9d8e38e27ec206",
+      "g_6c53e880964b700b",
+      "g_ac582e367cf6dd3a",
+      "g_905b6ccac3a7038f",
+      "g_8b2b98144478f428",
+      "g_6f9db0101677b4fa",
+      "g_df75782d825ef2de",
+      "g_fe6455c7a410b6f1",
+      "g_de4fb8c21750cdf3",
+      "g_0cc8b60ac44239bd",
+      "g_c769d2e793d8994f",
+      "g_0b8b0ddbc1c48a79",
+      "g_6c6f5f427c366e9e",
+      "g_f45a5e447dd91c02",
+      "g_ecd79c2b11fa011a",
+      "g_baa9c935f3e4147d",
+      "g_b2fa94306fb11acc",
+      "g_ff322dc80ae21e24",
+      "g_ef83aaaa4f0501c6",
+      "g_ed474eff25fc89b6",
+      "g_211ce6b92bb51afc",
+      "g_0a289d7921175859",
+      "g_2fde08e1860859ef",
+      "g_ab3d3739fbfc7aa5",
+      "g_d1953d79f575daee",
+      "g_ad20dcec7ea2551b",
+      "g_df657bd8e0b1eb80",
+      "g_91c8e33fd4355196",
+      "g_7220be29be7297ac",
+      "g_bb203a2f954397df",
+      "g_bbe6201113c7f997",
+      "g_5703d3b8884ff323",
+      "g_5a114ce4ea485765",
+      "g_94bf0f87070c3c10",
+      "g_94f44b8f35f0f44e",
+      "g_a42432000e76ce0d",
+      "g_8c69ae8550916609",
+      "g_4720d5c8c78d9d4c",
+      "g_6db9c96f8294642a",
+      "g_24a0e3627d4585e5",
+      "g_c162dd288f2b084d",
+      "g_45fca92f6c7718d2",
+      "g_7f8ab1bf155a13d2",
+      "g_d56c02043257db0e",
+      "g_7ab1992011fc7989",
+      "g_1c451ad6895cbe67",
+      "g_8b850dbd7a8f5b75",
+      "g_bf442a2c93fa2f30",
+      "g_6e1e183f1743a19c",
+      "g_e47042dacf2fcc31",
+      "g_ff943d6c3aeac05d",
+      "g_65587946dec51239",
+      "g_db08e8298fb436d0",
+      "g_4d30edd8fdce1ad9",
+      "g_ae2bc3bba605fd37",
+      "g_cd470f41d67ca59c",
+      "g_745da426b0bcbfd2",
+      "g_ee8003b44c511192",
+      "g_7e20e3ef09ade04f"
+    ]
+  },
+  "input_sha256": {
+    "processed": {
+      "manifest.json": "265149a25a79d785f54ae6132ef1e568ef0544f81ada15567b8b1cc0d56e81ae",
+      "samples.md": "99f63d6d59c75a551f4c22a2ab7023d7f8314ec747e69f968f89b3c8ccb78b0e",
+      "stats.json": "e6f19d3a8f8d83a89e6efe8554e3acbb99190e0cf0f51c0a5d002035ffee6def",
+      "stats.md": "57553c65e248e1fd414a2a0927fa961728cee9bcb5f403f15605b604b966ace7",
+      "test.jsonl": "7294a5118d1a5a312348630d2f8f6b6d3af80162b5c1a95f05d2054768017207",
+      "test.questions.jsonl": "1e60497acb13208111e8103c2a0affd440a48232b18bd94793ef96dc7b2ce1e4",
+      "train.jsonl": "c10c4bb6047576a42419600f050a49d8ed9c976a7342052d88f6c460718d2987",
+      "train.questions.jsonl": "640164ba1ab92d5329506a0721c6e3fb96274a7b0ef4be50515358a70da7767f",
+      "validation.jsonl": "94291e43dee17857b8e0d332d30f1e33f572bc2bdc8b46945d22e3df75ca1864",
+      "validation.questions.jsonl": "b9c4f4ab94812c34de3d9edc4b68f75f91c59469c6431966a1e4023b18d695f1"
+    },
+    "raw": {
+      "train": {
+        "file": "FB15K-237/train.txt",
+        "sha256": "6e4c2782169af21e9743f3b1d200886f5d595bf6bc504ec1351720949c5cdfae"
+      },
+      "valid": {
+        "file": "FB15K-237/valid.txt",
+        "sha256": "cf6309010852f6a8d47a45df830a426415d1ee6f7a3970a8376ff1fb81db4a5c"
+      },
+      "test": {
+        "file": "FB15K-237/test.txt",
+        "sha256": "5711cf41623ceb4eacc50eb6108a3ca6565c7492e3caaf82a3e355cc660d1574"
+      },
+      "entity_text": {
+        "file": "entity2text.txt",
+        "sha256": "16beedcfad3d32696e8b0b98cfa0f5eeb144f5142225f227a64fd9ce37447da5"
+      },
+      "relation_text": {
+        "file": "relation2text.txt",
+        "sha256": "4bf7cb6ea0ac09b17ad210889f723be5e079669f6ae5d507787e1320bbaa0f72"
+      }
+    }
+  },
+  "audit_script_sha256_lf": "8fc4bc59e1d5ebb6cc2ec94cf7436d754702d2cdf46f88679f3dd160c68a23bc"
+}

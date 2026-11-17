@@ -1,0 +1,100 @@
+{
+  "created_at": "2026-11-17T02:00:09+00:00",
+  "seed": 42,
+  "template_version": "v4",
+  "paraphrases_per_group": 2,
+  "max_answers": 20,
+  "max_groups": 60000,
+  "min_path_support": 25,
+  "max_dominant_share": 0.6,
+  "max_answer_set_share": 0.4,
+  "targets": {
+    "train": 2000,
+    "validation": 200,
+    "test": 300
+  },
+  "visible_graph": "FB15K-237 train.txt",
+  "protocol": "transductive known-graph two-hop template QA; grouped query split",
+  "topic_entities": "provided gold topic IDs; entity linking is evaluated separately",
+  "raw_inputs": {
+    "train": {
+      "file": "FB15K-237/train.txt",
+      "sha256": "6e4c2782169af21e9743f3b1d200886f5d595bf6bc504ec1351720949c5cdfae"
+    },
+    "valid": {
+      "file": "FB15K-237/valid.txt",
+      "sha256": "cf6309010852f6a8d47a45df830a426415d1ee6f7a3970a8376ff1fb81db4a5c"
+    },
+    "test": {
+      "file": "FB15K-237/test.txt",
+      "sha256": "5711cf41623ceb4eacc50eb6108a3ca6565c7492e3caaf82a3e355cc660d1574"
+    },
+    "entity_text": {
+      "file": "entity2text.txt",
+      "sha256": "16beedcfad3d32696e8b0b98cfa0f5eeb144f5142225f227a64fd9ce37447da5"
+    },
+    "relation_text": {
+      "file": "relation2text.txt",
+      "sha256": "4bf7cb6ea0ac09b17ad210889f723be5e079669f6ae5d507787e1320bbaa0f72"
+    }
+  },
+  "code_sha256": {
+    "__init__.py": "e4b388c960bd06f7afb56535248e5ee6544b6964fbc7aa180b76832407fa7a64",
+    "builder.py": "20062055fdc9d89bfdae671403ab1b1dc1e300718b74c1b6c79b3ce18d7a6445",
+    "dataset.py": "ac86a3b4fb39bd0b1d1025c3dbe6dd13a2f6076d2bf019f7f5d43d314c1a5a93",
+    "loader.py": "9c384793c36b42b47ef9d71699dae4a24fe499e0db4c722770c39c9eae590902",
+    "prepare.py": "d3cfcd309aa1f35bf46b5096cd342ddedd4b1ead4e35cc00f3f2dcd2a27a0285",
+    "report.py": "b238c66543f1efb8396ab0306edc86dfb2fe96faab622b52302a76c9a028037c",
+    "split.py": "e3c0d699893d6e1aae55cba8756a449af3eaaf957c1874008b8243cf29b699e6",
+    "surface.py": "3dcf8ba01ae74643ced87eb651c304e51b20337a9572e9fe60ea1544a72e99a6"
+  },
+  "code_hash_policy": "SHA256 of source bytes with CRLF normalized to LF",
+  "files": {
+    "train.jsonl": {
+      "items": 2000,
+      "sha256": "c10c4bb6047576a42419600f050a49d8ed9c976a7342052d88f6c460718d2987"
+    },
+    "train.questions.jsonl": {
+      "items": 2000,
+      "sha256": "640164ba1ab92d5329506a0721c6e3fb96274a7b0ef4be50515358a70da7767f"
+    },
+    "validation.jsonl": {
+      "items": 200,
+      "sha256": "94291e43dee17857b8e0d332d30f1e33f572bc2bdc8b46945d22e3df75ca1864"
+    },
+    "validation.questions.jsonl": {
+      "items": 200,
+      "sha256": "b9c4f4ab94812c34de3d9edc4b68f75f91c59469c6431966a1e4023b18d695f1"
+    },
+    "test.jsonl": {
+      "items": 300,
+      "sha256": "7294a5118d1a5a312348630d2f8f6b6d3af80162b5c1a95f05d2054768017207"
+    },
+    "test.questions.jsonl": {
+      "items": 300,
+      "sha256": "1e60497acb13208111e8103c2a0affd440a48232b18bd94793ef96dc7b2ce1e4"
+    },
+    "stats.json": {
+      "sha256": "e6f19d3a8f8d83a89e6efe8554e3acbb99190e0cf0f51c0a5d002035ffee6def"
+    },
+    "stats.md": {
+      "sha256": "57553c65e248e1fd414a2a0927fa961728cee9bcb5f403f15605b604b966ace7"
+    },
+    "samples.md": {
+      "sha256": "99f63d6d59c75a551f4c22a2ab7023d7f8314ec747e69f968f89b3c8ccb78b0e"
+    }
+  },
+  "download_sources": {
+    "graph_url": "https://download.microsoft.com/download/8/7/0/8700516a-ab3d-4850-b4bb-805c515aece1/FB15K-237.2.zip",
+    "archive_sha256": "40bd8dca0e5a93f8c25b077b8f173f9a6660818f235bb5a6bb67c87d45f2da40",
+    "text_repository": "https://github.com/yao8839836/kg-bert",
+    "text_commit": "f3f260309c5e2986467a66e0e68fa7f53b1a150e",
+    "files": {
+      "FB15K-237/train.txt": "6e4c2782169af21e9743f3b1d200886f5d595bf6bc504ec1351720949c5cdfae",
+      "FB15K-237/valid.txt": "cf6309010852f6a8d47a45df830a426415d1ee6f7a3970a8376ff1fb81db4a5c",
+      "FB15K-237/test.txt": "5711cf41623ceb4eacc50eb6108a3ca6565c7492e3caaf82a3e355cc660d1574",
+      "entity2text.txt": "16beedcfad3d32696e8b0b98cfa0f5eeb144f5142225f227a64fd9ce37447da5",
+      "relation2text.txt": "4bf7cb6ea0ac09b17ad210889f723be5e079669f6ae5d507787e1320bbaa0f72"
+    }
+  }
+}

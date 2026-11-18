@@ -6,17 +6,9 @@
 
 高级机器学习课程五人项目：基于 FB15k-237，比较纯大模型、Agent 加图谱文本检索、Agent 加图谱检索与 GNN 三种问答方案。
 
-**当前状态：A 数据管线与收尾材料已在 `codex/data` 交付。** 已提供可校验下载、两跳模板 QA 构造、分组划分与完整答案/证据审计，2000/200/300 条训练/验证/测试数据成品已提交到 [data/processed](data/processed/)。另提供全查询组质量标记、77组模型语义初审和A侧交接检查；已标记的语义限制及B/D待实际接入确认状态见 [收尾与验收](docs/A收尾与验收.md)。本分支其余模块仍为初始框架，尚无正式三组对比实验结果。A 的运行与接口见 [数据交接](docs/A数据交接.md)。
+**当前状态：A 数据交付已同步，B 图检索基础实现已具备。** 已从 `codex/data` 同步可复现的数据处理脚本、2000/200/300 条训练/验证/测试 QA、统计及质量记录。A 的运行与接口见[数据交接](docs/A数据交接.md)，质量边界见[收尾与验收](docs/A收尾与验收.md)。本地保留 B 的实体定位、双向检索、证据路径与评估工具；已知问题见[成员 B 功能验收报告](docs/成员B功能验收报告.md)。尚未接入大模型、训练 GNN 或获得正式三组对比结果。
 
 ## 快速开始
-
-A 数据可独立运行，无需第三方库或 API 密钥：
-
-```bash
-python scripts/download_data.py
-python scripts/prepare_data.py
-python scripts/check_data.py
-```
 
 需要 Python 3.10 或以上。先验证无需第三方依赖的检索示例：
 
@@ -24,7 +16,19 @@ python scripts/check_data.py
 python scripts/smoke_demo.py
 ```
 
-示例使用仓库内的虚构微型图谱，展示“电影 → 导演 → 出生地”的两跳检索及原始证据，不调用 LLM，也不运行 GNN。
+示例使用仓库内的虚构微型图谱，展示实体名称定位、“电影 → 导演 → 出生地”的两跳检索、原始证据、耗时和 Mermaid 子图，不调用 LLM，也不运行 GNN。
+
+运行 A/B 自动检查：`python tests/test_data_pipeline.py`、`python -m unittest discover -s tests -v`。单独运行 `python tests/test_retrieval.py` 还会输出 B 的已知问题探针；当前问题及验收范围见[成员 B 功能验收报告](docs/成员B功能验收报告.md)。
+
+A 的固定版本 QA 已在 `data/processed/`，无需重新生成。首次使用真实图谱时，下载并校验原始文件，再检查交付；这些步骤仅使用 Python 标准库：
+
+```bash
+python scripts/download_data.py
+python scripts/check_data.py
+python scripts/accept_data_handoff.py --output outputs/a_handoff_local.json
+```
+
+推理优先读取 `*.questions.jsonl`，标准答案仅用于训练或事后评测；建索引只使用 `data/raw/FB15K-237/train.txt`。若需重新构造 QA，请按 [data/README.md](data/README.md) 指定单独输出目录，保留冻结版本。
 
 开始正式开发时：
 
@@ -96,16 +100,52 @@ E 直接负责评测代码与批量实验入口，统计答案正确率或集合
 
 ```text
 configs/experiment.json       三基线与五组消融配置
-data/README.md                数据约定，成品 QA 已提交，原始大包按需下载
+data/README.md                A 数据与接口约定，固定 QA 已提交，原始图谱按需下载
 docs/                        分工 Word、数据链接与协作说明
 scripts/smoke_demo.py         无网络的检索示例
+scripts/query_graph.py        对本地图谱执行一次查询并输出 Mermaid
+scripts/evaluate_retrieval.py 在 QA JSONL 上统计召回和耗时
 scripts/run_experiments.py    正式实验入口，等待 E 完成
 src/graph_agent/schemas.py    公共数据结构
 src/graph_agent/data/         A
-src/graph_agent/retrieval/    B，含基础有向 BFS 示例
+src/graph_agent/retrieval/    B，实体链接、双向局部检索、可视化与召回评估
 src/graph_agent/gnn/          C
 src/graph_agent/agent/        D
 src/graph_agent/evaluation/   E
 ```
+
+### 图谱检索接口（成员 B）
+
+`GraphIndex.from_tsv(...)` 可读取 `head<TAB>relation<TAB>tail` 图谱文件，以及可选的 `ID<TAB>名称` 实体/关系映射。传入 `Question` 已定位的 `topic_entity_ids` 时优先使用这些 ID；为空时会在问题文本中按名称别名进行大小写不敏感的连续词组匹配。此实体链接器是可解释的精确别名匹配，不做语义猜测；歧义别名会返回对应的多个 ID。
+
+```python
+from graph_agent.retrieval import GraphIndex, to_mermaid
+from graph_agent.schemas import Question
+
+index = GraphIndex.from_tsv(
+    "data/raw/FB15K-237/train.txt",
+    entity_names_path="data/raw/entity2text.txt",
+    relation_names_path="data/raw/relation2text.txt",
+)
+result = index.retrieve_with_stats(
+    Question("q1", "Where was the film director born?", ("/m/film",)),
+    max_hops=2, max_nodes=200, max_edges=800,
+)
+print(result.stats)                       # latency, sizes, and truncation flags
+print(to_mermaid(result.subgraph, index.entity_names, index.relation_names))
+```
+
+检索支持正向和反向邻接遍历；返回的三元组始终保留图谱原始方向，`Subgraph.path_steps` 的 `is_reverse` 标记路径中反向走过的边。返回结果受跳数、节点数和边数限制，统计会说明是否触发节点或边上限。
+
+用于离线评估时，`benchmark_retrieval(index, cases, ...)` 在每个查询完成后才读取 `RetrievalCase` 中的标准答案与证据，输出答案召回率、证据召回率、平均/P50/P95 延迟、子图规模和截断比例。它不把标准答案或标准路径传给检索器；真实数据的实验统计仍需使用 A/E 提供的数据与评测流程生成。
+
+有本地数据后，也可直接从命令行查询或评估：
+
+```bash
+python scripts/query_graph.py --triples data/raw/FB15K-237/train.txt --entity-names data/raw/entity2text.txt --relation-names data/raw/relation2text.txt --question "Where was the film director born?"
+python scripts/evaluate_retrieval.py --triples data/raw/FB15K-237/train.txt --qa data/processed/test.jsonl --entity-names data/raw/entity2text.txt --relation-names data/raw/relation2text.txt
+```
+
+查询时可重复传入 `--topic-entity ID` 覆盖自动名称匹配；`--directed-only` 关闭反向遍历。评估脚本读取项目约定的 JSONL 中 `question_id`、`text`、`topic_entity_ids`、`answer_ids` 和可选 `evidence` 字段，结果输出到终端，也可用 `--output report.json` 写入文件。
 
 协作流程见 [协作指南](docs/协作指南.md)，数据来源见 [数据集链接](docs/数据集链接.md)。

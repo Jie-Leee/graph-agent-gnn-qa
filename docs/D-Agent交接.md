@@ -2,10 +2,12 @@
 
 本分支实现 LangChain ChatOpenAI 的 DeepSeek/OpenAI 兼容客户端、模型自主路由、有界工具循环、三种
 证据模式、结构化回答、实体解析、逐次调用日志和开发入口。公共 schemas、A 数据、
-B 检索和 C GNN 源码均未修改。实验统一使用已有 Anaconda `langchain` 环境，不新建 `.venv`。
+B 检索和 C GNN 源码均未由 D 额外修改。2026-11-18 已合并 B 的检索提交及其兼容的
+PathStep/Subgraph 扩展。实验统一使用已有 Anaconda `langchain` 环境，不新建 `.venv`。
 
-已通过离线自动测试与演示。尚未用真实密钥调用 DeepSeek；B 的正式检索和 C 的
-训练模型未交付，因此没有正式三组实验结果、真实路由准确率或备用演示录像。
+已接入 B 检索，在真实 DeepSeek 上验证了查询/跳过微型演示及验证集单题。另完成
+200题离线D/B接口与覆盖诊断。C 训练模型和 E 正式实验仍待接入，没有正式三组
+实验结果、全量真实路由准确率或备用录像。详见 [D/B联调记录](D-B检索联调.md)。
 
 2026-11-17 在上述 `langchain` 环境验证：103项 unittest、原有12项数据检查均
 通过，离线 Agent 演示、检索示例及24题路由文件校验通过。其中5项集成测试使用
@@ -83,8 +85,10 @@ python scripts/run_agent.py --mode llm --entity-map data/raw/entity2text.txt --l
 python scripts/run_agent.py --mode text --limit 1
 ```
 
-text 命令目前明确使用仓库已有的有向 BFS，只以 train 边建索引。它可用于联调，
-不能宣称为 B 最终检索。A 的完整验收依赖原始图谱，可另运行
+text 命令通过 `GraphRetrievalTool.from_raw` 接入 B 的 GraphIndex，并传入实体/关系
+名称；索引只用 train 边。默认允许反向遍历，可用 `--no-allow-inverse` 关闭。设置需
+在 text/gnn 间固定。日志包含图谱与检索源码哈希、实际检索耗时和截断标记。
+A 的完整验收依赖原始图谱，可另运行
 `python scripts/accept_data_handoff.py`；D 源码变更后该脚本会诚实报告需要下游检查，
 不会自动调用联网 Agent 或把 A 侧探针当成实际 Agent 验收。
 
@@ -101,10 +105,14 @@ text 命令目前明确使用仓库已有的有向 BFS，只以 train 边建索�
 单轮批量调用超过剩余额度、未知工具和非法参数均明确失败，不会静默增加预算。
 
 同一个 runner 对同一个完整 Question 缓存路由计划和检索结果。再运行另一证据
-模式时复用计划；`text` 用固定关系词汇重合排序，`gnn` 调 C 的真实 scorer 排序。
+模式时复用计划；`text` 用固定关系词汇重合排序，处理常见词形并去除功能词。
+在 B 已返回的子图内选择最相关的最多两跳真实路径，避免把无关的最短捷径当成
+答案依据；不会增加子图外的节点/边，也不使用标准路径。`gnn` 调 C 的真实 scorer。
 回答阶段重新构造消息，只放该模式的候选及证据，不把 text 的回答或路由对话带入
 gnn。查询循环因此不依赖 GNN 排序结果；这是控制变量设计，应在报告中说明。
-重复的相同跳数查询也复用子图，逻辑工具调用次数仍按模型实际请求计数。
+重复的相同跳数查询也复用子图，逻辑工具调用次数仍按模型实际请求计数。最终
+上下文使用最近一次查询的子图；不同跳数的检索未必嵌套，不把它们合并成超预算
+子图。无给定主题时保留 B 定位出的主题；主QA仍使用给定ID，不宣称实体定位成绩。
 
 每个模式的 Prediction token/耗时包含其共享路由成本，缓存命中时计入原路由成本，
 避免把热缓存误报成推理提速。trace 的 `actual_*` 则仅统计本次真实执行的调用和
@@ -115,7 +123,9 @@ gnn。查询循环因此不依赖 GNN 排序结果；这是控制变量设计，
 
 候选上下文默认按 UTF-8 字节数限制到配置的 context_token_budget 数值，作为
 保守的、不依赖分词器的预算；不是精确2000 token。固定 JSON 外壳也计入，证据
-路径只整条保留，放不下时跳过。字节上限只约束证据部分，不约束系统提示词和题面；
+路径只整条保留，放不下时跳过。当前 `compact_paths_v2` 把实体与关系名称存到共享
+字典，路径只引用ID及原始三元组，并保留 source_id/target_id/is_reverse；不重复
+展开每条边两端的名称。字节上限只约束证据部分，不约束系统提示词和题面；
 实际输入 token 用量由 API 报告。E 若改用精确分词，应对 text/gnn 统一修改预算。
 
 所有候选必须属于检索子图，证据必须在子图内、连通给定主题并到达该候选；允许
@@ -131,13 +141,15 @@ gnn。查询循环因此不依赖 GNN 排序结果；这是控制变量设计，
 from pathlib import Path
 from graph_agent.agent import AgentRunner, AgentSettings, EntityCatalog
 from graph_agent.agent.provider import LangChainClient, LLMSettings
+from graph_agent.agent.retrieval import GraphRetrievalTool
 from graph_agent.data.dataset import load_questions
 
+retriever, catalog = GraphRetrievalTool.from_raw(Path('data/raw'))
 runner = AgentRunner(
     LangChainClient(LLMSettings.from_env(Path('.env'))),
-    retriever=retriever,  # B: retrieve(Question, max_hops, max_nodes, max_edges) -> Subgraph
+    retriever=retriever,  # B适配器，支持allow_inverse并保留检索统计
     scorer=scorer,        # C: rank(Question, Subgraph) -> list[Candidate]，须已训练
-    catalog=EntityCatalog(entity_names, relation_names),
+    catalog=catalog,
     settings=AgentSettings(), trace_dir=Path('logs/agent'),
 )
 question = load_questions(Path('data/processed/validation.questions.jsonl'))[0]
@@ -149,6 +161,8 @@ gnn_prediction = runner.run(question, 'gnn')  # 同一份路由和检索
 只开放 llm/text；C 完成后通过上述依赖注入联调，接入 E 的正式实验入口。
 B 必须保证索引只有允许的训练边，返回原方向三元组、候选节点和真实路径。
 C 的候选排序还会按分数降序、ID破同分，节点与图级表示如何进入分数由 C 自证。
+与 C 联调时还需统一证据路径准备策略，避免把“路径选择变化”混入 GNN 排序对比；
+可复用 `text_rank` 生成的固定候选路径，再由 C 仅替换候选分数。
 
 E 可以直接读取原有 Prediction；trace 额外提供检索节点、排序后候选、上下文候选、
 被拒 ID/歧义名称、缓存情况、实际计费口径和完整提示词。候选召回应区分检索节点、
@@ -160,6 +174,12 @@ D 只接收精确的 Question，拒收 QAExample。A 的200条验证问题已用
 数据或把 data/quality、标准路径、答案、标准证据接入推理。24道合成路由题的
 expected_query 只留在检查脚本，绝不传入模型；它们和主 QA 指标分开报告。
 
-待交付条件：本地填写密钥后先运行真实微型演示和单道验证题；B/C交付后替换
-依赖并联调；最后由E运行正式实验。依据真实日志选展示样例、制作3页PPT与备用
-录像，当前不提前填写实验结果。
+当前待交付条件：接入 C 的主配置权重、完整加载/预处理及候选打分，配合 E 统一
+实验口径后运行三组对比。可用现有真实日志准备3页PPT和备用录像；单题调试成功
+与覆盖诊断均不能替代正式实验结果。离线D/B验收可复现为：
+
+```powershell
+python scripts/accept_agent_retrieval.py --gold data/processed/validation.jsonl
+```
+
+该命令的路由和回答由脚本提供，不调用模型。仅推理完成后才加载gold计算覆盖率。

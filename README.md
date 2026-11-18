@@ -8,7 +8,7 @@
 
 **当前状态：A 数据管线与收尾材料已在 `codex/data` 交付。** 已提供可校验下载、两跳模板 QA 构造、分组划分与完整答案/证据审计，2000/200/300 条训练/验证/测试数据成品已提交到 [data/processed](data/processed/)。另提供全查询组质量标记、77组模型语义初审和A侧交接检查；数据边界见 [收尾与验收](docs/A收尾与验收.md)。A 的运行与接口见 [数据交接](docs/A数据交接.md)。
 
-**D Agent 已完成可独立开发的实现。** 包括 LangChain/DeepSeek 客户端、自主工具循环、三种模式接口及离线演示。D 尚未使用真实密钥验证 API，B 检索已同步并正在联调，C 训练模型及 E 正式实验待接入；没有正式三组实验结果。D 的运行方法和边界见 [Agent 交接](docs/D-Agent交接.md)。
+**D Agent 已接入 B 检索并完成小规模真实 DeepSeek 联调。** 支持自主工具循环、三种模式接口、反向路径证据和检索统计。已验证真实微型演示与验证集单题，并完成200道验证题的离线接口/覆盖诊断；这不是完整问答实验。C 训练模型及 E 正式实验仍待接入。运行方法见 [Agent 交接](docs/D-Agent交接.md)，本轮结果和失败分析见 [D/B 联调记录](docs/D-B检索联调.md)。
 
 B 的检索支持名称映射、双向遍历、方向标记和检索统计，接口与验证结果见 [成员 B 功能验收报告](docs/成员B功能验收报告.md)。
 
@@ -129,6 +129,7 @@ scripts/evaluate_retrieval.py 统计检索召回率、耗时和子图大小
 scripts/agent_demo.py         D 的离线/真实 API 微型图谱演示
 scripts/run_agent.py          D 的验证集开发入口
 scripts/check_agent_routing.py D 的独立路由检查
+scripts/accept_agent_retrieval.py D/B 在真实验证问题上的离线接口与覆盖诊断
 scripts/run_experiments.py    完整实验入口，待接入实现
 src/graph_agent/schemas.py    各模块共用的数据结构
 src/graph_agent/data/         A：数据处理

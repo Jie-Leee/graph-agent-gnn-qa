@@ -12,6 +12,7 @@ sys.path.insert(0, str(ROOT / "src"))
 from graph_agent.agent.demo import DEMO_CATALOG, DEMO_TRIPLES  # noqa: E402
 from graph_agent.agent.provider import LangChainClient, LLMSettings  # noqa: E402
 from graph_agent.agent.runner import AgentRunner  # noqa: E402
+from graph_agent.agent.retrieval import GraphRetrievalTool  # noqa: E402
 from graph_agent.retrieval.graph import GraphIndex  # noqa: E402
 from graph_agent.schemas import Question  # noqa: E402
 
@@ -69,7 +70,8 @@ def main():
                               "skip_reference": sum(not expected for _, expected in cases)}))
             return
         runner = AgentRunner(LangChainClient(LLMSettings.from_env(args.env_file)),
-                             retriever=GraphIndex(DEMO_TRIPLES), catalog=DEMO_CATALOG,
+                             retriever=GraphRetrievalTool(GraphIndex(DEMO_TRIPLES, DEMO_CATALOG.entity_names,
+                                                                    DEMO_CATALOG.relation_names)), catalog=DEMO_CATALOG,
                              trace_dir=args.trace_dir)
         rows = [run_case(runner, question, expected) for question, expected in cases[:args.limit]]
         for row in rows:

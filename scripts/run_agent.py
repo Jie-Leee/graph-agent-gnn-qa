@@ -13,9 +13,9 @@ sys.path.insert(0, str(ROOT / "src"))
 from graph_agent.agent.evidence import EntityCatalog  # noqa: E402
 from graph_agent.agent.provider import LangChainClient, LLMSettings  # noqa: E402
 from graph_agent.agent.runner import AgentRunner, AgentSettings  # noqa: E402
+from graph_agent.agent.retrieval import GraphRetrievalTool  # noqa: E402
 from graph_agent.data.dataset import load_questions  # noqa: E402
-from graph_agent.data.loader import load_raw, read_text_map  # noqa: E402
-from graph_agent.retrieval.graph import GraphIndex  # noqa: E402
+from graph_agent.data.loader import read_text_map  # noqa: E402
 
 
 def main():
@@ -25,6 +25,8 @@ def main():
     parser.add_argument("--limit", type=int, default=1, help="Default 1 to keep development API usage small")
     parser.add_argument("--question-id")
     parser.add_argument("--raw", type=Path, default=ROOT / "data/raw")
+    parser.add_argument("--allow-inverse", action=argparse.BooleanOptionalAction, default=True,
+                        help="Use B's reverse traversal (default enabled); fix across evidence modes")
     parser.add_argument("--entity-map", type=Path, help="Pure LLM: optional complete entity2text.txt, used AFTER generation")
     parser.add_argument("--config", type=Path, default=ROOT / "configs/experiment.json")
     parser.add_argument("--env-file", type=Path, default=ROOT / ".env")
@@ -45,13 +47,11 @@ def main():
         config = json.loads(args.config.read_text(encoding="utf-8"))
         settings = AgentSettings(**{key: config["retrieval"][key] for key in (
             "max_hops", "max_nodes", "max_edges", "context_token_budget")},
-            max_tool_calls=config["agent"]["max_tool_calls"])
+            max_tool_calls=config["agent"]["max_tool_calls"], allow_inverse=args.allow_inverse)
         retriever, catalog = None, EntityCatalog()
         if args.mode == "text":
-            raw = load_raw(args.raw)
-            retriever = GraphIndex(raw.train_triples)
-            catalog = EntityCatalog(raw.entity_text, raw.relation_text)
-            print("Using scaffold directed BFS; B's final retriever is pending.", file=sys.stderr)
+            retriever, catalog = GraphRetrievalTool.from_raw(args.raw)
+            print(f"Using B GraphIndex with names, train edges only, allow_inverse={args.allow_inverse}.", file=sys.stderr)
         elif args.entity_map:
             catalog = EntityCatalog(read_text_map(args.entity_map))
         else:

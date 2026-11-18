@@ -15,6 +15,7 @@ from graph_agent.agent.demo import (  # noqa: E402
 )
 from graph_agent.agent.provider import LangChainClient, LLMSettings  # noqa: E402
 from graph_agent.agent.runner import AgentRunner  # noqa: E402
+from graph_agent.agent.retrieval import GraphRetrievalTool  # noqa: E402
 from graph_agent.retrieval.graph import GraphIndex  # noqa: E402
 
 
@@ -26,7 +27,8 @@ def main():
     args = parser.parse_args()
     try:
         provider = offline_provider() if args.offline else LangChainClient(LLMSettings.from_env(args.env_file))
-        runner = AgentRunner(provider, retriever=GraphIndex(DEMO_TRIPLES),
+        index = GraphIndex(DEMO_TRIPLES, DEMO_CATALOG.entity_names, DEMO_CATALOG.relation_names)
+        runner = AgentRunner(provider, retriever=GraphRetrievalTool(index),
                              catalog=DEMO_CATALOG, trace_dir=args.trace_dir)
         print("SCRIPTED OFFLINE DEMO (no LLM decisions)" if args.offline else "LIVE LLM DEMO (fictional graph, not formal QA)")
         for question in (DEMO_QUESTION, SKIP_QUESTION):

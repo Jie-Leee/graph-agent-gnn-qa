@@ -23,6 +23,7 @@ class Completion:
     input_tokens: int = 0
     output_tokens: int = 0
     usage_reported: bool = False
+    served_model: str | None = None
 
 
 class ChatProvider(Protocol):
@@ -161,7 +162,8 @@ class OpenAICompatibleClient:
         reported = all(type(usage.get(k)) is int and usage[k] >= 0
                        for k in ("prompt_tokens", "completion_tokens"))
         return Completion(clean, usage["prompt_tokens"] if reported else 0,
-                          usage["completion_tokens"] if reported else 0, reported)
+                          usage["completion_tokens"] if reported else 0, reported,
+                          data.get("model") if isinstance(data.get("model"), str) else None)
 
 
 class LangChainClient:
@@ -202,7 +204,7 @@ class LangChainClient:
             return OpenAICompatibleClient._parse({"choices": [{
                 "finish_reason": metadata.get("finish_reason"),
                 "message": self._to_openai(response),
-            }], "usage": token_usage})
+            }], "usage": token_usage, "model": metadata.get("model_name", metadata.get("model"))})
         except ProviderError:
             raise
         except Exception as error:

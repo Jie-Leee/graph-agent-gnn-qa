@@ -59,6 +59,7 @@ class LangChainIntegrationTests(unittest.TestCase):
         self.assertNotIn("tools", requests[-1])
         self.assertNotIn("secret-key", json.dumps(runner.last_trace))
         self.assertEqual(runner.last_trace["provider"]["backend"], "LangChainClient")
+        self.assertEqual(runner.last_trace["events"][-1]["served_model"], "deepseek-flash")
 
     def test_real_langchain_skip_and_pure_llm_do_not_query(self):
         for mode, messages in (("llm", [answer_message(text="Unknown")]),

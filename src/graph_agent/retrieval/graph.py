@@ -4,6 +4,8 @@ from __future__ import annotations
 from collections import defaultdict, deque
 from collections.abc import Iterable, Mapping
 from dataclasses import dataclass
+from heapq import heapify, heappop, heappush
+from itertools import count
 from pathlib import Path
 from time import perf_counter
 
@@ -77,11 +79,11 @@ def _load_alias_table(path: str | Path | None) -> dict[str, tuple[str, ...]]:
 
 
 class GraphIndex:
-    """In-memory adjacency index with exact-name entity linking and bounded BFS.
+    """Adjacency index with exact-name linking and bounded path-priority search.
 
     Traversal can follow both stored edges and their reverse direction. Returned
-    triples are always the original KG records; ``Subgraph.path_steps`` records
-    whether each path step was followed backward.
+    triples are always the original KG records. A final BFS constructs shortest
+    paths within the selected subgraph and records reverse steps explicitly.
     """
 
     def __init__(
@@ -190,55 +192,140 @@ class GraphIndex:
         if len(topics) > max_nodes:
             raise ValueError("Topic count exceeds max_nodes.")
 
-        question_tokens = set(_relation_tokens(question.text))
-        # Topic names often contain broad words such as "film". Excluding the
-        # linked mention prevents those words from biasing relation ranking.
-        for topic in topics:
-            for alias in self.entity_names.get(topic, ()):
-                question_tokens.difference_update(_relation_tokens(alias))
+        question_tokens = self._question_tokens(question.text, topics)
         nodes: dict[str, None] = dict.fromkeys(topics)
-        paths: dict[str, tuple[Triple, ...]] = {topic: () for topic in topics}
-        path_steps: dict[str, tuple[PathStep, ...]] = {topic: () for topic in topics}
-        queue = deque((topic, 0) for topic in topics)
+        depths = {topic: 0 for topic in topics}
         edges: dict[Triple, None] = {}
-        expanded_nodes = 0
+        expanded: set[str] = set()
         truncated_by_nodes = False
         truncated_by_edges = False
+        # Each layer initially gets a share of the remaining node/edge budget.
+        # Overflow stays queued and can borrow unused capacity in another pass.
+        # Within a layer, topics take turns and cumulative path relevance ranks
+        # candidates. This preserves breadth without starving deeper evidence.
+        queues: dict[int, list[list[tuple[float, int, int, str, _Traversal]]]] = {}
+        next_owner: dict[int, int] = {}
+        serial = count()
+        relation_scores: dict[str, float] = {}
+        entity_scores: dict[str, float] = {}
 
-        while queue:
-            if truncated_by_edges:
-                break
-            node, depth = queue.popleft()
+        def expand(node: str, depth: int, score: float, owner: int) -> None:
+            nonlocal truncated_by_nodes
             if depth >= max_hops:
-                continue
-            expanded_nodes += 1
-            traversals = self._adjacency.get(node, ())
-            if not allow_inverse:
-                traversals = tuple(step for step in traversals if not step.is_reverse)
-            # Keep the graph-file ordering as the tie-breaker so capped results
-            # are deterministic across runs.
-            ranked = sorted(
-                enumerate(traversals),
-                key=lambda item: (-self._relevance(item[1], question_tokens), item[0]),
-            )
-            for _, traversal in ranked:
-                triple, neighbor = traversal.triple, traversal.neighbor
-                if triple in edges:
+                return
+            expanded.add(node)
+            layer = queues.setdefault(depth + 1, [[] for _ in topics])
+            for traversal in self._adjacency.get(node, ()):
+                if traversal.is_reverse and not allow_inverse:
                     continue
-                if neighbor not in nodes and len(nodes) >= max_nodes:
+                if traversal.neighbor not in nodes and len(nodes) >= max_nodes:
                     truncated_by_nodes = True
                     continue
-                if len(edges) >= max_edges:
-                    truncated_by_edges = True
-                    break
+                relation, neighbor = traversal.triple.relation, traversal.neighbor
+                if relation not in relation_scores:
+                    relation_scores[relation] = self._relation_relevance(relation, question_tokens)
+                if neighbor not in entity_scores:
+                    entity_scores[neighbor] = self._entity_relevance(neighbor, question_tokens)
+                heappush(layer[owner], (
+                    -(score + relation_scores[relation] + entity_scores[neighbor]),
+                    -(depth + 1), next(serial), node, traversal,
+                ))
 
-                edges[triple] = None
-                if neighbor not in nodes:
-                    nodes[neighbor] = None
-                    step = PathStep(triple, node, neighbor, traversal.is_reverse)
-                    paths[neighbor] = paths[node] + (triple,)
-                    path_steps[neighbor] = path_steps[node] + (step,)
-                    queue.append((neighbor, depth + 1))
+        def prune_full_node_budget() -> None:
+            nonlocal truncated_by_nodes
+            # Once the node budget is full, discard impossible new-node edges
+            # in one pass, retaining edges between selected nodes. This avoids
+            # popping a hub's entire remainder one edge at a time.
+            for layer in queues.values():
+                for heap in layer:
+                    kept = []
+                    for entry in heap:
+                        _, negative_depth, _, source, traversal = entry
+                        if depths[source] != -negative_depth - 1:
+                            continue
+                        if traversal.neighbor not in nodes:
+                            truncated_by_nodes = True
+                        else:
+                            kept.append(entry)
+                    heap[:] = kept
+                    heapify(heap)
+
+        for owner, topic in enumerate(topics):
+            expand(topic, 0, 0.0, owner)
+        while any(heap for layer in queues.values() for heap in layer):
+            for level in range(1, max_hops + 1):
+                if level not in queues:
+                    continue
+                layer = queues[level]
+                order = ((next_owner.get(level, 0) + offset) % len(topics) for offset in range(len(topics)))
+                active = deque(owner for owner in order if layer[owner])
+                start_nodes, start_edges = len(nodes), len(edges)
+                remaining_hops = max_hops - level + 1
+                node_share = (max_nodes - start_nodes + remaining_hops - 1) // remaining_hops
+                edge_share = max(1, (max_edges - start_edges + remaining_hops - 1) // remaining_hops)
+                while active:
+                    owner = active.popleft()
+                    heap = layer[owner]
+                    while heap:
+                        negative_score, negative_depth, _, node, traversal = heappop(heap)
+                        depth = -negative_depth
+                        if depths[node] != depth - 1:
+                            continue  # A shorter route superseded this expansion.
+                        triple, neighbor = traversal.triple, traversal.neighbor
+                        if triple not in edges:
+                            if neighbor not in nodes and len(nodes) >= max_nodes:
+                                truncated_by_nodes = True
+                                continue
+                            if len(edges) >= max_edges:
+                                truncated_by_edges = True
+                                break
+                            edges[triple] = None
+                            nodes[neighbor] = None
+                            added = True
+                        else:
+                            added = False
+
+                        if depth < depths.get(neighbor, max_hops + 1):
+                            depths[neighbor] = depth
+                            expand(neighbor, depth, -negative_score, owner)
+                            if len(nodes) == max_nodes:
+                                prune_full_node_budget()
+                        if added:
+                            next_owner[level] = (owner + 1) % len(topics)
+                            break
+                    if truncated_by_edges:
+                        break
+                    if heap:
+                        active.append(owner)
+                    if ((node_share and len(nodes) - start_nodes >= node_share)
+                            or len(edges) - start_edges >= edge_share):
+                        break  # Defer remaining candidates; do not call it truncation yet.
+                if truncated_by_edges:
+                    break
+            if truncated_by_edges:
+                break
+
+        # Search priority may discover a longer route first. Rebuild paths from
+        # the selected original edges so every returned path is shortest,
+        # continuous, and consistent with the other returned paths.
+        adjacency: dict[str, list[_Traversal]] = defaultdict(list)
+        for triple in edges:
+            adjacency[triple.head].append(_Traversal(triple, triple.tail, False))
+            if allow_inverse:
+                adjacency[triple.tail].append(_Traversal(triple, triple.head, True))
+        paths: dict[str, tuple[Triple, ...]] = {topic: () for topic in topics}
+        path_steps: dict[str, tuple[PathStep, ...]] = {topic: () for topic in topics}
+        queue = deque(topics)
+        while queue:
+            node = queue.popleft()
+            for traversal in adjacency.get(node, ()):
+                neighbor = traversal.neighbor
+                if neighbor in paths:
+                    continue
+                step = PathStep(traversal.triple, node, neighbor, traversal.is_reverse)
+                paths[neighbor] = paths[node] + (traversal.triple,)
+                path_steps[neighbor] = path_steps[node] + (step,)
+                queue.append(neighbor)
 
         subgraph = Subgraph(
             topic_entity_ids=topics,
@@ -250,7 +337,7 @@ class GraphIndex:
         stats = RetrievalStats(
             elapsed_seconds=perf_counter() - started,
             topic_count=len(topics),
-            expanded_nodes=expanded_nodes,
+            expanded_nodes=len(expanded),
             retrieved_nodes=len(nodes),
             retrieved_edges=len(edges),
             truncated_by_nodes=truncated_by_nodes,
@@ -258,13 +345,26 @@ class GraphIndex:
         )
         return RetrievalResult(subgraph, stats)
 
-    def _relevance(self, traversal: _Traversal, question_tokens: set[str]) -> float:
-        relation_variants = self._relation_tokens.get(traversal.triple.relation, ())
+    def _question_tokens(self, text: str, topics: tuple[str, ...]) -> set[str]:
+        """Remove only the actual topic-name spans before relation normalization."""
+        tokens = tokenize(text)
+        linker = EntityLinker({topic: self.entity_names.get(topic, ()) for topic in topics})
+        mentions = linker.match(text, max_entities=max(1, len(topics)))
+        covered = {position for match in mentions for position in range(match.start_token, match.end_token)}
+        return {
+            _RELATION_EQUIVALENTS.get(token, token)
+            for position, token in enumerate(tokens) if position not in covered
+        }
+
+    def _relation_relevance(self, relation: str, question_tokens: set[str]) -> float:
+        relation_variants = self._relation_tokens.get(relation, ())
         relation_overlap = max((len(tokens & question_tokens) for tokens in relation_variants), default=0)
         score = float(relation_overlap)
         if any(tokens and tokens <= question_tokens for tokens in relation_variants):
             score += 3.0
-        entity_variants = self._entity_tokens.get(traversal.neighbor, ())
-        entity_overlap = max((len(tokens & question_tokens) for tokens in entity_variants), default=0)
-        score += min(entity_overlap, 3) * 0.25
         return score
+
+    def _entity_relevance(self, entity_id: str, question_tokens: set[str]) -> float:
+        entity_variants = self._entity_tokens.get(entity_id, ())
+        entity_overlap = max((len(tokens & question_tokens) for tokens in entity_variants), default=0)
+        return min(entity_overlap, 3) * 0.25

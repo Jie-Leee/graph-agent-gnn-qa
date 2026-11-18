@@ -224,41 +224,111 @@ class MemberBChecks(unittest.TestCase):
                     self.assertEqual(cursor, target)
 
 
-def defect_probes():
-    print("\nKNOWN-GAP PROBES (observations, not acceptance passes):")
-    alias_triples = [Triple("film", "cast", "actor"), Triple("film", "director", "director")]
-    alias_question = Question("q", "Who directed Test Film?", ("film",))
-    alias_results = {}
-    for label, aliases in [("actual_name_only", ("Test Film",)),
-                           ("with_unmentioned_alias", ("Test Film", "The Director's Cut"))]:
-        graph = GraphIndex(alias_triples, {"film": aliases}).retrieve(alias_question, max_nodes=2)
-        alias_results[label] = graph.node_ids
-    print(json.dumps({"alias_removes_relation_word": alias_results}, indent=2))
-    triples = [Triple("film", "directed_by", "director"),
-               Triple("director", "place_of_birth", "city")]
-    triples += [Triple("film", "cast", f"actor:{i}") for i in range(200)]
-    index = GraphIndex(triples)
-    q = Question("q", "Where was the director born?", ("film",))
-    bounded = index.retrieve_with_stats(q)
-    enlarged = index.retrieve(q, max_nodes=203)
-    print(json.dumps({"high_degree_two_hop": {
-        "default_nodes": len(bounded.subgraph.node_ids),
-        "director_retrieved": "director" in bounded.subgraph.node_ids,
-        "city_retrieved": "city" in bounded.subgraph.node_ids,
-        "city_retrieved_max_nodes_203": "city" in enlarged.node_ids,
-        "node_truncation": bounded.stats.truncated_by_nodes,
-    }}, indent=2))
-    empty_index = GraphIndex([])
-    empty_q = Question("q", "Unknown", ())
-    for label, cases in [("unlabeled", [RetrievalCase(empty_q)]), ("empty_dataset", []),
-                         ("mixed_evidence", [RetrievalCase(empty_q, ("x",), (Triple("x", "r", "y"),)),
-                                             RetrievalCase(empty_q, ("x",))])]:
-        metrics = benchmark_retrieval(empty_index, cases)
-        print(json.dumps({label: {k: v for k, v in metrics.items() if "recall" in k or k == "questions"}}, indent=2))
+
+class RetrievalFixChecks(unittest.TestCase):
+    def test_unmentioned_alias_cannot_remove_relation_words(self):
+        triples = [Triple("film", "cast", "actor"), Triple("film", "director", "director")]
+        question = Question("q", "Who directed Test Film?", ("film",))
+        for aliases in [("Test Film",), ("Test Film", "The Director's Cut")]:
+            with self.subTest(aliases=aliases):
+                graph = GraphIndex(triples, {"film": aliases}).retrieve(question, max_nodes=2)
+                self.assertEqual(graph.node_ids, ("film", "director"))
+
+    def test_relation_word_outside_the_name_span_is_preserved(self):
+        index = GraphIndex([Triple("film", "cast", "actor"), Triple("film", "director", "person")],
+                           {"film": "Film Director"})
+        graph = index.retrieve(Question("q", "Which director directed Film Director?", ("film",)), max_nodes=2)
+        self.assertIn("person", graph.node_ids)
+
+    def test_explicit_topic_with_no_name_mention_does_not_mask_words(self):
+        index = GraphIndex([Triple("film", "cast", "actor"), Triple("film", "director", "person")],
+                           {"film": "The Director"})
+        graph = index.retrieve(Question("q", "Who directed it?", ("film",)), max_nodes=2)
+        self.assertIn("person", graph.node_ids)
+
+    def hub_graph(self):
+        return GraphIndex([Triple("film", "directed_by", "director"),
+                           Triple("director", "place_of_birth", "city")]
+                          + [Triple("film", "cast", f"actor:{i}") for i in range(200)])
+
+    def test_high_degree_first_hop_leaves_room_for_relevant_second_hop(self):
+        result = self.hub_graph().retrieve_with_stats(Question("q", "Where was the director born?", ("film",)))
+        self.assertIn("city", result.subgraph.node_ids)
+        self.assertEqual(len(result.subgraph.paths["city"]), 2)
+        self.assertEqual(len(result.subgraph.node_ids), 200)
+        self.assertTrue(result.stats.truncated_by_nodes)
+
+    def test_two_edge_budget_can_select_a_complete_two_hop_path(self):
+        result = self.hub_graph().retrieve_with_stats(
+            Question("q", "Where was the director born?", ("film",)), max_edges=2)
+        self.assertIn("city", result.subgraph.node_ids)
+        self.assertEqual(len(result.subgraph.triples), 2)
+        self.assertTrue(result.stats.truncated_by_edges)
+
+    def test_star_graph_uses_budget_when_no_second_hop_exists(self):
+        index = GraphIndex([Triple("topic", "r", str(i)) for i in range(300)])
+        result = index.retrieve_with_stats(Question("q", "", ("topic",)), max_nodes=200)
+        self.assertEqual(len(result.subgraph.node_ids), 200)
+        self.assertEqual(len(result.subgraph.triples), 199)
+        self.assertTrue(result.stats.truncated_by_nodes)
+
+    def test_multiple_topics_take_turns_under_small_edge_budget(self):
+        index = GraphIndex([Triple("a", "relevant", f"x{i}") for i in range(10)]
+                           + [Triple("b", "other", "y")])
+        graph = index.retrieve(Question("q", "relevant", ("a", "b")), max_edges=2)
+        self.assertIn("x0", graph.node_ids)
+        self.assertIn("y", graph.node_ids)
+
+    def test_late_shortcut_reexpands_node_and_returns_shortest_paths(self):
+        triples = [Triple("root", "wanted", "a"), Triple("a", "wanted", "b"),
+                   Triple("root", "other", "b"), Triple("b", "wanted", "c"),
+                   Triple("c", "wanted", "d")]
+        graph = GraphIndex(triples).retrieve(Question("q", "wanted", ("root",)), allow_inverse=False)
+        self.assertEqual(len(graph.paths["b"]), 1)
+        self.assertEqual(len(graph.paths["c"]), 2)
+        self.assertNotIn("d", graph.node_ids)
+        self.assertEqual(set(graph.triples), set(triples[:4]))
+
+    def test_exact_budget_without_omission_is_not_truncation(self):
+        result = GraphIndex([Triple("a", "r", "b")]).retrieve_with_stats(
+            Question("q", "", ("a",)), max_nodes=2, max_edges=1)
+        self.assertFalse(result.stats.truncated_by_nodes)
+        self.assertFalse(result.stats.truncated_by_edges)
+
+    def test_uncapped_search_matches_bfs_coverage_and_distances(self):
+        from collections import defaultdict, deque
+        rng = random.Random(817)
+        for trial in range(100):
+            triples = tuple(dict.fromkeys(Triple(str(rng.randrange(20)), "r" + str(rng.randrange(3)),
+                                                   str(rng.randrange(20))) for _ in range(100)))
+            topics = tuple(rng.sample([str(i) for i in range(20)], 2))
+            inverse, hops = bool(trial % 2), trial % 4
+            adjacency = defaultdict(list)
+            for edge in triples:
+                adjacency[edge.head].append((edge, edge.tail))
+                if inverse:
+                    adjacency[edge.tail].append((edge, edge.head))
+            distance = dict.fromkeys(topics, 0)
+            queue, expected_edges = deque(topics), set()
+            while queue:
+                node = queue.popleft()
+                if distance[node] >= hops:
+                    continue
+                for edge, neighbor in adjacency[node]:
+                    expected_edges.add(edge)
+                    if neighbor not in distance:
+                        distance[neighbor] = distance[node] + 1
+                        queue.append(neighbor)
+            result = GraphIndex(triples).retrieve_with_stats(
+                Question("q", "r1", topics), max_hops=hops, max_nodes=100, max_edges=1000,
+                allow_inverse=inverse)
+            with self.subTest(trial=trial):
+                self.assertEqual(set(result.subgraph.node_ids), set(distance))
+                self.assertEqual(set(result.subgraph.triples), expected_edges)
+                self.assertEqual({node: len(path) for node, path in result.subgraph.paths.items()}, distance)
+                self.assertFalse(result.stats.truncated_by_nodes)
+                self.assertFalse(result.stats.truncated_by_edges)
 
 
 if __name__ == "__main__":
-    suite = unittest.defaultTestLoader.loadTestsFromTestCase(MemberBChecks)
-    result = unittest.TextTestRunner(verbosity=2).run(suite)
-    defect_probes()
-    raise SystemExit(not result.wasSuccessful())
+    unittest.main()

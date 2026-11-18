@@ -4,33 +4,32 @@
 
 分工文档：[五人分工与一周安排 Word](docs/五人分工与一周安排.docx) · [在线阅读分工](docs/五人分工与一周安排.md)
 
-高级机器学习课程五人项目：基于 FB15k-237，比较纯大模型、Agent 加图谱文本检索、Agent 加图谱检索与 GNN 三种问答方案。
+高级机器学习课程五人项目。我们使用 FB15k-237 知识图谱，比较三种回答问题的方法：大模型直接回答、先查图谱再回答、先查图谱并用 GNN 筛选证据再回答。
 
-**当前状态：A 数据交付已同步，B 图检索基础实现已具备。** 已从 `codex/data` 同步可复现的数据处理脚本、2000/200/300 条训练/验证/测试 QA、统计及质量记录。A 的运行与接口见[数据交接](docs/A数据交接.md)，质量边界见[收尾与验收](docs/A收尾与验收.md)。本地保留 B 的实体定位、双向检索、证据路径与评估工具；已知问题见[成员 B 功能验收报告](docs/成员B功能验收报告.md)。尚未接入大模型、训练 GNN 或获得正式三组对比结果。
+**当前状态：`codex/retrieval` 分支已接入 A 的数据，并提供 B 的基础检索工具。** 训练集 2000 条、验证集 200 条、测试集 300 条问答数据已放在 [data/processed](data/processed/)。目前可以读取数据、查询图谱、查看证据路径，并统计检索召回率和耗时。本分支中的 GNN、Agent 和完整实验流程还需要继续接入，尚无三种方案的最终对比结果。
+
+A 的数据用法见[数据交接](docs/A数据交接.md)，数据质量说明见[收尾与验收](docs/A收尾与验收.md)。B 的功能、修复记录和验证结果见[成员 B 功能验收报告](docs/成员B功能验收报告.md)。
 
 ## 快速开始
 
-需要 Python 3.10 或以上。先验证无需第三方依赖的检索示例：
+需要 Python 3.10 或以上，以下命令都在项目根目录运行。先下载原始图谱并检查数据；这两步只需 Python 自带的库，无需大模型密钥：
+
+```bash
+python scripts/download_data.py
+python scripts/check_data.py
+```
+
+问答数据已经生成，放在 `data/processed/`。需要重新生成时，再按 [data/README.md](data/README.md) 使用 `prepare_data.py` 并指定单独的输出目录。
+
+运行下面的检索示例，可以查看“从问题找到图谱证据”的过程。该示例也可以在下载真实图谱前单独运行：
 
 ```bash
 python scripts/smoke_demo.py
 ```
 
-示例使用仓库内的虚构微型图谱，展示实体名称定位、“电影 → 导演 → 出生地”的两跳检索、原始证据、耗时和 Mermaid 子图，不调用 LLM，也不运行 GNN。
+示例使用一个虚构小图，沿“电影 → 导演 → 出生地”走两步，输出相关三元组、路径和子图绘制代码。正常输出包含 5 个节点、4 条边。它用于演示检索过程，还不包含大模型回答或 GNN 打分。
 
-运行 A/B 自动检查：`python tests/test_data_pipeline.py`、`python -m unittest discover -s tests -v`。单独运行 `python tests/test_retrieval.py` 还会输出 B 的已知问题探针；当前问题及验收范围见[成员 B 功能验收报告](docs/成员B功能验收报告.md)。
-
-A 的固定版本 QA 已在 `data/processed/`，无需重新生成。首次使用真实图谱时，下载并校验原始文件，再检查交付；这些步骤仅使用 Python 标准库：
-
-```bash
-python scripts/download_data.py
-python scripts/check_data.py
-python scripts/accept_data_handoff.py --output outputs/a_handoff_local.json
-```
-
-推理优先读取 `*.questions.jsonl`，标准答案仅用于训练或事后评测；建索引只使用 `data/raw/FB15K-237/train.txt`。若需重新构造 QA，请按 [data/README.md](data/README.md) 指定单独输出目录，保留冻结版本。
-
-开始正式开发时：
+开发 Agent 或 GNN 时，建议先建立独立的 Python 环境，再安装对应依赖。下面是 Windows PowerShell 命令：
 
 ```bash
 python -m venv .venv
@@ -41,7 +40,9 @@ python -m pip install -r requirements.txt
 python -m pip install -r requirements-gnn.txt
 ```
 
-复制 `.env.example` 为本地 `.env` 后填写配置。真实密钥只保存在本地，不提交到 GitHub。正式实验入口尚未实现，会明确退出提示：
+接入大模型时，将 `.env.example` 复制为 `.env`，填写接口地址、模型名称和密钥。密钥保留在本机。
+
+下面是预留的完整实验命令。目前本分支还没有接好完整流程，运行它会显示 `NOT IMPLEMENTED`，这是尚未实现的提示：
 
 ```bash
 python scripts/run_experiments.py --config configs/experiment.json
@@ -49,36 +50,44 @@ python scripts/run_experiments.py --config configs/experiment.json
 
 ## 五人职责与分支
 
-主分支 `main` 保存组长验收后的内容；另外设置五个人的工作分支，总计六个分支。A—E 为占位称呼，E 是组长，可在分工文档中填写姓名。
+`main` 保存组长审核后的整合版本。五位成员分别在自己的分支开发，完成后交给组长合并。A—E 代表五位成员，E 同时担任组长。
 
 | 成员 | 工作分支 | 主要负责目录 | 交付内容 |
 |---|---|---|---|
-| A 数据 | `codex/data` | `src/graph_agent/data/`、`data/` | 图谱清洗、实体名称、QA 构造与划分、数据统计 |
-| B 图检索 | `codex/retrieval` | `src/graph_agent/retrieval/` | 实体定位、带方向与关系的局部子图、证据路径、召回与效率 |
-| C GNN | `codex/gnn` | `src/graph_agent/gnn/` | GAT、训练、候选打分、五组配置消融 |
-| D Agent | `codex/agent` | `src/graph_agent/agent/` | LLM API、自主工具决策、三种模式、演示 |
-| E 组长及实验评测 | `codex/evaluation` | `src/graph_agent/evaluation/`、`scripts/run_experiments.py` | 评测代码、三组对比实验、消融结果汇总、图表与失败分析、最后整合 |
+| A 数据 | `codex/data` | `src/graph_agent/data/`、`data/` | 整理图谱和名称，生成并划分问答数据，提供统计 |
+| B 图检索 | `codex/retrieval` | `src/graph_agent/retrieval/` | 找到问题中的实体，检索附近的图，输出证据并评估检索效果 |
+| C GNN | `codex/gnn` | `src/graph_agent/gnn/` | 训练 GAT，为候选答案打分，比较五组模型配置 |
+| D Agent | `codex/agent` | `src/graph_agent/agent/` | 接入大模型，让 Agent 决定是否查图谱，完成三种回答模式和演示 |
+| E 组长及实验评测 | `codex/evaluation` | `src/graph_agent/evaluation/`、`scripts/run_experiments.py` | 编写评测，汇总实验结果和图表，分析错误，整合各模块 |
 
-E 直接负责评测代码与批量实验入口，统计答案正确率或集合 F1、检索召回、证据支持情况和耗时，组织三组对比，配合 C 汇总消融结果、画图并分析失败案例。C 负责 GNN 各配置的训练，E 在评测和分析之外完成最终联调整合。
+C 负责训练不同配置的模型；E 负责统一评测、比较结果并整合项目。检索召回率表示标准答案有多少进入候选节点，问答准确率表示最终回答是否正确，两者需要分别统计。
 
-公共接口和跨模块依赖先沟通。每人制作自己约 3 页 PPT，汇报约 5 分钟；完成后一起过一遍展示。
+修改公共数据结构或其他成员需要调用的接口前，先与相关成员沟通。每人准备约 3 页 PPT，讲清自己完成的工作，汇报约 5 分钟。
 
 ## 技术主线
 
+完整系统计划按下面的流程运行。LLM 指大模型，GAT 是本项目使用的图神经网络：
+
 ```text
-问题 → LLM 决定查询或直接回答 → 图谱局部检索
-     → GAT 编码及候选打分 → 真实证据转结构化上下文 → LLM 回答
+问题 → Agent 决定直接回答，还是先查图谱
+     → B 检索相关节点和证据路径
+     → C 用 GAT 给候选答案打分（仅 gnn 模式）
+     → 把选出的证据交给大模型 → 生成回答
 ```
 
-- 默认本地 CPU 训练小型 GAT，大模型调用 API；优先完成两跳问答。
-- 主配置：两层 GAT，隐藏维度 128。保留关系类型、边方向和主题实体标记。
-- 用训练 QA 监督候选打分；节点表示与图级聚合表示必须真实参与打分。
-- 将筛选后的候选与真实图谱路径放入上下文，称为“GNN 引导的证据融合”。若课程要求连续图向量直接注入 LLM，应在开始前确认并调整方案。
-- 测试检索和 Agent 输入不包含答案或标准关系路径；禁止按答案补候选节点。
+- GAT 默认在本地 CPU 上训练，大模型通过 API 调用。优先处理沿两条关系才能找到答案的问题，即“两跳问答”。
+- 主模型使用两层 GAT，隐藏维度为 128。输入保留关系类型、边的方向，以及问题对应的主题实体标记。
+- 用训练集中的标准答案学习打分。打分时同时使用候选节点的信息和整张子图汇总的信息。
+- GNN 帮助筛选候选答案，再把对应的真实图谱路径整理成文字交给大模型。当前方案不直接把图向量输入大模型；若课程要求这种做法，需要另行确认。
+- 检索器和 Agent 只接收问题及主题实体 ID。标准答案和预先标注的路径只用于训练或评测，不能用于给测试题补答案。
 
 ## 实验范围
 
-三组基线：`llm`、`text`、`gnn`。固定相同 LLM、问题集、检索器、子图规模和文本预算。聚合消融指图级 pooling，不能将其说成更换 GAT 的邻居注意力机制。
+比较三种方案：`llm` 由大模型直接回答；`text` 先查图谱，把证据整理成文字再回答；`gnn` 在检索后增加 GNN 打分，再用筛选出的证据回答。
+
+三种方案使用相同的大模型和问题集。两种使用检索的方案，还要统一检索器、子图大小上限和输入文本长度。
+
+另外比较下面五组 GAT 配置，观察层数和信息汇总方式对结果的影响，这类比较称为“消融实验”。图级聚合是把所有节点的信息汇总成整张子图的信息：`mean` 取平均，`sum` 求和，`max` 取最大值；它与 GAT 内部的邻居注意力计算是两个步骤。
 
 | 配置 | GAT 层数 | 图级聚合 |
 |---|---:|---|
@@ -88,64 +97,36 @@ E 直接负责评测代码与批量实验入口，统计答案正确率或集合
 | 聚合消融 | 2 | sum |
 | 聚合消融 | 2 | max |
 
-每种配置分别训练，验证集选参数，测试集用于最终报告。指标包括答案集合 F1/准确率、候选召回率、缺乏图谱证据的作答比例、工具调用次数、耗时和 token 用量。另准备约 20—30 题路由测试，展示 Agent 的查询与跳过决策，不混入主 QA 指标。
+每种配置都单独训练，用验证集选择参数，最后在测试集上统一比较。记录最终答案的准确率或集合 F1、检索召回率、没有证据支持的回答比例、工具调用次数、耗时和 token 用量。
+
+另准备约 20—30 道题，单独检查 Agent 能否决定“查图谱”或“直接回答”。这部分结果单独展示，不与主要问答指标混在一起。
 
 ## 完成时间与展示
 
-项目在一周内完成，统一在周五之前交齐。大家按自己的节奏推进，做完就发到自己的 branch 里，附上运行方法和需要对接的内容，群里说一声，组长收到后安排联调。涉及数据、接口和模型输出的依赖提前沟通。
+按分工约定，项目在一周内完成，周五之前交齐。各成员完成后推送到自己的分支，附上运行方法和需要其他成员配合的事项，再通知组长安排联调。涉及数据、接口或模型输出的问题，提前沟通。
 
-每人约 3 页 PPT、汇报约 5 分钟，共 25 分钟。顺序为 A 任务与数据、B 检索、C GNN、D Agent 与演示、E 实验结果与分析。
+每人约 3 页 PPT、汇报约 5 分钟，总计约 25 分钟。顺序为：A 介绍任务与数据，B 介绍图谱检索，C 介绍 GNN，D 演示 Agent，E 汇报实验结果与分析。
 
 ## 项目目录
 
 ```text
-configs/experiment.json       三基线与五组消融配置
-data/README.md                A 数据与接口约定，固定 QA 已提交，原始图谱按需下载
-docs/                        分工 Word、数据链接与协作说明
-scripts/smoke_demo.py         无网络的检索示例
-scripts/query_graph.py        对本地图谱执行一次查询并输出 Mermaid
-scripts/evaluate_retrieval.py 在 QA JSONL 上统计召回和耗时
-scripts/run_experiments.py    正式实验入口，等待 E 完成
-src/graph_agent/schemas.py    公共数据结构
-src/graph_agent/data/         A
-src/graph_agent/retrieval/    B，实体链接、双向局部检索、可视化与召回评估
-src/graph_agent/gnn/          C
-src/graph_agent/agent/        D
-src/graph_agent/evaluation/   E
+configs/experiment.json       三种问答方案和五组 GAT 配置
+data/README.md                数据下载、格式和使用说明
+data/processed/              已生成的问答数据、统计和校验清单
+docs/                        分工、交接和验收说明
+scripts/download_data.py      下载并校验原始图谱与名称映射
+scripts/check_data.py         检查数据是否完整、是否符合约定
+scripts/smoke_demo.py         无需下载数据的检索示例
+scripts/query_graph.py        查询本地图谱，输出三元组、路径和子图绘制代码
+scripts/evaluate_retrieval.py 统计检索召回率、耗时和子图大小
+scripts/run_experiments.py    完整实验入口，待接入实现
+src/graph_agent/schemas.py    各模块共用的数据结构
+src/graph_agent/data/         A：数据处理
+src/graph_agent/retrieval/    B：实体定位、图谱检索与证据输出
+src/graph_agent/gnn/          C：模型训练与候选打分
+src/graph_agent/agent/        D：大模型调用与 Agent 流程
+src/graph_agent/evaluation/   E：评测指标
+tests/                       数据与检索的自动检查
 ```
-
-### 图谱检索接口（成员 B）
-
-`GraphIndex.from_tsv(...)` 可读取 `head<TAB>relation<TAB>tail` 图谱文件，以及可选的 `ID<TAB>名称` 实体/关系映射。传入 `Question` 已定位的 `topic_entity_ids` 时优先使用这些 ID；为空时会在问题文本中按名称别名进行大小写不敏感的连续词组匹配。此实体链接器是可解释的精确别名匹配，不做语义猜测；歧义别名会返回对应的多个 ID。
-
-```python
-from graph_agent.retrieval import GraphIndex, to_mermaid
-from graph_agent.schemas import Question
-
-index = GraphIndex.from_tsv(
-    "data/raw/FB15K-237/train.txt",
-    entity_names_path="data/raw/entity2text.txt",
-    relation_names_path="data/raw/relation2text.txt",
-)
-result = index.retrieve_with_stats(
-    Question("q1", "Where was the film director born?", ("/m/film",)),
-    max_hops=2, max_nodes=200, max_edges=800,
-)
-print(result.stats)                       # latency, sizes, and truncation flags
-print(to_mermaid(result.subgraph, index.entity_names, index.relation_names))
-```
-
-检索支持正向和反向邻接遍历；返回的三元组始终保留图谱原始方向，`Subgraph.path_steps` 的 `is_reverse` 标记路径中反向走过的边。返回结果受跳数、节点数和边数限制，统计会说明是否触发节点或边上限。
-
-用于离线评估时，`benchmark_retrieval(index, cases, ...)` 在每个查询完成后才读取 `RetrievalCase` 中的标准答案与证据，输出答案召回率、证据召回率、平均/P50/P95 延迟、子图规模和截断比例。它不把标准答案或标准路径传给检索器；真实数据的实验统计仍需使用 A/E 提供的数据与评测流程生成。
-
-有本地数据后，也可直接从命令行查询或评估：
-
-```bash
-python scripts/query_graph.py --triples data/raw/FB15K-237/train.txt --entity-names data/raw/entity2text.txt --relation-names data/raw/relation2text.txt --question "Where was the film director born?"
-python scripts/evaluate_retrieval.py --triples data/raw/FB15K-237/train.txt --qa data/processed/test.jsonl --entity-names data/raw/entity2text.txt --relation-names data/raw/relation2text.txt
-```
-
-查询时可重复传入 `--topic-entity ID` 覆盖自动名称匹配；`--directed-only` 关闭反向遍历。评估脚本读取项目约定的 JSONL 中 `question_id`、`text`、`topic_entity_ids`、`answer_ids` 和可选 `evidence` 字段，结果输出到终端，也可用 `--output report.json` 写入文件。
 
 协作流程见 [协作指南](docs/协作指南.md)，数据来源见 [数据集链接](docs/数据集链接.md)。

@@ -29,11 +29,21 @@ class QAExample:
 
 
 @dataclass(frozen=True)
+class PathStep:
+    """An original KG triple plus the direction used to traverse it."""
+    triple: Triple
+    source_entity_id: str
+    target_entity_id: str
+    is_reverse: bool = False
+
+
+@dataclass(frozen=True)
 class Subgraph:
     topic_entity_ids: tuple[str, ...]
     node_ids: tuple[str, ...]
     triples: tuple[Triple, ...]
     paths: dict[str, tuple[Triple, ...]] = field(default_factory=dict)
+    path_steps: dict[str, tuple[PathStep, ...]] = field(default_factory=dict)
 
 
 @dataclass(frozen=True)

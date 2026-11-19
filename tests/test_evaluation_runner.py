@@ -5,6 +5,7 @@ import tempfile
 import unittest
 from dataclasses import replace
 from pathlib import Path
+from threading import Barrier
 
 from graph_agent.evaluation.runner import EvaluationOptions, run_evaluation
 from graph_agent.schemas import Prediction, Question
@@ -106,6 +107,41 @@ class EvaluationRunnerTests(unittest.TestCase):
         self.assertEqual(summary["execution_backend"], "mock")
         self.assertTrue(all(r["execution_backend"] == "mock" for r in self.rows()))
         self.assertIsNone(self.rows()[0]["actual_input_tokens"])
+    def test_parallel_questions_keep_routes_and_persist_whole_batches(self):
+        barrier = Barrier(2)
+
+        class ParallelEngine(FakeEngine):
+            def new_worker(self):
+                return ParallelEngine()
+
+            def run(self, question, variant):
+                if variant == "llm":
+                    barrier.wait(timeout=3)
+                    self.question_id = question.question_id
+                else:
+                    assert self.question_id == question.question_id
+                result = super().run(question, variant)
+                self.last_trace["shared_route_events"] = [{"stage": "route", "qid": self.question_id}]
+                return result
+
+        engine = ParallelEngine()
+        summary = run_evaluation(replace(self.options, workers=2), engine=engine)
+        self.assertTrue(summary["complete"])
+        self.assertEqual(summary["variants"]["llm"]["exact_match"], 1)
+        rows = self.rows()
+        self.assertEqual(len(rows), 6)
+        for index in (0, 3):
+            batch = rows[index:index + 3]
+            self.assertEqual(len({row["question_id"] for row in batch}), 1)
+            self.assertEqual([row["variant"] for row in batch], list(self.options.variants))
+            self.assertTrue(all(row["shared_route_consistent"] for row in batch))
+        self.assertNotEqual(rows[1]["route_fingerprint"], rows[4]["route_fingerprint"])
+
+        resumed = ParallelEngine()
+        run_evaluation(replace(self.options, resume=True), engine=resumed)
+        self.assertEqual(resumed.inputs, [])
+        self.assertEqual(rows, self.rows())
+
     def test_resume_skips_complete_questions(self):
         run_evaluation(self.options, engine=FakeEngine())
         resumed = FakeEngine()

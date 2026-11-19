@@ -1,0 +1,19 @@
+{
+  "result_kind": "supplemental_prompt_sensitivity",
+  "experiment_fingerprint": "2a4d62112d785163f476cb360157ebbe85b7a26e7c76cd53ad5639b4f20e917e",
+  "split": "test",
+  "question_count": 300,
+  "group_count": 150,
+  "success_count": 291,
+  "failure_count": 9,
+  "exact_match": 0.05333333333333334,
+  "f1": 0.21006075351063824,
+  "answer_rate": 0.7833333333333333,
+  "graph_unsupported_answer_fraction": 0.7165733763357415,
+  "graph_unsupported_answer_fraction_denominator": 235,
+  "checkpoints_used": 0,
+  "served_models": [
+    "deepseek-flash"
+  ],
+  "script_sha256": "23f6c03f0b7b4ff69836b5cdbd1380fb9c3734daeee0d568640f78bc1e4897f3"
+}

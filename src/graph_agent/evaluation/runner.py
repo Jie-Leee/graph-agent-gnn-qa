@@ -10,9 +10,12 @@ import os
 import subprocess
 import time
 import uuid
+from concurrent.futures import FIRST_COMPLETED, ThreadPoolExecutor, wait
+from contextlib import closing
 from dataclasses import asdict, dataclass
 from datetime import datetime, timezone
 from pathlib import Path
+from threading import Event, Lock, local
 
 from graph_agent.data.dataset import load_examples, load_questions
 from graph_agent.evaluation.metrics import answer_metrics, candidate_recall
@@ -58,6 +61,7 @@ class EvaluationOptions:
     resume: bool = False
     device: str = "cpu"
     repo_root: Path | None = None
+    workers: int = 1
 
 
 class MockEngine:
@@ -67,6 +71,9 @@ class MockEngine:
 
     def preflight(self):
         pass
+
+    def new_worker(self):
+        return MockEngine()
 
     def identity(self):
         return {"backend": "mock", "implementation": "empty-answers-v1", "requested_model": self.requested_model}
@@ -80,8 +87,21 @@ class MockEngine:
         return Prediction(question.question_id, (), "MOCK: empty answer; validates evaluator only.")
 
 
+class _LockedScorer:
+    def __init__(self, scorer, lock):
+        self.scorer, self.lock = scorer, lock
+
+    def describe(self):
+        return self.scorer.describe()
+
+    def rank(self, question, graph):
+        # Share the loaded weights, but serialize GNN inference across workers.
+        with self.lock:
+            return self.scorer.rank(question, graph)
+
+
 class LiveEngine:
-    """One sequential AgentRunner keeps routing identical across evidence variants."""
+    """Each worker keeps one AgentRunner for all variants of a question."""
     def __init__(self, options, config):
         from graph_agent.agent.provider import LLMSettings
         self.options, self.config = options, config
@@ -95,6 +115,8 @@ class LiveEngine:
         self.checkpoints = {v: root / "checkpoints" / v / "best.pt"
                             for v in options.variants if _mode(v) == "gnn"}
         self.scorers, self.runner = {}, None
+        self.resources = None
+        self.active_question = None
         self.last_trace = None
 
     def preflight(self):
@@ -105,11 +127,22 @@ class LiveEngine:
         if any(_mode(v) != "llm" for v in self.options.variants):
             if not (self.options.raw / "FB15K-237" / "train.txt").is_file():
                 raise ValueError("Missing visible training graph; run scripts/download_data.py")
+        scorer_lock = Lock()
         configured = {item["name"] for item in self.config["gnn"]["configs"]}
         for variant, path in self.checkpoints.items():
             if variant not in configured or not path.is_file() or not path.stat().st_size:
                 raise ValueError(f"Missing selected GNN checkpoint/config: {variant}")
-            self.scorers[variant] = CheckpointScorer(path, device=self.options.device)
+            scorer = CheckpointScorer(path, device=self.options.device)
+            self.scorers[variant] = _LockedScorer(scorer, scorer_lock) if self.options.workers > 1 else scorer
+        if self.options.workers > 1:
+            self._prepare_resources()
+
+    def new_worker(self):
+        worker = copy.copy(self)
+        worker.runner = None
+        worker.active_question = None
+        worker.last_trace = None
+        return worker
 
     def identity(self):
         result = {"backend": "live", "provider_backend": "LangChainClient",
@@ -125,13 +158,12 @@ class LiveEngine:
                                if (raw / name).is_file()}
         return result
 
-    def _initialize(self):
-        if self.runner is not None:
+    def _prepare_resources(self):
+        if self.resources is not None:
             return
         from graph_agent.agent.evidence import EntityCatalog
-        from graph_agent.agent.provider import LangChainClient
         from graph_agent.agent.retrieval import GraphRetrievalTool
-        from graph_agent.agent.runner import AgentRunner, AgentSettings
+        from graph_agent.agent.runner import AgentSettings
         from graph_agent.data.loader import read_text_map
         retrieval = self.config["retrieval"]
         settings = AgentSettings(**{key: retrieval[key] for key in
@@ -143,11 +175,24 @@ class LiveEngine:
             retriever, catalog = GraphRetrievalTool.from_raw(self.options.raw)
         else:
             catalog = EntityCatalog(read_text_map(self.options.raw / "entity2text.txt"))
-        self.runner = AgentRunner(LangChainClient(self.llm), retriever=retriever,
+        self.resources = retriever, catalog, settings
+
+    def _initialize(self):
+        if self.runner is not None:
+            return
+        from graph_agent.agent.provider import LangChainClient
+        from graph_agent.agent.runner import AgentRunner
+        self._prepare_resources()
+        retriever, catalog, settings = self.resources
+        # The tool's mutable last_stats is per worker; the graph index is read-only.
+        self.runner = AgentRunner(LangChainClient(self.llm), retriever=copy.copy(retriever),
                                   catalog=catalog, settings=settings, trace_dir=None)
 
     def run(self, question, variant):
         self._initialize()
+        if question != self.active_question:
+            self.runner.clear_cache()
+            self.active_question = question
         self.runner.scorer = self.scorers.get(variant)
         try:
             return self.runner.run(question, _mode(variant))
@@ -305,6 +350,40 @@ def _write_summary(output, rows, examples, options, fingerprint, dataset_questio
     return summary
 
 
+def _question_batches(tasks, evaluate, engine, workers):
+    if workers == 1:
+        for task in tasks:
+            yield evaluate(task, engine)
+        return
+
+    state = local()
+    stopped = Event()
+
+    def run_task(task):
+        if not hasattr(state, "engine"):
+            state.engine = engine.new_worker()
+        return evaluate(task, state.engine, stopped)
+
+    pool = ThreadPoolExecutor(max_workers=workers)
+    active = set()
+    try:
+        for _ in range(workers):
+            task = next(tasks, None)
+            if task is None:
+                break
+            active.add(pool.submit(run_task, task))
+        while active:
+            ready, active = wait(active, return_when=FIRST_COMPLETED)
+            for future in ready:
+                yield future.result()
+                task = next(tasks, None)
+                if task is not None:
+                    active.add(pool.submit(run_task, task))
+    finally:
+        stopped.set()
+        pool.shutdown(wait=True, cancel_futures=True)
+
+
 def run_evaluation(options: EvaluationOptions, *, engine=None):
     """Run deterministic selected questions, committing all variants per question.
 
@@ -316,6 +395,8 @@ def run_evaluation(options: EvaluationOptions, *, engine=None):
         raise ValueError("Choose backend live/mock and split validation/test")
     if not isinstance(options.limit, int) or options.limit < 1:
         raise ValueError("limit must be a positive integer; default is a small validation run")
+    if type(options.workers) is not int or options.workers < 1:
+        raise ValueError("workers must be a positive integer")
     if not options.variants or len(set(options.variants)) != len(options.variants) or set(options.variants) - set(VARIANTS):
         raise ValueError("Choose unique supported variants: " + ",".join(VARIANTS))
     data = Path(options.data)
@@ -336,6 +417,8 @@ def run_evaluation(options: EvaluationOptions, *, engine=None):
         raise ValueError("Evaluation output must not be inside the dataset directory")
     config = json.loads(options.config.read_text(encoding="utf-8-sig"))
     engine = engine or (MockEngine() if options.backend == "mock" else LiveEngine(options, config))
+    if options.workers > 1 and not callable(getattr(engine, "new_worker", None)):
+        raise ValueError("Concurrent evaluation requires isolated worker engines")
     engine.preflight()
     fingerprint, identity = _fingerprint(options, engine, gold_path, questions_path,
                                          [q.question_id for q in questions])
@@ -376,7 +459,7 @@ def run_evaluation(options: EvaluationOptions, *, engine=None):
         _atomic_json(manifest_path, manifest)
         predictions_path.touch()
     manifest.update(dataset_question_count=len(gold), selected_question_count=len(examples),
-                    split=options.split, variants=list(options.variants),
+                    split=options.split, variants=list(options.variants), workers=options.workers,
                     selected_question_ids=[q.question_id for q in questions],
                     selected_question_groups={e.question.question_id: hashlib.sha256(
                         _canonical([list(e.question.topic_entity_ids), list(e.relation_path)]).encode()
@@ -385,37 +468,40 @@ def run_evaluation(options: EvaluationOptions, *, engine=None):
                     result_kind="mock" if options.backend == "mock" else "development")
     _atomic_json(manifest_path, manifest)
     completed_ids = {r["question_id"] for r in rows}
+    pending = ((example, question) for example, question in zip(examples, questions)
+               if question.question_id not in completed_ids)
     try:
         with predictions_path.open("a", encoding="utf-8", newline="\n") as handle:
-            for example, question in zip(examples, questions):
-                if question.question_id in completed_ids:
-                    continue
-                group_id = hashlib.sha256(_canonical([list(question.topic_entity_ids), list(example.relation_path)]).encode()).hexdigest()[:20]
+            def evaluate(task, worker, stopped=None):
+                example, question = task
+                group_id = manifest["selected_question_groups"][question.question_id]
                 batch = []
                 for variant in options.variants:
+                    if stopped is not None and stopped.is_set():
+                        return None
                     started = time.perf_counter()
                     prediction, error_type = None, None
                     # Clear stale state before running, without touching D's route cache.
                     try:
-                        engine.last_trace = None
+                        worker.last_trace = None
                     except (AttributeError, TypeError):
                         pass
                     try:
-                        prediction = engine.run(question, variant)
+                        prediction = worker.run(question, variant)
                         if not isinstance(prediction, Prediction) or prediction.question_id != question.question_id:
                             raise TypeError("Predictor returned an incompatible Prediction")
                     except Exception as error:
                         # Never serialize exception messages: providers may echo credentials.
                         error_type = type(error).__name__
                     wall_time = time.perf_counter() - started
-                    trace = copy.deepcopy(engine.last_trace or {})
+                    trace = copy.deepcopy(worker.last_trace or {})
                     trace_id = uuid.uuid4().hex
                     relative_trace = "traces/" + trace_id + ".json"
                     _atomic_json(output / relative_trace,
                                  {"experiment_fingerprint": fingerprint, "execution_backend": options.backend,
                                   "question_id": question.question_id, "variant": variant, "trace": trace})
                     row = _row(example, prediction, trace, variant, options, fingerprint, group_id, error_type, wall_time)
-                    row["requested_model"] = getattr(engine, "requested_model", None)
+                    row["requested_model"] = getattr(worker, "requested_model", None)
                     row["trace_file"] = relative_trace
                     route = trace.get("shared_route_events")
                     row["route_fingerprint"] = hashlib.sha256(_canonical(route).encode()).hexdigest() if route is not None else None
@@ -423,12 +509,16 @@ def run_evaluation(options: EvaluationOptions, *, engine=None):
                 routes = {r["route_fingerprint"] for r in batch if r["mode"] != "llm" and r["route_fingerprint"]}
                 for row in batch:
                     row["shared_route_consistent"] = len(routes) <= 1
-                # One complete question is the persistence/resume unit. An interruption
-                # before this point leaves trace files, not mixed partially reused modes.
-                handle.write("".join(_canonical(row) + "\n" for row in batch))
-                handle.flush()
-                os.fsync(handle.fileno())
-                rows.extend(batch)
+                return batch
+
+            with closing(_question_batches(pending, evaluate, engine, options.workers)) as batches:
+                for batch in batches:
+                    # One complete question is the persistence/resume unit. An interruption
+                    # before this point leaves trace files, not mixed partially reused modes.
+                    handle.write("".join(_canonical(row) + "\n" for row in batch))
+                    handle.flush()
+                    os.fsync(handle.fileno())
+                    rows.extend(batch)
     finally:
         summary = _write_summary(output, rows, examples, options, fingerprint, len(gold))
         manifest.update(complete=summary["complete"], updated_at=datetime.now(timezone.utc).isoformat(),

@@ -8,7 +8,7 @@
 
 **当前状态：A 数据管线与收尾材料已在 `codex/data` 交付。** 已提供可校验下载、两跳模板 QA 构造、分组划分与完整答案/证据审计，2000/200/300 条训练/验证/测试数据成品已提交到 [data/processed](data/processed/)。另提供全查询组质量标记、77组模型语义初审和A侧交接检查；数据边界见 [收尾与验收](docs/A收尾与验收.md)。A 的运行与接口见 [数据交接](docs/A数据交接.md)。
 
-**D Agent 已接入 A/B/C，并完成真实主配置与三模式小规模联调。** C正式权重位于 `checkpoints/`，默认使用两层mean主配置；200道验证题的离线契约验收通过，固定前5题的15次真实调用全部正常完成。24道合成路由题、三页PPT和三模式备用日志回放已准备。没有完整正式测试集实验结果。运行与待办见 [D Agent完成说明](docs/D-Agent完成说明.md)，前期证据覆盖与失败分析见 [D/B联调记录](docs/D-B检索联调.md)。
+**D Agent 已接入 A/B/C，并完成真实主配置与三模式小规模联调。** C正式权重位于 `checkpoints/`，默认使用两层mean主配置；200道验证题的离线契约验收通过，固定前5题的15次真实调用全部正常完成。24道合成路由题、三页PPT和三模式备用日志回放已准备。完整测试集结果由 E 单独汇总。运行与待办见 [D Agent完成说明](docs/D-Agent完成说明.md)，前期证据覆盖与失败分析见 [D/B联调记录](docs/D-B检索联调.md)。
 
 B 的检索支持名称映射、双向遍历、方向标记和检索统计，接口与验证结果见 [成员 B 功能验收报告](docs/成员B功能验收报告.md)。
 
@@ -130,7 +130,7 @@ scripts/agent_demo.py         D 的离线/真实 API 微型图谱演示
 scripts/run_agent.py          D 的验证集开发入口
 scripts/check_agent_routing.py D 的独立路由检查
 scripts/accept_agent_retrieval.py D/B 在真实验证问题上的离线接口与覆盖诊断
-scripts/run_experiments.py    完整实验入口，待接入实现
+scripts/run_experiments.py    正式评测、并发和断点恢复入口
 src/graph_agent/schemas.py    各模块共用的数据结构
 src/graph_agent/data/         A：数据处理
 src/graph_agent/retrieval/    B：实体定位、图谱检索与证据输出
@@ -144,4 +144,4 @@ tests/                       数据与检索的自动检查
 
 ## E 统一评测
 
-E 已整合 ABCD 的交付，提供三基线与五 GNN 配置的批量评测、断点恢复、完整日志、失败案例、组级统计和PNG/SVG报告。请参阅 [E评测与整合交接](docs/E评测与整合交接.md)。默认5题验证联调用于检查接口；完整300题测试须显式选择。模拟预测只验证程序，不是模型成绩。本机源码和环境均保存在 E 盘高级机器学习作业目录，API密钥仅写本地 `.env`。
+E 已整合 ABCD 的交付，并完成 300 道测试题、七种设置的真实 DeepSeek 评测。见 [正式报告和图表](docs/evaluation/formal/E实验评测报告.md) 与 [E 五分钟汇报提纲](docs/evaluation/formal/E汇报提纲.md)。请参阅 [E评测与整合交接](docs/E评测与整合交接.md)。默认5题验证联调用于检查接口；完整300题测试须显式选择。模拟预测只验证程序，不是模型成绩。本机源码和环境均保存在 E 盘高级机器学习作业目录，API密钥仅写本地 `.env`。

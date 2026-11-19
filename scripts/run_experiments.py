@@ -24,11 +24,13 @@ def main():
     parser.add_argument("--resume", action="store_true", help="Requires identical data/config/model/weights/source/git fingerprints")
     parser.add_argument("--backend", choices=("live", "mock"), default="live")
     parser.add_argument("--device", default="cpu")
+    parser.add_argument("--workers", type=int, default=1,
+                        help="Concurrent questions. Variants within each question share one route.")
     args = parser.parse_args()
     variants = tuple(part for item in args.variants for part in item.split(",") if part)
     options = EvaluationOptions(data=args.data, raw=args.raw, config=args.config, env=args.env,
         output=args.output, split=args.split, limit=args.limit, variants=variants,
-        backend=args.backend, resume=args.resume, device=args.device, repo_root=ROOT)
+        backend=args.backend, resume=args.resume, device=args.device, repo_root=ROOT, workers=args.workers)
     try:
         summary = run_evaluation(options)
     except (ValueError, OSError, KeyError, TypeError) as error:

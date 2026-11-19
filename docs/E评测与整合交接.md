@@ -22,15 +22,15 @@ python scripts/build_evaluation_report.py --predictions outputs/evaluation/mock/
 python scripts/run_experiments.py --backend live --split validation --limit 5 --variants llm text gat_2_mean gat_1_mean gat_3_mean gat_2_sum gat_2_max --output outputs/evaluation/live-smoke
 
 # 全量测试：300题，三基线与五种GNN配置共7个变体
-python scripts/run_experiments.py --backend live --split test --limit 300 --variants llm text gat_2_mean gat_1_mean gat_3_mean gat_2_sum gat_2_max --output outputs/evaluation/test
+python scripts/run_experiments.py --backend live --split test --limit 300 --workers 8 --variants llm text gat_2_mean gat_1_mean gat_3_mean gat_2_sum gat_2_max --output outputs/evaluation/test
 python scripts/build_evaluation_report.py --predictions outputs/evaluation/test/predictions.jsonl --output outputs/evaluation/test/report
 ```
 
-同一命令中断后可追加 `--resume`；数据、题数、变体顺序、配置、模型、权重、源码或Git版本变化时，请使用新的输出目录。恢复以一个问题的全部变体为单位，中断重试仍可能有额外 API 开销。
+同一命令中断后可追加 `--resume`；数据、题数、变体顺序、配置、模型、权重、源码或Git版本变化时，请使用新的输出目录。恢复以一个问题的全部变体为单位，中断重试仍可能有额外 API 开销。并发发生在题与题之间，同一题的变体仍串行并共享路由。批量评测在保存全部记录后遇到任何失败预测会返回非零，这时先检查清单，再按预定规则保留失败记录并生成报告。
 
 ## DeepSeek 配置
 
-根目录 `.env` 只保存在本地，已在 `.gitignore` 中排除，不要提交密钥。已准备平台地址 `https://api.deepseek.com`、请求模型 `deepseek-flash`、超时120秒，密钥留空。若D使用其他模型，请在正式实验开始前统一。记录请求模型和服务端实际返回模型；模型版本不同不能简单归因于GNN。
+根目录 `.env` 只保存在本地，已在 `.gitignore` 中排除，不要提交密钥。已准备平台地址 `https://api.deepseek.com`、请求模型 `deepseek-flash`、超时120秒，由各成员在自己的机器上填密钥。若D使用其他模型，请在正式实验开始前统一。记录请求模型和服务端实际返回模型；模型版本不同不能简单归因于GNN。
 
 ## 指标和公平性
 

@@ -31,7 +31,7 @@ python scripts/smoke_demo.py
 
 示例使用一个虚构小图，沿“电影 → 导演 → 出生地”走两步，输出相关三元组、路径和子图绘制代码。正常输出包含 5 个节点、4 条边。它用于演示检索过程，还不包含大模型回答或 GNN 打分。
 
-实验使用已有的 Anaconda `langchain` 环境：
+D 开发时使用 Anaconda `langchain` 环境，已有该环境可继续使用。当前 E 盘副本的评测环境位于上一级 `.venv`，可直接运行 `..\.venv\Scripts\python.exe`，详见 [E交接](docs/E评测与整合交接.md)。以下是 Anaconda 环境的原有用法：
 
 ```bash
 conda activate langchain
@@ -49,7 +49,7 @@ python scripts/agent_demo.py --offline
 python scripts/check_agent_routing.py --dry-run
 ```
 
-复制 `.env.example` 为本地 `.env` 后填写 DeepSeek 密钥（已有文件不要覆盖）。真实密钥只保存在本地，不提交到 GitHub。然后运行 `python scripts/agent_demo.py` 验证真实模型路由，或 `python scripts/run_agent.py --mode llm --limit 1` 开发验证集单题。正式实验入口仍由 E 完成，目前会明确退出提示：
+复制 `.env.example` 为本地 `.env` 后填写 DeepSeek 密钥（已有文件不要覆盖）。真实密钥只保存在本地，不提交到 GitHub。然后运行 `python scripts/agent_demo.py` 验证真实模型路由，或 `python scripts/run_agent.py --mode llm --limit 1` 开发验证集单题。E 的批量实验入口已实现，默认仅运行5道验证题；本地密钥留空时不会调用API：
 
 ```bash
 python scripts/run_experiments.py --config configs/experiment.json
@@ -141,3 +141,7 @@ tests/                       数据与检索的自动检查
 ```
 
 协作流程见 [协作指南](docs/协作指南.md)，数据来源见 [数据集链接](docs/数据集链接.md)。
+
+## E 统一评测
+
+E 已整合 ABCD 的交付，提供三基线与五 GNN 配置的批量评测、断点恢复、完整日志、失败案例、组级统计和PNG/SVG报告。请参阅 [E评测与整合交接](docs/E评测与整合交接.md)。默认5题验证联调用于检查接口；完整300题测试须显式选择。模拟预测只验证程序，不是模型成绩。本机源码和环境均保存在 E 盘高级机器学习作业目录，API密钥仅写本地 `.env`。

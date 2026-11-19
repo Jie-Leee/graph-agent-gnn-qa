@@ -15,7 +15,7 @@ python -m graph_agent.gnn.train --device auto --output outputs/gnn
 
 默认运行五组。仅训练主配置时附加 `--name gat_2_mean`。本次运行使用 RTX 4090、Python 3.12.3、PyTorch 2.3.0+cu121、PyG 2.8.1，种子 42、批大小 24、学习率 0.001、每组最多 20 轮、早停耐心值 5。五组共用子图，按验证 MAP@10 选权重。GPU 算子可能带来小幅运行间差异。
 
-输出目录中，每个配置的 `best.pt`、`history.csv` 和 `metrics.json` 对应最佳权重、逐轮记录和配置汇总。`summary.json` 记录实验设置、数据哈希和各配置结果。训练权重通过组内训练包交接。
+重新训练时，输出目录中每个配置的 `best.pt`、`history.csv` 和 `metrics.json` 对应最佳权重、逐轮记录和配置汇总。`summary.json` 记录实验设置、数据哈希和各配置结果。AutoDL 训练的五组最佳权重位于 [`checkpoints/`](../checkpoints/)。
 
 ## 交给 Agent 的接口
 
@@ -23,7 +23,7 @@ python -m graph_agent.gnn.train --device auto --output outputs/gnn
 from pathlib import Path
 from graph_agent.gnn.model import GNNScorer
 
-scorer = GNNScorer(Path("outputs/gnn/gat_2_mean/best.pt"), device="cpu")
+scorer = GNNScorer(Path("checkpoints/gat_2_mean/best.pt"), device="cpu")
 candidates = scorer.rank(question, subgraph)
 ```
 

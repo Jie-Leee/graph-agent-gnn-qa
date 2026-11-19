@@ -14,11 +14,22 @@ __pycache__/
 .DS_Store
 Thumbs.db
 ~$*
-# Raw data, generated QA, weights and experiment output
+# Raw data, unversioned generated files, weights and experiment output
 data/raw/*
 !data/raw/.gitkeep
 data/processed/*
 !data/processed/.gitkeep
+# Fixed A handoff dataset; other scratch/generated variants stay ignored.
+!data/processed/train.jsonl
+!data/processed/validation.jsonl
+!data/processed/test.jsonl
+!data/processed/train.questions.jsonl
+!data/processed/validation.questions.jsonl
+!data/processed/test.questions.jsonl
+!data/processed/manifest.json
+!data/processed/stats.json
+!data/processed/stats.md
+!data/processed/samples.md
 checkpoints/
 outputs/
 logs/

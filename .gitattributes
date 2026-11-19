@@ -1,0 +1,7 @@
+# Generated artifact hashes must survive Windows and Linux checkouts.
+data/processed/*.jsonl text eol=lf
+data/processed/*.json text eol=lf
+data/processed/*.md text eol=lf
+data/quality/*.jsonl text eol=lf
+data/quality/*.json text eol=lf
+data/quality/*.md text eol=lf

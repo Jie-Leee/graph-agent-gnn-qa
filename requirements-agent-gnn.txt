@@ -1,0 +1,6 @@
+# Existing Anaconda langchain environment, CPU inference snapshot.
+# Installation is unnecessary if these dependencies are already present.
+--extra-index-url https://download.pytorch.org/whl/cpu
+-r requirements-agent.txt
+torch==2.15.0+cpu
+torch-geometric==2.8.1

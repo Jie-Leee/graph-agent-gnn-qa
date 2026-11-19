@@ -1,0 +1,30 @@
+{
+  "experiment_fingerprint": "8338f68b62f99c7b9e83102d0c98dbc514a941993202d6bd6164fe30f1e4cf3c",
+  "backend": "live",
+  "split": "test",
+  "question_count": 300,
+  "records": 2100,
+  "validation_pilot_questions": 5,
+  "workers": 8,
+  "created_at": "2026-11-19T21:46:10.559285+08:00",
+  "finished_at": "2026-11-19T21:54:17.05844+08:00",
+  "base_git_commit_at_execution": "aa5feb69b737c80c3fb3c03b9153ed97d35291ae",
+  "note": "The runner and CLI were locally modified for concurrency at execution; the source hashes below identify the exact files used.",
+  "gold_sha256": "7294a5118d1a5a312348630d2f8f6b6d3af80162b5c1a95f05d2054768017207",
+  "questions_sha256": "1e60497acb13208111e8103c2a0affd440a48232b18bd94793ef96dc7b2ce1e4",
+  "config_sha256": "5582543d972f475a8cc88015e2baaad2df5c2bafb5af9269691c03cfed7d8561",
+  "exact_runner_sha256": "9d9c82e51cf3659e1e02b6dad22d87cb6a20f2362a9ba11a07d943ebceee2072",
+  "exact_cli_sha256": "3c3ca13b7a324a3e3730e5a3c8353e52cfce4f45a959d0124f65b774739aa8cb",
+  "checkpoints_sha256": {
+    "gat_2_mean": "0444815ce0b921993e84fcf2b2c8c7e2d01891386084d8298e68184453752345",
+    "gat_1_mean": "3aab47fc11a205c69f334d0c2d328b9595028527a81b492d1a98cd89064fadd0",
+    "gat_3_mean": "0503690c160f66502fd8cdbaec736ecf2e8fbd4f6cc8a32ca352650d0f6f7900",
+    "gat_2_sum": "ac242e06d98c5c95141317deaa7979174941dd58b96edeaff71582c7477dc8ca",
+    "gat_2_max": "73525dc3a513041aadaaebc87cd06d7b32c407f2ff0bfa60908bdc9149c087fb"
+  },
+  "requested_model": "deepseek-flash",
+  "served_models": [
+    "deepseek-flash"
+  ],
+  "failure_count": 2
+}

@@ -1,0 +1,5 @@
+# Verified in the existing Anaconda langchain environment (Python 3.13.15).
+# Activate langchain; do not create a project .venv.
+langchain==1.2.12
+langchain-core==1.2.18
+langchain-openai==1.1.11

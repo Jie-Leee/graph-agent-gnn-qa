@@ -1,0 +1,1895 @@
+{
+  "dataset": "FB15k-237 two-hop template QA",
+  "seed": 42,
+  "template_version": "v4",
+  "paraphrases_per_group": 2,
+  "max_answers": 20,
+  "max_groups": 60000,
+  "min_path_support": 25,
+  "max_dominant_share": 0.6,
+  "max_answer_set_share": 0.4,
+  "visible_graph": "train split only",
+  "whitelist_relations": 24,
+  "raw": {
+    "triples": {
+      "train": 272115,
+      "valid": 17535,
+      "test": 20466
+    },
+    "entities_all_splits": 14541,
+    "relations_all_splits": 237,
+    "entities_train": 14505,
+    "relations_train": 237,
+    "entity_text_entries": 14951,
+    "relation_text_entries": 237,
+    "entity_text_coverage_train": 1.0,
+    "relation_text_coverage_train": 1.0,
+    "out_degree_mean": 19.75,
+    "out_degree_max": 1325,
+    "in_degree_max": 6289,
+    "self_loops_train": 1625,
+    "duplicates": {
+      "train": 0,
+      "valid": 0,
+      "test": 0
+    }
+  },
+  "splits": {
+    "train": {
+      "items": 2000,
+      "groups": 1000,
+      "paraphrases_per_group": 2,
+      "answers_mean": 2.81,
+      "answers_max": 20,
+      "path_types": 39
+    },
+    "validation": {
+      "items": 200,
+      "groups": 100,
+      "paraphrases_per_group": 2,
+      "answers_mean": 2.89,
+      "answers_max": 18,
+      "path_types": 27
+    },
+    "test": {
+      "items": 300,
+      "groups": 150,
+      "paraphrases_per_group": 2,
+      "answers_mean": 2.89,
+      "answers_max": 19,
+      "path_types": 33
+    }
+  },
+  "answer_histogram": {
+    "1": 1278,
+    "2": 424,
+    "3": 204,
+    "4": 158,
+    "5": 144,
+    "6": 48,
+    "7": 82,
+    "8": 20,
+    "9": 26,
+    "10": 4,
+    "11": 16,
+    "12": 20,
+    "13": 4,
+    "14": 6,
+    "15": 18,
+    "16": 4,
+    "17": 2,
+    "18": 36,
+    "19": 2,
+    "20": 4
+  },
+  "path_count": 39,
+  "path_usage": [
+    [
+      [
+        "/people/person/place_of_birth",
+        "/location/location/contains"
+      ],
+      266
+    ],
+    [
+      [
+        "/film/film/music",
+        "/people/person/profession"
+      ],
+      174
+    ],
+    [
+      [
+        "/film/film/produced_by",
+        "/people/person/profession"
+      ],
+      170
+    ],
+    [
+      [
+        "/film/film/production_companies",
+        "/organization/organization/headquarters./location/mailing_address/citytown"
+      ],
+      160
+    ],
+    [
+      [
+        "/film/film/produced_by",
+        "/people/person/place_of_birth"
+      ],
+      142
+    ],
+    [
+      [
+        "/film/film/country",
+        "/location/country/official_language"
+      ],
+      130
+    ],
+    [
+      [
+        "/film/film/written_by",
+        "/people/person/profession"
+      ],
+      116
+    ],
+    [
+      [
+        "/film/film/written_by",
+        "/people/person/place_of_birth"
+      ],
+      96
+    ],
+    [
+      [
+        "/film/film/music",
+        "/people/person/place_of_birth"
+      ],
+      94
+    ],
+    [
+      [
+        "/organization/organization/headquarters./location/mailing_address/citytown",
+        "/location/location/time_zones"
+      ],
+      86
+    ],
+    [
+      [
+        "/film/film/featured_film_locations",
+        "/location/location/time_zones"
+      ],
+      86
+    ],
+    [
+      [
+        "/location/location/contains",
+        "/location/location/time_zones"
+      ],
+      80
+    ],
+    [
+      [
+        "/location/location/contains",
+        "/education/educational_institution/school_type"
+      ],
+      78
+    ],
+    [
+      [
+        "/music/genre/artists",
+        "/people/person/place_of_birth"
+      ],
+      60
+    ],
+    [
+      [
+        "/music/artist/origin",
+        "/location/location/contains"
+      ],
+      58
+    ],
+    [
+      [
+        "/film/film/produced_by",
+        "/people/person/religion"
+      ],
+      52
+    ],
+    [
+      [
+        "/tv/tv_program/regular_cast./tv/regular_tv_appearance/actor",
+        "/people/person/profession"
+      ],
+      50
+    ],
+    [
+      [
+        "/tv/tv_program/regular_cast./tv/regular_tv_appearance/actor",
+        "/people/person/nationality"
+      ],
+      50
+    ],
+    [
+      [
+        "/music/genre/artists",
+        "/people/person/profession"
+      ],
+      50
+    ],
+    [
+      [
+        "/music/artist/origin",
+        "/location/location/time_zones"
+      ],
+      50
+    ],
+    [
+      [
+        "/music/genre/artists",
+        "/music/artist/origin"
+      ],
+      48
+    ],
+    [
+      [
+        "/music/genre/artists",
+        "/people/person/religion"
+      ],
+      48
+    ],
+    [
+      [
+        "/music/genre/artists",
+        "/people/person/nationality"
+      ],
+      44
+    ],
+    [
+      [
+        "/tv/tv_program/regular_cast./tv/regular_tv_appearance/actor",
+        "/people/person/place_of_birth"
+      ],
+      40
+    ],
+    [
+      [
+        "/film/film/music",
+        "/music/artist/origin"
+      ],
+      40
+    ],
+    [
+      [
+        "/film/film/featured_film_locations",
+        "/location/location/contains"
+      ],
+      38
+    ],
+    [
+      [
+        "/film/film/written_by",
+        "/people/person/religion"
+      ],
+      38
+    ],
+    [
+      [
+        "/people/person/nationality",
+        "/location/location/contains"
+      ],
+      36
+    ],
+    [
+      [
+        "/organization/organization/headquarters./location/mailing_address/citytown",
+        "/location/location/contains"
+      ],
+      24
+    ],
+    [
+      [
+        "/tv/tv_program/regular_cast./tv/regular_tv_appearance/actor",
+        "/people/person/religion"
+      ],
+      18
+    ],
+    [
+      [
+        "/location/location/contains",
+        "/organization/organization/headquarters./location/mailing_address/citytown"
+      ],
+      18
+    ],
+    [
+      [
+        "/film/film/featured_film_locations",
+        "/location/country/official_language"
+      ],
+      18
+    ],
+    [
+      [
+        "/film/film/featured_film_locations",
+        "/location/country/form_of_government"
+      ],
+      14
+    ],
+    [
+      [
+        "/location/country/capital",
+        "/location/location/contains"
+      ],
+      8
+    ],
+    [
+      [
+        "/film/film/featured_film_locations",
+        "/location/country/capital"
+      ],
+      6
+    ],
+    [
+      [
+        "/film/film/country",
+        "/location/location/contains"
+      ],
+      4
+    ],
+    [
+      [
+        "/location/location/contains",
+        "/location/country/official_language"
+      ],
+      4
+    ],
+    [
+      [
+        "/tv/tv_program/regular_cast./tv/regular_tv_appearance/actor",
+        "/music/artist/origin"
+      ],
+      4
+    ],
+    [
+      [
+        "/people/person/place_of_birth",
+        "/location/country/form_of_government"
+      ],
+      2
+    ]
+  ],
+  "template_usage": [
+    [
+      "Return every {r2} of any {r1} of {head}.",
+      659
+    ],
+    [
+      "List every {r2} of any {r1} of {head}.",
+      633
+    ],
+    [
+      "For {head}, list every {r2} of any {r1}.",
+      617
+    ],
+    [
+      "Name every {r2} of any {r1} of {head}.",
+      591
+    ]
+  ],
+  "dropped_paths": [
+    [
+      "/education/educational_institution/school_type",
+      "/organization/organization/headquarters./location/mailing_address/citytown",
+      10,
+      1.0,
+      1.0,
+      "support<25"
+    ],
+    [
+      "/film/film/country",
+      "/location/country/capital",
+      1651,
+      0.569,
+      0.573,
+      "repeated answer set 57%>40%"
+    ],
+    [
+      "/film/film/country",
+      "/location/country/form_of_government",
+      1653,
+      0.498,
+      0.599,
+      "repeated answer set 60%>40%"
+    ],
+    [
+      "/film/film/country",
+      "/location/location/time_zones",
+      1589,
+      0.18,
+      0.621,
+      "repeated answer set 62%>40%"
+    ],
+    [
+      "/film/film/country",
+      "/people/person/gender",
+      2,
+      1.0,
+      1.0,
+      "support<25"
+    ],
+    [
+      "/film/film/featured_film_locations",
+      "/education/educational_institution/school_type",
+      17,
+      0.308,
+      0.353,
+      "support<25"
+    ],
+    [
+      "/film/film/featured_film_locations",
+      "/organization/organization/headquarters./location/mailing_address/citytown",
+      13,
+      0.308,
+      0.308,
+      "support<25"
+    ],
+    [
+      "/film/film/featured_film_locations",
+      "/people/person/gender",
+      1,
+      1.0,
+      1.0,
+      "support<25"
+    ],
+    [
+      "/film/film/genre",
+      "/music/genre/artists",
+      155,
+      0.528,
+      0.639,
+      "repeated answer set 64%>40%"
+    ],
+    [
+      "/film/film/language",
+      "/location/country/capital",
+      1,
+      1.0,
+      1.0,
+      "support<25"
+    ],
+    [
+      "/film/film/language",
+      "/location/country/form_of_government",
+      3,
+      0.667,
+      0.667,
+      "support<25"
+    ],
+    [
+      "/film/film/language",
+      "/location/country/official_language",
+      1,
+      1.0,
+      1.0,
+      "support<25"
+    ],
+    [
+      "/film/film/language",
+      "/location/location/time_zones",
+      3,
+      0.667,
+      0.667,
+      "support<25"
+    ],
+    [
+      "/film/film/music",
+      "/people/person/gender",
+      760,
+      0.979,
+      0.979,
+      "dominant answer 98%>60%"
+    ],
+    [
+      "/film/film/music",
+      "/people/person/nationality",
+      789,
+      0.513,
+      0.54,
+      "repeated answer set 54%>40%"
+    ],
+    [
+      "/film/film/music",
+      "/people/person/religion",
+      70,
+      0.44,
+      0.414,
+      "repeated answer set 41%>40%"
+    ],
+    [
+      "/film/film/produced_by",
+      "/music/artist/origin",
+      8,
+      0.25,
+      0.25,
+      "support<25"
+    ],
+    [
+      "/film/film/produced_by",
+      "/organization/organization/headquarters./location/mailing_address/citytown",
+      5,
+      1.0,
+      1.0,
+      "support<25"
+    ],
+    [
+      "/film/film/produced_by",
+      "/people/person/gender",
+      793,
+      0.938,
+      0.936,
+      "dominant answer 94%>60%"
+    ],
+    [
+      "/film/film/produced_by",
+      "/people/person/nationality",
+      762,
+      0.666,
+      0.663,
+      "dominant answer 67%>60%"
+    ],
+    [
+      "/film/film/production_companies",
+      "/people/person/gender",
+      35,
+      1.0,
+      1.0,
+      "dominant answer 100%>60%"
+    ],
+    [
+      "/film/film/written_by",
+      "/music/artist/origin",
+      5,
+      0.4,
+      0.4,
+      "support<25"
+    ],
+    [
+      "/film/film/written_by",
+      "/people/person/gender",
+      580,
+      0.966,
+      0.966,
+      "dominant answer 97%>60%"
+    ],
+    [
+      "/film/film/written_by",
+      "/people/person/nationality",
+      557,
+      0.609,
+      0.65,
+      "dominant answer 61%>60%"
+    ],
+    [
+      "/location/country/capital",
+      "/location/location/time_zones",
+      52,
+      0.472,
+      0.481,
+      "repeated answer set 48%>40%"
+    ],
+    [
+      "/location/location/contains",
+      "/location/country/capital",
+      20,
+      0.033,
+      0.05,
+      "support<25"
+    ],
+    [
+      "/location/location/contains",
+      "/people/person/gender",
+      2,
+      1.0,
+      1.0,
+      "support<25"
+    ],
+    [
+      "/location/location/contains",
+      "/people/person/nationality",
+      1,
+      1.0,
+      1.0,
+      "support<25"
+    ],
+    [
+      "/music/artist/origin",
+      "/location/country/capital",
+      29,
+      0.562,
+      0.586,
+      "repeated answer set 59%>40%"
+    ],
+    [
+      "/music/artist/origin",
+      "/location/country/form_of_government",
+      37,
+      0.392,
+      0.459,
+      "repeated answer set 46%>40%"
+    ],
+    [
+      "/music/artist/origin",
+      "/location/country/official_language",
+      14,
+      0.368,
+      0.286,
+      "support<25"
+    ],
+    [
+      "/music/genre/artists",
+      "/people/person/gender",
+      284,
+      0.658,
+      0.504,
+      "dominant answer 66%>60%"
+    ],
+    [
+      "/organization/organization/headquarters./location/mailing_address/citytown",
+      "/location/country/capital",
+      1,
+      1.0,
+      1.0,
+      "support<25"
+    ],
+    [
+      "/organization/organization/headquarters./location/mailing_address/citytown",
+      "/location/country/form_of_government",
+      1,
+      1.0,
+      1.0,
+      "support<25"
+    ],
+    [
+      "/people/person/nationality",
+      "/location/country/capital",
+      3476,
+      0.665,
+      0.674,
+      "dominant answer 66%>60%"
+    ],
+    [
+      "/people/person/nationality",
+      "/location/country/form_of_government",
+      3671,
+      0.563,
+      0.647,
+      "repeated answer set 65%>40%"
+    ],
+    [
+      "/people/person/nationality",
+      "/location/country/official_language",
+      1076,
+      0.509,
+      0.429,
+      "repeated answer set 43%>40%"
+    ],
+    [
+      "/people/person/nationality",
+      "/location/location/time_zones",
+      3344,
+      0.186,
+      0.712,
+      "repeated answer set 71%>40%"
+    ],
+    [
+      "/people/person/nationality",
+      "/people/person/gender",
+      8,
+      0.875,
+      0.875,
+      "support<25"
+    ],
+    [
+      "/people/person/place_of_birth",
+      "/location/country/capital",
+      21,
+      0.478,
+      0.524,
+      "support<25"
+    ],
+    [
+      "/people/person/place_of_birth",
+      "/location/country/official_language",
+      22,
+      0.457,
+      0.409,
+      "support<25"
+    ],
+    [
+      "/people/person/place_of_birth",
+      "/location/location/time_zones",
+      1350,
+      0.445,
+      0.451,
+      "repeated answer set 45%>40%"
+    ],
+    [
+      "/people/person/profession",
+      "/people/person/gender",
+      1,
+      1.0,
+      1.0,
+      "support<25"
+    ],
+    [
+      "/people/person/religion",
+      "/organization/organization/headquarters./location/mailing_address/citytown",
+      23,
+      0.739,
+      0.739,
+      "support<25"
+    ],
+    [
+      "/tv/tv_program/genre",
+      "/music/genre/artists",
+      70,
+      0.106,
+      0.671,
+      "repeated answer set 67%>40%"
+    ],
+    [
+      "/tv/tv_program/regular_cast./tv/regular_tv_appearance/actor",
+      "/people/person/gender",
+      248,
+      0.579,
+      0.56,
+      "repeated answer set 56%>40%"
+    ]
+  ],
+  "path_stats": [
+    {
+      "path": [
+        "/people/person/nationality",
+        "/location/country/form_of_government"
+      ],
+      "path_text": "country of citizenship >> form of government",
+      "groups": 3671,
+      "answers_mean": 1.24,
+      "dominant_share": 0.563,
+      "answer_set_share": 0.647,
+      "kept": false,
+      "reason": "repeated answer set 65%>40%"
+    },
+    {
+      "path": [
+        "/people/person/nationality",
+        "/location/country/capital"
+      ],
+      "path_text": "country of citizenship >> capital city",
+      "groups": 3476,
+      "answers_mean": 1.09,
+      "dominant_share": 0.665,
+      "answer_set_share": 0.674,
+      "kept": false,
+      "reason": "dominant answer 66%>60%"
+    },
+    {
+      "path": [
+        "/people/person/nationality",
+        "/location/location/time_zones"
+      ],
+      "path_text": "country of citizenship >> time zone",
+      "groups": 3344,
+      "answers_mean": 4.2,
+      "dominant_share": 0.186,
+      "answer_set_share": 0.712,
+      "kept": false,
+      "reason": "repeated answer set 71%>40%"
+    },
+    {
+      "path": [
+        "/film/film/country",
+        "/location/country/form_of_government"
+      ],
+      "path_text": "country >> form of government",
+      "groups": 1653,
+      "answers_mean": 1.63,
+      "dominant_share": 0.498,
+      "answer_set_share": 0.599,
+      "kept": false,
+      "reason": "repeated answer set 60%>40%"
+    },
+    {
+      "path": [
+        "/film/film/country",
+        "/location/country/capital"
+      ],
+      "path_text": "country >> capital city",
+      "groups": 1651,
+      "answers_mean": 1.4,
+      "dominant_share": 0.569,
+      "answer_set_share": 0.573,
+      "kept": false,
+      "reason": "repeated answer set 57%>40%"
+    },
+    {
+      "path": [
+        "/film/film/country",
+        "/location/location/time_zones"
+      ],
+      "path_text": "country >> time zone",
+      "groups": 1589,
+      "answers_mean": 4.7,
+      "dominant_share": 0.18,
+      "answer_set_share": 0.621,
+      "kept": false,
+      "reason": "repeated answer set 62%>40%"
+    },
+    {
+      "path": [
+        "/people/person/place_of_birth",
+        "/location/location/time_zones"
+      ],
+      "path_text": "place of birth >> time zone",
+      "groups": 1350,
+      "answers_mean": 1.03,
+      "dominant_share": 0.445,
+      "answer_set_share": 0.451,
+      "kept": false,
+      "reason": "repeated answer set 45%>40%"
+    },
+    {
+      "path": [
+        "/people/person/place_of_birth",
+        "/location/location/contains"
+      ],
+      "path_text": "place of birth >> contained location",
+      "groups": 1344,
+      "answers_mean": 4.33,
+      "dominant_share": 0.018,
+      "answer_set_share": 0.076,
+      "kept": true,
+      "reason": "kept"
+    },
+    {
+      "path": [
+        "/people/person/nationality",
+        "/location/country/official_language"
+      ],
+      "path_text": "country of citizenship >> official language",
+      "groups": 1076,
+      "answers_mean": 1.29,
+      "dominant_share": 0.509,
+      "answer_set_share": 0.429,
+      "kept": false,
+      "reason": "repeated answer set 43%>40%"
+    },
+    {
+      "path": [
+        "/film/film/produced_by",
+        "/people/person/profession"
+      ],
+      "path_text": "producer >> profession",
+      "groups": 889,
+      "answers_mean": 3.56,
+      "dominant_share": 0.242,
+      "answer_set_share": 0.101,
+      "kept": true,
+      "reason": "kept"
+    },
+    {
+      "path": [
+        "/film/film/music",
+        "/people/person/profession"
+      ],
+      "path_text": "composer >> profession",
+      "groups": 816,
+      "answers_mean": 2.8,
+      "dominant_share": 0.235,
+      "answer_set_share": 0.235,
+      "kept": true,
+      "reason": "kept"
+    },
+    {
+      "path": [
+        "/film/film/produced_by",
+        "/people/person/gender"
+      ],
+      "path_text": "producer >> gender",
+      "groups": 793,
+      "answers_mean": 1.03,
+      "dominant_share": 0.938,
+      "answer_set_share": 0.936,
+      "kept": false,
+      "reason": "dominant answer 94%>60%"
+    },
+    {
+      "path": [
+        "/film/film/music",
+        "/people/person/nationality"
+      ],
+      "path_text": "composer >> country of citizenship",
+      "groups": 789,
+      "answers_mean": 1.11,
+      "dominant_share": 0.513,
+      "answer_set_share": 0.54,
+      "kept": false,
+      "reason": "repeated answer set 54%>40%"
+    },
+    {
+      "path": [
+        "/film/film/production_companies",
+        "/organization/organization/headquarters./location/mailing_address/citytown"
+      ],
+      "path_text": "production company >> headquarters city",
+      "groups": 773,
+      "answers_mean": 1.41,
+      "dominant_share": 0.177,
+      "answer_set_share": 0.207,
+      "kept": true,
+      "reason": "kept"
+    },
+    {
+      "path": [
+        "/film/film/produced_by",
+        "/people/person/nationality"
+      ],
+      "path_text": "producer >> country of citizenship",
+      "groups": 762,
+      "answers_mean": 1.17,
+      "dominant_share": 0.666,
+      "answer_set_share": 0.663,
+      "kept": false,
+      "reason": "dominant answer 67%>60%"
+    },
+    {
+      "path": [
+        "/film/film/music",
+        "/people/person/gender"
+      ],
+      "path_text": "composer >> gender",
+      "groups": 760,
+      "answers_mean": 1.01,
+      "dominant_share": 0.979,
+      "answer_set_share": 0.979,
+      "kept": false,
+      "reason": "dominant answer 98%>60%"
+    },
+    {
+      "path": [
+        "/film/film/country",
+        "/location/country/official_language"
+      ],
+      "path_text": "country >> official language",
+      "groups": 699,
+      "answers_mean": 1.53,
+      "dominant_share": 0.429,
+      "answer_set_share": 0.375,
+      "kept": true,
+      "reason": "kept"
+    },
+    {
+      "path": [
+        "/film/film/produced_by",
+        "/people/person/place_of_birth"
+      ],
+      "path_text": "producer >> place of birth",
+      "groups": 673,
+      "answers_mean": 1.2,
+      "dominant_share": 0.132,
+      "answer_set_share": 0.128,
+      "kept": true,
+      "reason": "kept"
+    },
+    {
+      "path": [
+        "/film/film/music",
+        "/people/person/place_of_birth"
+      ],
+      "path_text": "composer >> place of birth",
+      "groups": 664,
+      "answers_mean": 1.05,
+      "dominant_share": 0.138,
+      "answer_set_share": 0.14,
+      "kept": true,
+      "reason": "kept"
+    },
+    {
+      "path": [
+        "/film/film/written_by",
+        "/people/person/profession"
+      ],
+      "path_text": "writer >> profession",
+      "groups": 654,
+      "answers_mean": 4.28,
+      "dominant_share": 0.179,
+      "answer_set_share": 0.046,
+      "kept": true,
+      "reason": "kept"
+    },
+    {
+      "path": [
+        "/film/film/written_by",
+        "/people/person/gender"
+      ],
+      "path_text": "writer >> gender",
+      "groups": 580,
+      "answers_mean": 1.01,
+      "dominant_share": 0.966,
+      "answer_set_share": 0.966,
+      "kept": false,
+      "reason": "dominant answer 97%>60%"
+    },
+    {
+      "path": [
+        "/film/film/written_by",
+        "/people/person/nationality"
+      ],
+      "path_text": "writer >> country of citizenship",
+      "groups": 557,
+      "answers_mean": 1.19,
+      "dominant_share": 0.609,
+      "answer_set_share": 0.65,
+      "kept": false,
+      "reason": "dominant answer 61%>60%"
+    },
+    {
+      "path": [
+        "/organization/organization/headquarters./location/mailing_address/citytown",
+        "/location/location/time_zones"
+      ],
+      "path_text": "headquarters city >> time zone",
+      "groups": 448,
+      "answers_mean": 1.02,
+      "dominant_share": 0.386,
+      "answer_set_share": 0.386,
+      "kept": true,
+      "reason": "kept"
+    },
+    {
+      "path": [
+        "/film/film/written_by",
+        "/people/person/place_of_birth"
+      ],
+      "path_text": "writer >> place of birth",
+      "groups": 436,
+      "answers_mean": 1.14,
+      "dominant_share": 0.166,
+      "answer_set_share": 0.151,
+      "kept": true,
+      "reason": "kept"
+    },
+    {
+      "path": [
+        "/film/film/featured_film_locations",
+        "/location/location/time_zones"
+      ],
+      "path_text": "featured location >> time zone",
+      "groups": 403,
+      "answers_mean": 1.28,
+      "dominant_share": 0.346,
+      "answer_set_share": 0.335,
+      "kept": true,
+      "reason": "kept"
+    },
+    {
+      "path": [
+        "/location/location/contains",
+        "/location/location/time_zones"
+      ],
+      "path_text": "contained location >> time zone",
+      "groups": 382,
+      "answers_mean": 1.12,
+      "dominant_share": 0.309,
+      "answer_set_share": 0.319,
+      "kept": true,
+      "reason": "kept"
+    },
+    {
+      "path": [
+        "/location/location/contains",
+        "/education/educational_institution/school_type"
+      ],
+      "path_text": "contained location >> school type",
+      "groups": 362,
+      "answers_mean": 1.88,
+      "dominant_share": 0.361,
+      "answer_set_share": 0.387,
+      "kept": true,
+      "reason": "kept"
+    },
+    {
+      "path": [
+        "/music/artist/origin",
+        "/location/location/time_zones"
+      ],
+      "path_text": "place of origin >> time zone",
+      "groups": 304,
+      "answers_mean": 1.29,
+      "dominant_share": 0.317,
+      "answer_set_share": 0.332,
+      "kept": true,
+      "reason": "kept"
+    },
+    {
+      "path": [
+        "/music/genre/artists",
+        "/people/person/gender"
+      ],
+      "path_text": "artist >> gender",
+      "groups": 284,
+      "answers_mean": 1.45,
+      "dominant_share": 0.658,
+      "answer_set_share": 0.504,
+      "kept": false,
+      "reason": "dominant answer 66%>60%"
+    },
+    {
+      "path": [
+        "/music/genre/artists",
+        "/people/person/nationality"
+      ],
+      "path_text": "artist >> country of citizenship",
+      "groups": 284,
+      "answers_mean": 3.55,
+      "dominant_share": 0.243,
+      "answer_set_share": 0.271,
+      "kept": true,
+      "reason": "kept"
+    },
+    {
+      "path": [
+        "/film/film/featured_film_locations",
+        "/location/location/contains"
+      ],
+      "path_text": "featured location >> contained location",
+      "groups": 278,
+      "answers_mean": 7.51,
+      "dominant_share": 0.029,
+      "answer_set_share": 0.187,
+      "kept": true,
+      "reason": "kept"
+    },
+    {
+      "path": [
+        "/music/artist/origin",
+        "/location/location/contains"
+      ],
+      "path_text": "place of origin >> contained location",
+      "groups": 272,
+      "answers_mean": 5.18,
+      "dominant_share": 0.028,
+      "answer_set_share": 0.132,
+      "kept": true,
+      "reason": "kept"
+    },
+    {
+      "path": [
+        "/tv/tv_program/regular_cast./tv/regular_tv_appearance/actor",
+        "/people/person/profession"
+      ],
+      "path_text": "cast member >> profession",
+      "groups": 259,
+      "answers_mean": 5.41,
+      "dominant_share": 0.168,
+      "answer_set_share": 0.081,
+      "kept": true,
+      "reason": "kept"
+    },
+    {
+      "path": [
+        "/tv/tv_program/regular_cast./tv/regular_tv_appearance/actor",
+        "/people/person/nationality"
+      ],
+      "path_text": "cast member >> country of citizenship",
+      "groups": 254,
+      "answers_mean": 1.84,
+      "dominant_share": 0.462,
+      "answer_set_share": 0.394,
+      "kept": true,
+      "reason": "kept"
+    },
+    {
+      "path": [
+        "/film/film/music",
+        "/music/artist/origin"
+      ],
+      "path_text": "composer >> place of origin",
+      "groups": 251,
+      "answers_mean": 1.04,
+      "dominant_share": 0.206,
+      "answer_set_share": 0.211,
+      "kept": true,
+      "reason": "kept"
+    },
+    {
+      "path": [
+        "/film/film/produced_by",
+        "/people/person/religion"
+      ],
+      "path_text": "producer >> religion",
+      "groups": 250,
+      "answers_mean": 1.14,
+      "dominant_share": 0.28,
+      "answer_set_share": 0.276,
+      "kept": true,
+      "reason": "kept"
+    },
+    {
+      "path": [
+        "/tv/tv_program/regular_cast./tv/regular_tv_appearance/actor",
+        "/people/person/gender"
+      ],
+      "path_text": "cast member >> gender",
+      "groups": 248,
+      "answers_mean": 1.56,
+      "dominant_share": 0.579,
+      "answer_set_share": 0.56,
+      "kept": false,
+      "reason": "repeated answer set 56%>40%"
+    },
+    {
+      "path": [
+        "/music/genre/artists",
+        "/people/person/profession"
+      ],
+      "path_text": "artist >> profession",
+      "groups": 245,
+      "answers_mean": 9.19,
+      "dominant_share": 0.092,
+      "answer_set_share": 0.02,
+      "kept": true,
+      "reason": "kept"
+    },
+    {
+      "path": [
+        "/music/genre/artists",
+        "/music/artist/origin"
+      ],
+      "path_text": "artist >> place of origin",
+      "groups": 239,
+      "answers_mean": 4.93,
+      "dominant_share": 0.058,
+      "answer_set_share": 0.017,
+      "kept": true,
+      "reason": "kept"
+    },
+    {
+      "path": [
+        "/music/genre/artists",
+        "/people/person/place_of_birth"
+      ],
+      "path_text": "artist >> place of birth",
+      "groups": 235,
+      "answers_mean": 4.26,
+      "dominant_share": 0.054,
+      "answer_set_share": 0.026,
+      "kept": true,
+      "reason": "kept"
+    },
+    {
+      "path": [
+        "/tv/tv_program/regular_cast./tv/regular_tv_appearance/actor",
+        "/people/person/place_of_birth"
+      ],
+      "path_text": "cast member >> place of birth",
+      "groups": 227,
+      "answers_mean": 3.13,
+      "dominant_share": 0.068,
+      "answer_set_share": 0.018,
+      "kept": true,
+      "reason": "kept"
+    },
+    {
+      "path": [
+        "/film/film/written_by",
+        "/people/person/religion"
+      ],
+      "path_text": "writer >> religion",
+      "groups": 199,
+      "answers_mean": 1.32,
+      "dominant_share": 0.262,
+      "answer_set_share": 0.256,
+      "kept": true,
+      "reason": "kept"
+    },
+    {
+      "path": [
+        "/organization/organization/headquarters./location/mailing_address/citytown",
+        "/location/location/contains"
+      ],
+      "path_text": "headquarters city >> contained location",
+      "groups": 197,
+      "answers_mean": 5.11,
+      "dominant_share": 0.027,
+      "answer_set_share": 0.081,
+      "kept": true,
+      "reason": "kept"
+    },
+    {
+      "path": [
+        "/music/genre/artists",
+        "/people/person/religion"
+      ],
+      "path_text": "artist >> religion",
+      "groups": 167,
+      "answers_mean": 3.08,
+      "dominant_share": 0.189,
+      "answer_set_share": 0.144,
+      "kept": true,
+      "reason": "kept"
+    },
+    {
+      "path": [
+        "/people/person/nationality",
+        "/location/location/contains"
+      ],
+      "path_text": "country of citizenship >> contained location",
+      "groups": 159,
+      "answers_mean": 6.68,
+      "dominant_share": 0.013,
+      "answer_set_share": 0.082,
+      "kept": true,
+      "reason": "kept"
+    },
+    {
+      "path": [
+        "/film/film/genre",
+        "/music/genre/artists"
+      ],
+      "path_text": "genre >> artist",
+      "groups": 155,
+      "answers_mean": 1.37,
+      "dominant_share": 0.528,
+      "answer_set_share": 0.639,
+      "kept": false,
+      "reason": "repeated answer set 64%>40%"
+    },
+    {
+      "path": [
+        "/tv/tv_program/regular_cast./tv/regular_tv_appearance/actor",
+        "/people/person/religion"
+      ],
+      "path_text": "cast member >> religion",
+      "groups": 140,
+      "answers_mean": 1.48,
+      "dominant_share": 0.425,
+      "answer_set_share": 0.364,
+      "kept": true,
+      "reason": "kept"
+    },
+    {
+      "path": [
+        "/location/location/contains",
+        "/organization/organization/headquarters./location/mailing_address/citytown"
+      ],
+      "path_text": "contained location >> headquarters city",
+      "groups": 123,
+      "answers_mean": 2.41,
+      "dominant_share": 0.013,
+      "answer_set_share": 0.024,
+      "kept": true,
+      "reason": "kept"
+    },
+    {
+      "path": [
+        "/film/film/music",
+        "/people/person/religion"
+      ],
+      "path_text": "composer >> religion",
+      "groups": 70,
+      "answers_mean": 1.07,
+      "dominant_share": 0.44,
+      "answer_set_share": 0.414,
+      "kept": false,
+      "reason": "repeated answer set 41%>40%"
+    },
+    {
+      "path": [
+        "/tv/tv_program/genre",
+        "/music/genre/artists"
+      ],
+      "path_text": "genre >> artist",
+      "groups": 70,
+      "answers_mean": 7.93,
+      "dominant_share": 0.106,
+      "answer_set_share": 0.671,
+      "kept": false,
+      "reason": "repeated answer set 67%>40%"
+    },
+    {
+      "path": [
+        "/film/film/featured_film_locations",
+        "/location/country/form_of_government"
+      ],
+      "path_text": "featured location >> form of government",
+      "groups": 59,
+      "answers_mean": 1.51,
+      "dominant_share": 0.303,
+      "answer_set_share": 0.322,
+      "kept": true,
+      "reason": "kept"
+    },
+    {
+      "path": [
+        "/film/film/featured_film_locations",
+        "/location/country/capital"
+      ],
+      "path_text": "featured location >> capital city",
+      "groups": 57,
+      "answers_mean": 1.02,
+      "dominant_share": 0.224,
+      "answer_set_share": 0.211,
+      "kept": true,
+      "reason": "kept"
+    },
+    {
+      "path": [
+        "/film/film/featured_film_locations",
+        "/location/country/official_language"
+      ],
+      "path_text": "featured location >> official language",
+      "groups": 54,
+      "answers_mean": 1.26,
+      "dominant_share": 0.309,
+      "answer_set_share": 0.222,
+      "kept": true,
+      "reason": "kept"
+    },
+    {
+      "path": [
+        "/location/country/capital",
+        "/location/location/time_zones"
+      ],
+      "path_text": "capital city >> time zone",
+      "groups": 52,
+      "answers_mean": 1.02,
+      "dominant_share": 0.472,
+      "answer_set_share": 0.481,
+      "kept": false,
+      "reason": "repeated answer set 48%>40%"
+    },
+    {
+      "path": [
+        "/location/country/capital",
+        "/location/location/contains"
+      ],
+      "path_text": "capital city >> contained location",
+      "groups": 50,
+      "answers_mean": 1.68,
+      "dominant_share": 0.048,
+      "answer_set_share": 0.08,
+      "kept": true,
+      "reason": "kept"
+    },
+    {
+      "path": [
+        "/music/artist/origin",
+        "/location/country/form_of_government"
+      ],
+      "path_text": "place of origin >> form of government",
+      "groups": 37,
+      "answers_mean": 1.38,
+      "dominant_share": 0.392,
+      "answer_set_share": 0.459,
+      "kept": false,
+      "reason": "repeated answer set 46%>40%"
+    },
+    {
+      "path": [
+        "/film/film/production_companies",
+        "/people/person/gender"
+      ],
+      "path_text": "production company >> gender",
+      "groups": 35,
+      "answers_mean": 1.0,
+      "dominant_share": 1.0,
+      "answer_set_share": 1.0,
+      "kept": false,
+      "reason": "dominant answer 100%>60%"
+    },
+    {
+      "path": [
+        "/people/person/place_of_birth",
+        "/location/country/form_of_government"
+      ],
+      "path_text": "place of birth >> form of government",
+      "groups": 30,
+      "answers_mean": 1.37,
+      "dominant_share": 0.415,
+      "answer_set_share": 0.4,
+      "kept": true,
+      "reason": "kept"
+    },
+    {
+      "path": [
+        "/music/artist/origin",
+        "/location/country/capital"
+      ],
+      "path_text": "place of origin >> capital city",
+      "groups": 29,
+      "answers_mean": 1.1,
+      "dominant_share": 0.562,
+      "answer_set_share": 0.586,
+      "kept": false,
+      "reason": "repeated answer set 59%>40%"
+    },
+    {
+      "path": [
+        "/film/film/country",
+        "/location/location/contains"
+      ],
+      "path_text": "country >> contained location",
+      "groups": 28,
+      "answers_mean": 6.43,
+      "dominant_share": 0.039,
+      "answer_set_share": 0.214,
+      "kept": true,
+      "reason": "kept"
+    },
+    {
+      "path": [
+        "/location/location/contains",
+        "/location/country/form_of_government"
+      ],
+      "path_text": "contained location >> form of government",
+      "groups": 27,
+      "answers_mean": 3.48,
+      "dominant_share": 0.234,
+      "answer_set_share": 0.222,
+      "kept": true,
+      "reason": "kept"
+    },
+    {
+      "path": [
+        "/location/location/contains",
+        "/location/country/official_language"
+      ],
+      "path_text": "contained location >> official language",
+      "groups": 27,
+      "answers_mean": 3.89,
+      "dominant_share": 0.2,
+      "answer_set_share": 0.111,
+      "kept": true,
+      "reason": "kept"
+    },
+    {
+      "path": [
+        "/tv/tv_program/regular_cast./tv/regular_tv_appearance/actor",
+        "/music/artist/origin"
+      ],
+      "path_text": "cast member >> place of origin",
+      "groups": 27,
+      "answers_mean": 1.56,
+      "dominant_share": 0.143,
+      "answer_set_share": 0.185,
+      "kept": true,
+      "reason": "kept"
+    },
+    {
+      "path": [
+        "/people/person/religion",
+        "/organization/organization/headquarters./location/mailing_address/citytown"
+      ],
+      "path_text": "religion >> headquarters city",
+      "groups": 23,
+      "answers_mean": 1.0,
+      "dominant_share": 0.739,
+      "answer_set_share": 0.739,
+      "kept": false,
+      "reason": "support<25"
+    },
+    {
+      "path": [
+        "/people/person/place_of_birth",
+        "/location/country/official_language"
+      ],
+      "path_text": "place of birth >> official language",
+      "groups": 22,
+      "answers_mean": 1.59,
+      "dominant_share": 0.457,
+      "answer_set_share": 0.409,
+      "kept": false,
+      "reason": "support<25"
+    },
+    {
+      "path": [
+        "/people/person/place_of_birth",
+        "/location/country/capital"
+      ],
+      "path_text": "place of birth >> capital city",
+      "groups": 21,
+      "answers_mean": 1.1,
+      "dominant_share": 0.478,
+      "answer_set_share": 0.524,
+      "kept": false,
+      "reason": "support<25"
+    },
+    {
+      "path": [
+        "/location/location/contains",
+        "/location/country/capital"
+      ],
+      "path_text": "contained location >> capital city",
+      "groups": 20,
+      "answers_mean": 4.6,
+      "dominant_share": 0.033,
+      "answer_set_share": 0.05,
+      "kept": false,
+      "reason": "support<25"
+    },
+    {
+      "path": [
+        "/film/film/featured_film_locations",
+        "/education/educational_institution/school_type"
+      ],
+      "path_text": "featured location >> school type",
+      "groups": 17,
+      "answers_mean": 1.53,
+      "dominant_share": 0.308,
+      "answer_set_share": 0.353,
+      "kept": false,
+      "reason": "support<25"
+    },
+    {
+      "path": [
+        "/music/artist/origin",
+        "/location/country/official_language"
+      ],
+      "path_text": "place of origin >> official language",
+      "groups": 14,
+      "answers_mean": 1.36,
+      "dominant_share": 0.368,
+      "answer_set_share": 0.286,
+      "kept": false,
+      "reason": "support<25"
+    },
+    {
+      "path": [
+        "/film/film/featured_film_locations",
+        "/organization/organization/headquarters./location/mailing_address/citytown"
+      ],
+      "path_text": "featured location >> headquarters city",
+      "groups": 13,
+      "answers_mean": 1.0,
+      "dominant_share": 0.308,
+      "answer_set_share": 0.308,
+      "kept": false,
+      "reason": "support<25"
+    },
+    {
+      "path": [
+        "/education/educational_institution/school_type",
+        "/organization/organization/headquarters./location/mailing_address/citytown"
+      ],
+      "path_text": "school type >> headquarters city",
+      "groups": 10,
+      "answers_mean": 1.0,
+      "dominant_share": 1.0,
+      "answer_set_share": 1.0,
+      "kept": false,
+      "reason": "support<25"
+    },
+    {
+      "path": [
+        "/film/film/produced_by",
+        "/music/artist/origin"
+      ],
+      "path_text": "producer >> place of origin",
+      "groups": 8,
+      "answers_mean": 1.0,
+      "dominant_share": 0.25,
+      "answer_set_share": 0.25,
+      "kept": false,
+      "reason": "support<25"
+    },
+    {
+      "path": [
+        "/people/person/nationality",
+        "/people/person/gender"
+      ],
+      "path_text": "country of citizenship >> gender",
+      "groups": 8,
+      "answers_mean": 1.0,
+      "dominant_share": 0.875,
+      "answer_set_share": 0.875,
+      "kept": false,
+      "reason": "support<25"
+    },
+    {
+      "path": [
+        "/film/film/produced_by",
+        "/organization/organization/headquarters./location/mailing_address/citytown"
+      ],
+      "path_text": "producer >> headquarters city",
+      "groups": 5,
+      "answers_mean": 1.0,
+      "dominant_share": 1.0,
+      "answer_set_share": 1.0,
+      "kept": false,
+      "reason": "support<25"
+    },
+    {
+      "path": [
+        "/film/film/written_by",
+        "/music/artist/origin"
+      ],
+      "path_text": "writer >> place of origin",
+      "groups": 5,
+      "answers_mean": 1.0,
+      "dominant_share": 0.4,
+      "answer_set_share": 0.4,
+      "kept": false,
+      "reason": "support<25"
+    },
+    {
+      "path": [
+        "/film/film/language",
+        "/location/country/form_of_government"
+      ],
+      "path_text": "language >> form of government",
+      "groups": 3,
+      "answers_mean": 1.0,
+      "dominant_share": 0.667,
+      "answer_set_share": 0.667,
+      "kept": false,
+      "reason": "support<25"
+    },
+    {
+      "path": [
+        "/film/film/language",
+        "/location/location/time_zones"
+      ],
+      "path_text": "language >> time zone",
+      "groups": 3,
+      "answers_mean": 1.0,
+      "dominant_share": 0.667,
+      "answer_set_share": 0.667,
+      "kept": false,
+      "reason": "support<25"
+    },
+    {
+      "path": [
+        "/film/film/country",
+        "/people/person/gender"
+      ],
+      "path_text": "country >> gender",
+      "groups": 2,
+      "answers_mean": 1.0,
+      "dominant_share": 1.0,
+      "answer_set_share": 1.0,
+      "kept": false,
+      "reason": "support<25"
+    },
+    {
+      "path": [
+        "/location/location/contains",
+        "/people/person/gender"
+      ],
+      "path_text": "contained location >> gender",
+      "groups": 2,
+      "answers_mean": 1.0,
+      "dominant_share": 1.0,
+      "answer_set_share": 1.0,
+      "kept": false,
+      "reason": "support<25"
+    },
+    {
+      "path": [
+        "/film/film/featured_film_locations",
+        "/people/person/gender"
+      ],
+      "path_text": "featured location >> gender",
+      "groups": 1,
+      "answers_mean": 1.0,
+      "dominant_share": 1.0,
+      "answer_set_share": 1.0,
+      "kept": false,
+      "reason": "support<25"
+    },
+    {
+      "path": [
+        "/film/film/language",
+        "/location/country/capital"
+      ],
+      "path_text": "language >> capital city",
+      "groups": 1,
+      "answers_mean": 1.0,
+      "dominant_share": 1.0,
+      "answer_set_share": 1.0,
+      "kept": false,
+      "reason": "support<25"
+    },
+    {
+      "path": [
+        "/film/film/language",
+        "/location/country/official_language"
+      ],
+      "path_text": "language >> official language",
+      "groups": 1,
+      "answers_mean": 1.0,
+      "dominant_share": 1.0,
+      "answer_set_share": 1.0,
+      "kept": false,
+      "reason": "support<25"
+    },
+    {
+      "path": [
+        "/location/location/contains",
+        "/people/person/nationality"
+      ],
+      "path_text": "contained location >> country of citizenship",
+      "groups": 1,
+      "answers_mean": 1.0,
+      "dominant_share": 1.0,
+      "answer_set_share": 1.0,
+      "kept": false,
+      "reason": "support<25"
+    },
+    {
+      "path": [
+        "/organization/organization/headquarters./location/mailing_address/citytown",
+        "/location/country/capital"
+      ],
+      "path_text": "headquarters city >> capital city",
+      "groups": 1,
+      "answers_mean": 1.0,
+      "dominant_share": 1.0,
+      "answer_set_share": 1.0,
+      "kept": false,
+      "reason": "support<25"
+    },
+    {
+      "path": [
+        "/organization/organization/headquarters./location/mailing_address/citytown",
+        "/location/country/form_of_government"
+      ],
+      "path_text": "headquarters city >> form of government",
+      "groups": 1,
+      "answers_mean": 1.0,
+      "dominant_share": 1.0,
+      "answer_set_share": 1.0,
+      "kept": false,
+      "reason": "support<25"
+    },
+    {
+      "path": [
+        "/people/person/profession",
+        "/people/person/gender"
+      ],
+      "path_text": "profession >> gender",
+      "groups": 1,
+      "answers_mean": 1.0,
+      "dominant_share": 1.0,
+      "answer_set_share": 1.0,
+      "kept": false,
+      "reason": "support<25"
+    }
+  ],
+  "candidate_groups": 36199,
+  "kept_groups": 12985,
+  "skipped_groups_on_collision": 2,
+  "audit": {
+    "cross_split_groups": 0,
+    "cross_split_questions": 0,
+    "duplicated_questions_within_split": {
+      "train": 0,
+      "validation": 0,
+      "test": 0
+    },
+    "self_answer_items": 0,
+    "empty_answer_items": 0,
+    "evidence_incomplete_items": 0,
+    "disconnected_evidence_items": 0,
+    "evidence_not_in_visible_graph_items": 0,
+    "incomplete_answer_set_items": 0,
+    "unreachable_answer_items": 0,
+    "duplicate_question_ids": 0,
+    "duplicate_answer_id_items": 0,
+    "visible_graph_checked": true,
+    "topic_entity_overlap_train_test": 27,
+    "test_topic_entities_unseen_in_train": 121,
+    "answer_entity_overlap_train_test": 164,
+    "violations": []
+  }
+}

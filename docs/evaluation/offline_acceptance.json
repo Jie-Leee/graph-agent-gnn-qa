@@ -1,0 +1,67 @@
+{
+  "status": "offline_passed_live_pending",
+  "api_requests_made": 0,
+  "formal_test_results_available": false,
+  "code_base": "241a40af8d784581377f19170b872b885dcf63f5",
+  "data_contract": {
+    "train": 2000,
+    "validation": 200,
+    "test": 300,
+    "data_check_violations": []
+  },
+  "tests": {
+    "passed": 216,
+    "subtests_passed": 631,
+    "warnings": 1,
+    "elapsed_seconds": 12.3
+  },
+  "gnn_offline": {
+    "gat_2_mean": {
+      "questions": 5,
+      "contract": "passed",
+      "kind": "offline_real_GNN_with_scripted_LLM_not_QA_accuracy",
+      "checkpoint_sha256": "0444815ce0b921993e84fcf2b2c8c7e2d01891386084d8298e68184453752345"
+    },
+    "gat_1_mean": {
+      "questions": 5,
+      "contract": "passed",
+      "kind": "offline_real_GNN_with_scripted_LLM_not_QA_accuracy",
+      "checkpoint_sha256": "3aab47fc11a205c69f334d0c2d328b9595028527a81b492d1a98cd89064fadd0"
+    },
+    "gat_3_mean": {
+      "questions": 5,
+      "contract": "passed",
+      "kind": "offline_real_GNN_with_scripted_LLM_not_QA_accuracy",
+      "checkpoint_sha256": "0503690c160f66502fd8cdbaec736ecf2e8fbd4f6cc8a32ca352650d0f6f7900"
+    },
+    "gat_2_sum": {
+      "questions": 5,
+      "contract": "passed",
+      "kind": "offline_real_GNN_with_scripted_LLM_not_QA_accuracy",
+      "checkpoint_sha256": "ac242e06d98c5c95141317deaa7979174941dd58b96edeaff71582c7477dc8ca"
+    },
+    "gat_2_max": {
+      "questions": 5,
+      "contract": "passed",
+      "kind": "offline_real_GNN_with_scripted_LLM_not_QA_accuracy",
+      "checkpoint_sha256": "73525dc3a513041aadaaebc87cd06d7b32c407f2ff0bfa60908bdc9149c087fb"
+    }
+  },
+  "mock": {
+    "selected_questions": 5,
+    "variants": 7,
+    "records": 35,
+    "kind": "software_plumbing_only_not_model_results",
+    "manifest_status": "smoke"
+  },
+  "runtime": {
+    "python": "3.12.14",
+    "torch": "2.15.0+cpu",
+    "torch-geometric": "2.8.1",
+    "langchain": "1.2.12",
+    "langchain-core": "1.2.18",
+    "langchain-openai": "1.1.11",
+    "matplotlib": "3.11.2"
+  },
+  "remaining": "Provide local DeepSeek API key, run live validation smoke, then full test and final report."
+}

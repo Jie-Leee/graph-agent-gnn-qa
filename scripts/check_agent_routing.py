@@ -49,7 +49,8 @@ def run_case(runner: AgentRunner, question: Question, expected: bool) -> dict:
                 "tool_calls": prediction.tool_calls, "run_id": runner.last_trace["run_id"]}
     except (RuntimeError, ValueError, OSError) as error:
         return {"question_id": question.question_id, "status": "error", "error_type": type(error).__name__,
-                "expected_query": expected, "agreement": False}
+                "expected_query": expected, "agreement": False,
+                "run_id": runner.last_trace["run_id"] if runner.last_trace else None}
 
 
 def main():
@@ -59,6 +60,7 @@ def main():
     parser.add_argument("--dry-run", action="store_true", help="Validate cases only; no API calls")
     parser.add_argument("--env-file", type=Path, default=ROOT / ".env")
     parser.add_argument("--trace-dir", type=Path, default=ROOT / "logs/agent-routing")
+    parser.add_argument("--output", type=Path, default=ROOT / "outputs/agent/routing.json")
     args = parser.parse_args()
     try:
         cases = load_cases(args.cases)
@@ -76,9 +78,12 @@ def main():
         rows = [run_case(runner, question, expected) for question, expected in cases[:args.limit]]
         for row in rows:
             print(json.dumps(row, ensure_ascii=False))
-        print(json.dumps({"kind": "synthetic_routing_only_not_QA", "cases": len(rows),
-                          "errors": sum(row["status"] == "error" for row in rows),
-                          "agreement_including_errors_as_failures": sum(row["agreement"] for row in rows) / len(rows)}))
+        summary = {"kind": "synthetic_routing_only_not_QA", "cases": len(rows),
+                   "errors": sum(row["status"] == "error" for row in rows),
+                   "agreement_including_errors_as_failures": sum(row["agreement"] for row in rows) / len(rows)}
+        args.output.parent.mkdir(parents=True, exist_ok=True)
+        args.output.write_text(json.dumps({"summary": summary, "rows": rows}, ensure_ascii=False, indent=2), encoding="utf-8")
+        print(json.dumps(summary))
     except (RuntimeError, ValueError, OSError) as error:
         parser.exit(1, f"Routing checks failed: {error}\n")
 

@@ -19,6 +19,26 @@ from graph_agent.retrieval.graph import GraphIndex
 
 
 class RoutingTests(unittest.TestCase):
+    def test_malformed_stop_structure_is_a_bounded_Agent_error(self):
+        from graph_agent.agent.runner import AgentError
+        provider = ScriptedProvider([{"role": "assistant", "content": None,
+                                     "tool_calls": [{"id": "bad", "type": "function", "function": None}]}])
+        runner = AgentRunner(provider, retriever=GraphIndex(DEMO_TRIPLES))
+        question, _ = routing.load_cases(ROOT / "docs/agent_routing_cases.json")[0]
+        with self.assertRaises(AgentError):
+            runner.run(question, "text")
+
+    def test_declared_finish_action_stops_without_graph_query(self):
+        finish = {"role": "assistant", "content": None, "tool_calls": [{"id": "stop-1", "type": "function",
+                  "function": {"name": "finish", "arguments": "{}"}}]}
+        provider = ScriptedProvider([finish, answer_message(text="120 minutes")])
+        runner = AgentRunner(provider, retriever=GraphIndex(DEMO_TRIPLES), catalog=DEMO_CATALOG)
+        question, _ = routing.load_cases(ROOT / "docs/agent_routing_cases.json")[16]
+        result = runner.run(question, "text")
+        self.assertEqual(result.tool_calls, 0)
+        self.assertIn("finish", [tool["function"]["name"] for tool in provider.requests[0]["tools"]])
+        self.assertEqual(runner.last_trace["events"][1]["stage"], "route_stop")
+
     def test_all_24_reference_labels_stay_outside_actual_inference(self):
         cases = routing.load_cases(ROOT / "docs/agent_routing_cases.json")
         self.assertEqual(len(cases), 24)
